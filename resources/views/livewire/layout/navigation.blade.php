@@ -43,6 +43,9 @@ new class extends Component
                     <x-nav-link :href="route('automations.index')" :active="request()->routeIs('automations.*')" wire:navigate>
                         {{ __('Automations') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('mailboxes.index')" :active="request()->routeIs('mailboxes.*')" wire:navigate>
+                        {{ __('Mailboxes') }}
+                    </x-nav-link>
                 </div>
             </div>
 
