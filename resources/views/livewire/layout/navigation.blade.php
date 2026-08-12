@@ -46,6 +46,13 @@ new class extends Component
                     <x-nav-link :href="route('mailboxes.index')" :active="request()->routeIs('mailboxes.*')" wire:navigate>
                         {{ __('Mailboxes') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('replies.inbox')" :active="request()->routeIs('replies.*')" wire:navigate>
+                        {{ __('Replies') }}
+                        @php($unreadReplies = \App\Models\Reply::query()->whereNull('read_at')->count())
+                        @if ($unreadReplies > 0)
+                            <span class="ms-1 px-1.5 py-0.5 text-xs rounded-full bg-green-600 text-white">{{ $unreadReplies }}</span>
+                        @endif
+                    </x-nav-link>
                 </div>
             </div>
 

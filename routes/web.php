@@ -19,6 +19,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('automations', Automations\Index::class)->name('automations.index');
     Route::get('automations/{automation}', Automations\Edit::class)->name('automations.edit');
     Route::get('mailboxes', App\Livewire\Mailboxes\Index::class)->name('mailboxes.index');
+    Route::get('replies', App\Livewire\Replies\Inbox::class)->name('replies.inbox');
     Route::get('mailboxes/connect', [GoogleOAuthController::class, 'redirect'])->name('mailboxes.connect');
     Route::get('oauth/google/callback', [GoogleOAuthController::class, 'callback'])->name('oauth.google.callback');
 });

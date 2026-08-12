@@ -22,6 +22,11 @@ return Application::configure(basePath: dirname(__DIR__))
             ->withoutOverlapping(10)
             ->onFailure(fn () => Log::error('outreach:dispatch-due-emails scheduled run failed'));
 
+        $schedule->command('gmail:poll-mailboxes')
+            ->everyTwoMinutes()
+            ->withoutOverlapping(10)
+            ->onFailure(fn () => Log::error('gmail:poll-mailboxes scheduled run failed'));
+
         $schedule->command('outreach:advance-sequences')
             ->everyTenMinutes()
             ->withoutOverlapping(10)
