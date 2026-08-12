@@ -41,6 +41,21 @@ return Application::configure(basePath: dirname(__DIR__))
             ->daily()
             ->withoutOverlapping(30)
             ->onFailure(fn () => Log::error('mailboxes:refresh-tokens scheduled run failed'));
+
+        $schedule->command('health:evaluate')
+            ->hourly()
+            ->withoutOverlapping(30)
+            ->onFailure(fn () => Log::error('health:evaluate scheduled run failed'));
+
+        $schedule->command('health:check-dns')
+            ->dailyAt('06:00')
+            ->withoutOverlapping(30)
+            ->onFailure(fn () => Log::error('health:check-dns scheduled run failed'));
+
+        $schedule->command('health:check-dns --dnsbl')
+            ->dailyAt('06:30')
+            ->withoutOverlapping(30)
+            ->onFailure(fn () => Log::error('health:check-dns --dnsbl scheduled run failed'));
     })
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([

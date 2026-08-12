@@ -53,6 +53,9 @@ new class extends Component
                             <span class="ms-1 px-1.5 py-0.5 text-xs rounded-full bg-green-600 text-white">{{ $unreadReplies }}</span>
                         @endif
                     </x-nav-link>
+                    <x-nav-link :href="route('health')" :active="request()->routeIs('health')" wire:navigate>
+                        {{ __('Health') }}
+                    </x-nav-link>
                 </div>
             </div>
 
