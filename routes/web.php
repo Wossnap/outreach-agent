@@ -14,6 +14,7 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('approvals', App\Livewire\ApprovalQueue::class)->name('approvals');
     Route::get('automations', Automations\Index::class)->name('automations.index');
     Route::get('automations/{automation}', Automations\Edit::class)->name('automations.edit');
 });
