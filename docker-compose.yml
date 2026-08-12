@@ -1,0 +1,94 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: outreach_app
+    restart: unless-stopped
+    ports:
+      - "8010:8000"
+    volumes:
+      - .:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=outreach
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - QUEUE_CONNECTION=database
+    depends_on:
+      - postgres
+    networks:
+      - outreach_network
+
+  postgres:
+    image: postgres:15
+    container_name: outreach_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: outreach
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - outreach_network
+
+  queue-worker-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: outreach_queue_worker_1
+    restart: unless-stopped
+    command: php artisan queue:work database --sleep=3 --tries=3 --timeout=300 --memory=512
+    volumes:
+      - .:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=outreach
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - QUEUE_CONNECTION=database
+    depends_on:
+      - postgres
+    networks:
+      - outreach_network
+
+  # Scheduler — runs due scheduled commands (dispatch sends, poll inboxes, health checks)
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: outreach_scheduler
+    restart: unless-stopped
+    command: php artisan schedule:work
+    volumes:
+      - .:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=outreach
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - QUEUE_CONNECTION=database
+    depends_on:
+      - postgres
+    networks:
+      - outreach_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  outreach_network:
+    driver: bridge
