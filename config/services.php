@@ -35,4 +35,18 @@ return [
         ],
     ],
 
+    'anthropic' => [
+        'api_key' => env('ANTHROPIC_API_KEY'),
+        'api_url' => env('ANTHROPIC_API_URL', 'https://api.anthropic.com/v1/messages'),
+        'model' => env('ANTHROPIC_MODEL', 'claude-sonnet-5'),
+        'max_output_tokens' => (int) env('ANTHROPIC_MAX_OUTPUT_TOKENS', 1500),
+        'timeout' => (int) env('ANTHROPIC_TIMEOUT', 120),
+    ],
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
+    ],
+
 ];
