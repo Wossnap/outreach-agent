@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Middleware\ApiAuth;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -14,6 +16,27 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    ->withSchedule(function (Schedule $schedule): void {
+        $schedule->command('outreach:dispatch-due-emails')
+            ->everyMinute()
+            ->withoutOverlapping(10)
+            ->onFailure(fn () => Log::error('outreach:dispatch-due-emails scheduled run failed'));
+
+        $schedule->command('outreach:advance-sequences')
+            ->everyTenMinutes()
+            ->withoutOverlapping(10)
+            ->onFailure(fn () => Log::error('outreach:advance-sequences scheduled run failed'));
+
+        $schedule->command('outreach:reconcile-stuck')
+            ->everyFifteenMinutes()
+            ->withoutOverlapping(10)
+            ->onFailure(fn () => Log::error('outreach:reconcile-stuck scheduled run failed'));
+
+        $schedule->command('mailboxes:refresh-tokens')
+            ->daily()
+            ->withoutOverlapping(30)
+            ->onFailure(fn () => Log::error('mailboxes:refresh-tokens scheduled run failed'));
+    })
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'api.auth' => ApiAuth::class,
