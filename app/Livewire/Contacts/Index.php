@@ -130,7 +130,8 @@ class Index extends Component
             'availableStatuses' => [
                 Enrollment::STATUS_ACTIVE, Enrollment::STATUS_COMPLETED, Enrollment::STATUS_STOPPED_REPLY,
                 Enrollment::STATUS_STOPPED_UNSUBSCRIBE, Enrollment::STATUS_STOPPED_BOUNCE,
-                Enrollment::STATUS_STOPPED_SUPPRESSED, Enrollment::STATUS_CANCELLED, Enrollment::STATUS_FAILED,
+                Enrollment::STATUS_STOPPED_SUPPRESSED, Enrollment::STATUS_STOPPED_REJECTED,
+                Enrollment::STATUS_CANCELLED, Enrollment::STATUS_FAILED,
             ],
         ]);
     }

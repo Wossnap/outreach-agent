@@ -195,4 +195,28 @@ class ContactIngestTest extends TestCase
     {
         $this->getJson('/api/health')->assertOk()->assertJsonPath('success', true);
     }
+
+    public function test_a_contact_can_be_re_added_after_their_draft_was_rejected(): void
+    {
+        Queue::fake();
+        $automation = Automation::factory()->create(['tag' => 'collab']);
+        $contact = Contact::factory()->create(['email' => 'jane@example.com']);
+
+        // Rejecting a draft stops the enrollment, so the contact is no longer
+        // counted as enrolled and another app can add them again.
+        Enrollment::factory()->create([
+            'contact_id' => $contact->id,
+            'automation_id' => $automation->id,
+            'status' => Enrollment::STATUS_STOPPED_REJECTED,
+        ]);
+
+        $response = $this->postJson('/api/contacts', [
+            'email' => 'jane@example.com',
+            'tags' => ['collab'],
+        ], $this->apiHeaders());
+
+        $response->assertOk()->assertJsonPath('data.enrollments.0.skipped', null);
+        $this->assertSame(2, Enrollment::query()->count());
+        Queue::assertPushed(DraftEmailJob::class);
+    }
 }

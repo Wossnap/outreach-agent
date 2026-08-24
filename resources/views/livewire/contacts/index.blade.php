@@ -43,7 +43,7 @@
 
                     <div>
                         <x-input-label value="Enrollment status" />
-                        <div class="mt-1 space-y-1 max-h-28 overflow-y-auto">
+                        <div class="mt-1 space-y-1 max-h-64 overflow-y-auto">
                             @foreach ($availableStatuses as $status)
                                 <label class="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                                     <input type="checkbox" wire:model.live="enrollmentStatuses" value="{{ $status }}" class="rounded border-gray-300"> {{ str_replace('_', ' ', $status) }}

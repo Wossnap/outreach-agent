@@ -23,6 +23,8 @@ class Enrollment extends Model
 
     public const STATUS_STOPPED_SUPPRESSED = 'stopped_suppressed';
 
+    public const STATUS_STOPPED_REJECTED = 'stopped_rejected';
+
     public const STATUS_CANCELLED = 'cancelled';
 
     public const STATUS_FAILED = 'failed';

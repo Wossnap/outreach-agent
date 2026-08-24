@@ -201,4 +201,46 @@ class ApprovalQueueTest extends TestCase
             ->assertSee('so they stay in the same conversation')
             ->assertDontSee('A subject that will never be sent');
     }
+
+    public function test_rejecting_takes_the_contact_out_of_the_sequence(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $message = $this->makePending();
+
+        Livewire::test(ApprovalQueue::class)
+            ->call('startReject', $message->id)
+            ->set('rejectionNote', 'Not a good fit')
+            ->call('confirmReject');
+
+        $message->refresh();
+        $enrollment = $message->enrollment->refresh();
+
+        $this->assertSame(Message::STATUS_REJECTED, $message->status);
+        $this->assertSame(Enrollment::STATUS_STOPPED_REJECTED, $enrollment->status);
+        $this->assertNotNull($enrollment->stopped_at);
+        $this->assertStringContainsString('Not a good fit', $enrollment->stop_reason);
+    }
+
+    public function test_rejecting_cancels_other_queued_emails_for_that_contact(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $message = $this->makePending();
+
+        $laterStep = SequenceStep::factory()->create([
+            'automation_id' => $message->enrollment->automation_id,
+            'position' => 2,
+        ]);
+        $queued = Message::factory()->pendingApproval()->create([
+            'enrollment_id' => $message->enrollment_id,
+            'sequence_step_id' => $laterStep->id,
+            'contact_id' => $message->contact_id,
+            'mailbox_id' => $message->mailbox_id,
+        ]);
+
+        Livewire::test(ApprovalQueue::class)
+            ->call('startReject', $message->id)
+            ->call('confirmReject');
+
+        $this->assertSame(Message::STATUS_CANCELLED, $queued->refresh()->status);
+    }
 }

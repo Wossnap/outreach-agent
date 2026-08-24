@@ -2,7 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\Enrollment;
 use App\Models\Message;
+use App\Services\Sending\EnrollmentStopper;
 use App\Services\Sending\SendScheduler;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Layout;
@@ -104,9 +106,9 @@ class ApprovalQueue extends Component
         $this->rejectionNote = '';
     }
 
-    public function confirmReject(): void
+    public function confirmReject(EnrollmentStopper $stopper): void
     {
-        $message = Message::query()->findOrFail($this->rejectingId);
+        $message = Message::query()->with('enrollment')->findOrFail($this->rejectingId);
 
         if ($message->status === Message::STATUS_PENDING_APPROVAL) {
             $message->update([
@@ -114,6 +116,18 @@ class ApprovalQueue extends Component
                 'rejected_at' => now(),
                 'rejection_note' => $this->rejectionNote ?: null,
             ]);
+
+            // Rejecting takes the contact out of the sequence. Without this the
+            // enrollment stayed active with nothing left to advance it: no
+            // further email was ever drafted, and the ingest API refused to
+            // re-add the contact because it still counted as enrolled.
+            if ($message->enrollment) {
+                $stopper->stop(
+                    $message->enrollment,
+                    Enrollment::STATUS_STOPPED_REJECTED,
+                    'Draft rejected'.($this->rejectionNote ? ': '.$this->rejectionNote : ''),
+                );
+            }
         }
 
         unset($this->drafts[$message->id], $this->selected[$message->id]);
