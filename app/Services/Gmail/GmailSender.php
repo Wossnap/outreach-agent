@@ -3,6 +3,7 @@
 namespace App\Services\Gmail;
 
 use App\Models\Message;
+use Google\Service\Gmail;
 use Google\Service\Gmail\Message as GmailMessage;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -39,13 +40,40 @@ class GmailSender
             $gmailMessage->setThreadId($threadId);
         }
 
-        $sent = $this->clientFactory->gmailFor($mailbox)->users_messages->send('me', $gmailMessage);
+        $gmail = $this->clientFactory->gmailFor($mailbox);
+
+        $sent = $gmail->users_messages->send('me', $gmailMessage);
+
+        // Gmail discards the Message-ID we set and assigns its own. Follow-ups
+        // quote this value in In-Reply-To/References, so storing ours would
+        // point them at a message that does not exist and the recipient's mail
+        // client would file the follow-up as a separate conversation.
+        $rfcMessageId = $this->sentMessageId($gmail, $sent->getId()) ?? $rfcMessageId;
 
         return [
             'gmail_message_id' => $sent->getId(),
             'gmail_thread_id' => $sent->getThreadId(),
             'rfc_message_id' => $rfcMessageId,
         ];
+    }
+
+    /**
+     * The Message-ID Gmail actually assigned to a sent message.
+     */
+    protected function sentMessageId(Gmail $gmail, string $gmailMessageId): ?string
+    {
+        $sent = $gmail->users_messages->get('me', $gmailMessageId, [
+            'format' => 'metadata',
+            'metadataHeaders' => ['Message-ID'],
+        ]);
+
+        foreach ($sent->getPayload()?->getHeaders() ?? [] as $header) {
+            if (mb_strtolower($header->getName()) === 'message-id') {
+                return $header->getValue();
+            }
+        }
+
+        return null;
     }
 
     /**

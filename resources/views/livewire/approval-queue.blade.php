@@ -72,8 +72,18 @@
                     @endif
 
                     <div>
-                        <x-input-label value="Subject" />
-                        <x-text-input wire:model.blur="drafts.{{ $message->id }}.subject" class="mt-1 w-full" />
+                        {{-- Follow-ups send as "Re: <first email's subject>" so they stay in the
+                             same conversation, and any edit here would be discarded on send. --}}
+                        @if (($message->sequenceStep?->position ?? 1) > 1)
+                            <x-input-label value="Subject" />
+                            <x-text-input class="mt-1 w-full bg-gray-100 dark:bg-gray-800"
+                                value="Re: {{ ($priorThreads[$message->enrollment_id] ?? null)?->first()?->subject ?? $message->subject }}"
+                                disabled readonly />
+                            <p class="mt-1 text-xs text-gray-500">Follow-ups keep the first email's subject so they stay in the same conversation.</p>
+                        @else
+                            <x-input-label value="Subject" />
+                            <x-text-input wire:model.blur="drafts.{{ $message->id }}.subject" class="mt-1 w-full" />
+                        @endif
                     </div>
                     <div>
                         <x-input-label value="Body" />

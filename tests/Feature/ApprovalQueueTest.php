@@ -167,4 +167,38 @@ class ApprovalQueueTest extends TestCase
         $this->assertNotNull($select, 'No ordered select against messages was run.');
         $this->assertStringContainsString('order by "created_at" asc, "id" asc', $select);
     }
+
+    public function test_follow_up_subject_is_shown_read_only_with_the_thread_subject(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $mailbox = Mailbox::factory()->connected()->create();
+        $enrollment = Enrollment::factory()->create(['mailbox_id' => $mailbox->id]);
+
+        $first = SequenceStep::factory()->create(['automation_id' => $enrollment->automation_id, 'position' => 1]);
+        $second = SequenceStep::factory()->create(['automation_id' => $enrollment->automation_id, 'position' => 2]);
+
+        Message::factory()->create([
+            'enrollment_id' => $enrollment->id,
+            'sequence_step_id' => $first->id,
+            'contact_id' => $enrollment->contact_id,
+            'mailbox_id' => $mailbox->id,
+            'status' => Message::STATUS_SENT,
+            'subject' => 'The original subject',
+            'sent_at' => now()->subDay(),
+        ]);
+
+        Message::factory()->pendingApproval()->create([
+            'enrollment_id' => $enrollment->id,
+            'sequence_step_id' => $second->id,
+            'contact_id' => $enrollment->contact_id,
+            'mailbox_id' => $mailbox->id,
+            'subject' => 'A subject that will never be sent',
+        ]);
+
+        Livewire::test(ApprovalQueue::class)
+            ->assertSee('Re: The original subject')
+            ->assertSee('so they stay in the same conversation')
+            ->assertDontSee('A subject that will never be sent');
+    }
 }
