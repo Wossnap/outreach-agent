@@ -32,17 +32,33 @@ Laravel 13 · Livewire (Breeze) · Postgres · database queue · Docker (app :80
 ```bash
 cp .env.example .env               # then fill the vars below
 docker compose up -d --build
-docker exec outreach_app php artisan key:generate
-docker exec outreach_app php artisan migrate
+
+# The image installs dependencies and builds the assets, then compose mounts
+# this directory over the top of them — so both must be installed again here,
+# through the container. Without these two commands every container exits
+# immediately on a missing vendor/autoload.php.
+docker compose run --rm --no-deps app composer install
+docker compose exec app sh -c "npm install && npm run build"
+
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate
 # register your login user at http://localhost:8010/register
 ```
 
-Local (no Docker): `composer install && npm install && npm run build && php artisan migrate && composer dev` — but you must also run `php artisan queue:work database` and `php artisan schedule:work` for anything to actually draft/send.
+Local (no Docker) needs **PHP 8.4 or newer**: `composer install && npm install && npm run build && php artisan migrate && composer dev` — but you must also run `php artisan queue:work database` and `php artisan schedule:work` for anything to actually draft/send.
+
+### Running the tests
+
+`php artisan test` — the suite runs on in-memory SQLite. phpunit.xml sets that
+with `<server>` entries as well as `<env>`, because docker-compose sets `DB_*`
+on the container and Laravel reads `$_SERVER` first. Removing those entries
+makes the suite run against the live database and drop every table in it.
 
 ### Required env vars
 
 | Var | Purpose |
 |---|---|
+| `ANTHROPIC_DRAFTER` | `api` calls Claude; `mock` drafts offline for local testing, no key needed |
 | `ANTHROPIC_API_KEY` | Claude API key for drafting |
 | `ANTHROPIC_MODEL` | default `claude-sonnet-5` |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | OAuth client — see `docs/google-cloud-setup.md` |
