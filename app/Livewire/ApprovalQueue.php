@@ -132,7 +132,11 @@ class ApprovalQueue extends Component
         $messages = Message::query()
             ->where('status', Message::STATUS_PENDING_APPROVAL)
             ->with(['contact', 'mailbox', 'sequenceStep', 'enrollment.automation'])
+            // created_at is second-precision, so drafts made in the same second
+            // tie; without the id tiebreaker an edited row is returned last and
+            // appears to jump to the bottom of the queue.
             ->oldest()
+            ->orderBy('id')
             ->paginate(15);
 
         foreach ($messages as $message) {

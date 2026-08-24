@@ -9,6 +9,7 @@ use App\Models\Message;
 use App\Models\SequenceStep;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -140,5 +141,30 @@ class ApprovalQueueTest extends TestCase
 
         $this->assertSame(Message::STATUS_APPROVED, $message->fresh()->status);
         $this->assertNull($message->fresh()->scheduled_at);
+    }
+
+    public function test_queue_is_ordered_by_created_at_then_id(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $this->makePending();
+
+        // created_at is second-precision. Postgres returns tied rows in heap
+        // order, so an updated row comes back last and appears to jump to the
+        // bottom of the queue. The id tiebreaker is what prevents that, and
+        // SQLite cannot reproduce the reordering — so assert the ordering
+        // itself rather than the symptom.
+        $queries = [];
+        DB::listen(function ($query) use (&$queries) {
+            $queries[] = $query->sql;
+        });
+
+        Livewire::test(ApprovalQueue::class);
+
+        $select = collect($queries)->first(
+            fn (string $sql) => str_contains($sql, 'from "messages"') && str_contains($sql, 'order by')
+        );
+
+        $this->assertNotNull($select, 'No ordered select against messages was run.');
+        $this->assertStringContainsString('order by "created_at" asc, "id" asc', $select);
     }
 }
