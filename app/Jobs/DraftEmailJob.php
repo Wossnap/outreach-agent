@@ -6,7 +6,7 @@ use App\Models\ActivityLog;
 use App\Models\Enrollment;
 use App\Models\Message;
 use App\Models\Suppression;
-use App\Services\Drafting\AnthropicDrafter;
+use App\Services\Drafting\Drafter;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Throwable;
@@ -25,7 +25,7 @@ class DraftEmailJob implements ShouldQueue
         public int $stepPosition,
     ) {}
 
-    public function handle(AnthropicDrafter $drafter): void
+    public function handle(Drafter $drafter): void
     {
         $enrollment = Enrollment::query()->with(['contact', 'automation', 'mailbox'])->find($this->enrollmentId);
 

@@ -36,6 +36,8 @@ return [
     ],
 
     'anthropic' => [
+        // 'api' calls Claude; 'mock' returns a canned draft offline (local testing).
+        'drafter' => env('ANTHROPIC_DRAFTER', 'api'),
         'api_key' => env('ANTHROPIC_API_KEY'),
         'api_url' => env('ANTHROPIC_API_URL', 'https://api.anthropic.com/v1/messages'),
         'model' => env('ANTHROPIC_MODEL', 'claude-sonnet-5'),

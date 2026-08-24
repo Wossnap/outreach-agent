@@ -13,7 +13,7 @@ use RuntimeException;
  * user-written instructions plus the contact's data. Follow-up steps get the
  * full prior thread so the draft reads naturally in-thread.
  */
-class AnthropicDrafter
+class AnthropicDrafter implements Drafter
 {
     /**
      * @return array{subject: string, body: string}
