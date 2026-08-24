@@ -23,6 +23,26 @@
                 <div class="rounded-md bg-yellow-50 dark:bg-yellow-900/30 p-3 text-sm text-yellow-800 dark:text-yellow-200">{{ session('queue-warning') }}</div>
             @endif
 
+            @if ($waiting->isNotEmpty())
+                <div class="rounded-md border border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/20 p-4 space-y-2">
+                    <p class="text-sm font-semibold text-yellow-900 dark:text-yellow-200">
+                        Waiting to send ({{ $waiting->count() }})
+                    </p>
+                    <p class="text-xs text-yellow-800 dark:text-yellow-300">
+                        Approved, but no mailbox was available to send from. These are retried automatically. If they stay here, check the Mailboxes page for a paused or disconnected mailbox.
+                    </p>
+                    <ul class="text-xs text-yellow-900 dark:text-yellow-200 space-y-1">
+                        @foreach ($waiting as $item)
+                            <li>
+                                {{ $item->contact?->email }}
+                                — step {{ $item->sequenceStep?->position }}
+                                — approved {{ $item->approved_at?->timezone(config('outreach.timezone'))->format('D j M, H:i') }}
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             @forelse ($messages as $message)
                 <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 space-y-4" wire:key="message-{{ $message->id }}">
                     <div class="flex items-start justify-between gap-4">

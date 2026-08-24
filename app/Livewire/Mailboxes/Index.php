@@ -4,6 +4,7 @@ namespace App\Livewire\Mailboxes;
 
 use App\Models\Mailbox;
 use App\Models\Message;
+use App\Services\Sending\ApprovedMessageRecovery;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -60,12 +61,21 @@ class Index extends Component
         Mailbox::query()->findOrFail($id)->pause('Paused manually');
     }
 
-    public function resume(int $id): void
+    public function resume(int $id, ApprovedMessageRecovery $recovery): void
     {
         Mailbox::query()->findOrFail($id)->update([
             'status' => Mailbox::STATUS_ACTIVE,
             'paused_reason' => null,
         ]);
+
+        // Anything approved while every mailbox was paused is waiting for one.
+        // This is the moment it became sendable, so do not make it wait for the
+        // next scheduled sweep.
+        $recovered = count($recovery->run());
+
+        if ($recovered > 0) {
+            session()->flash('status', $recovered.' email(s) that were waiting for a mailbox have been scheduled.');
+        }
     }
 
     public function render()

@@ -149,6 +149,15 @@ class ApprovalQueue extends Component
         return view('livewire.approval-queue', [
             'messages' => $messages,
             'priorThreads' => $this->priorThreads($messages->getCollection()),
+            // Approved but never given a send slot — happens when every mailbox
+            // was paused or disconnected at the moment of approval. Surfaced so
+            // these cannot sit unsent unnoticed; the reconciler retries them.
+            'waiting' => Message::query()
+                ->where('status', Message::STATUS_APPROVED)
+                ->whereNull('sent_at')
+                ->with(['contact', 'sequenceStep'])
+                ->orderBy('approved_at')
+                ->get(),
         ]);
     }
 

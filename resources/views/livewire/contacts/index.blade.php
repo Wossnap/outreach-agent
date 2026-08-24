@@ -145,7 +145,10 @@
                                                         @foreach ($expanded->messages->where('enrollment_id', $enrollment->id)->sortBy(fn ($m) => $m->sequenceStep->position) as $message)
                                                             <li>
                                                                 Step {{ $message->sequenceStep->position }} — {{ str_replace('_', ' ', $message->status) }}
-                                                                @if ($message->sent_at) · sent {{ $message->sent_at->timezone(config('outreach.timezone'))->format('j M H:i') }} @endif
+                                                                @if ($message->sent_at) · sent {{ $message->sent_at->timezone(config('outreach.timezone'))->format('j M H:i') }}
+                                                                @elseif ($message->scheduled_at) · sending {{ $message->scheduled_at->timezone(config('outreach.timezone'))->format('j M H:i:s') }}
+                                                                @elseif ($message->approved_at) · approved {{ $message->approved_at->timezone(config('outreach.timezone'))->format('j M H:i') }}, waiting for a mailbox
+                                                                @endif
                                                                 @if ($message->subject) · “{{ $message->subject }}” @endif
                                                             </li>
                                                         @endforeach

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\ActivityLog;
 use App\Models\Message;
+use App\Services\Sending\ApprovedMessageRecovery;
 use Illuminate\Console\Command;
 
 /**
@@ -11,6 +12,11 @@ use Illuminate\Console\Command;
  * has a gmail_message_id reached Gmail — flip it to sent. One without never
  * left — mark it failed for a manual retry (auto-requeueing a send risks a
  * duplicate email to a real person).
+ *
+ * Also picks up approved messages that never got a send slot, which happens
+ * when every mailbox was paused or disconnected at the moment of approval.
+ * Nothing else in the system reads the approved status, so without this they
+ * would sit unsent indefinitely.
  */
 class ReconcileStuckMessages extends Command
 {
@@ -18,7 +24,7 @@ class ReconcileStuckMessages extends Command
 
     protected $description = 'Heal or fail messages stuck in sending/drafting after a worker crash';
 
-    public function handle(): int
+    public function handle(ApprovedMessageRecovery $recovery): int
     {
         $threshold = now()->subMinutes((int) $this->option('minutes'));
 
@@ -63,7 +69,9 @@ class ReconcileStuckMessages extends Command
             );
         }
 
-        $this->info('Reconciled '.$stuckSending->count().' sending + '.$stuckDrafting->count().' drafting rows.');
+        $rescheduled = count($recovery->run());
+
+        $this->info('Reconciled '.$stuckSending->count().' sending + '.$stuckDrafting->count().' drafting rows, rescheduled '.$rescheduled.' approved.');
 
         return self::SUCCESS;
     }
