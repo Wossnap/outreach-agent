@@ -2,6 +2,7 @@
 
 namespace App\Services\Inbound;
 
+use App\Models\ActivityLog;
 use App\Models\Mailbox;
 use App\Services\Gmail\GmailClientFactory;
 use Carbon\CarbonImmutable;
@@ -32,18 +33,46 @@ class GmailInboxFetcher
             : $this->idsFromRecentList($gmail);
 
         $emails = [];
+        $skipped = [];
 
         foreach (array_unique($messageIds) as $id) {
-            $email = $this->fetchOne($gmail, $id);
+            try {
+                $email = $this->fetchOne($gmail, $id);
+            } catch (GoogleServiceException $e) {
+                // Gmail's history lists messages that no longer exist — most
+                // often draft autosaves, each of which lives for seconds while
+                // someone types. Aborting here left the cursor unsaved, so every
+                // later poll failed on the same message and replies and opt-outs
+                // stopped being seen entirely.
+                if ($e->getCode() === 404) {
+                    $skipped[] = $id;
+
+                    continue;
+                }
+
+                throw $e;
+            }
 
             if ($email) {
                 $emails[] = $email;
             }
         }
 
-        // Advance the cursor to the mailbox's current historyId.
+        // Advance the cursor to the mailbox's current historyId. This runs even
+        // when some messages were skipped, so a single missing message cannot
+        // stall polling permanently.
         $profile = $gmail->users->getProfile('me');
         $mailbox->update(['gmail_history_id' => $profile->getHistoryId(), 'last_polled_at' => now()]);
+
+        if ($skipped !== []) {
+            ActivityLog::record(
+                event: 'inbound_message_skipped',
+                message: count($skipped).' inbound message(s) could not be read for '.$mailbox->email.' and were skipped: '.implode(', ', $skipped),
+                level: ActivityLog::LEVEL_WARNING,
+                subject: $mailbox,
+                context: ['gmail_message_ids' => $skipped],
+            );
+        }
 
         return $emails;
     }
@@ -71,7 +100,15 @@ class GmailInboxFetcher
 
                 foreach ($history->getHistory() ?? [] as $record) {
                     foreach ($record->getMessagesAdded() ?? [] as $added) {
-                        $ids[] = $added->getMessage()->getId();
+                        $message = $added->getMessage();
+
+                        // Draft autosaves are our own half-written emails, never
+                        // an inbound reply, and they are deleted moments later.
+                        if (in_array('DRAFT', $message->getLabelIds() ?? [], true)) {
+                            continue;
+                        }
+
+                        $ids[] = $message->getId();
                     }
                 }
 
