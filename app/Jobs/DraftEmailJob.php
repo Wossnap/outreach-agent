@@ -64,6 +64,10 @@ class DraftEmailJob implements ShouldQueue
             'ai_subject' => $draft['subject'],
             'ai_body' => $draft['body'],
             'status' => Message::STATUS_PENDING_APPROVAL,
+            // A failure from an earlier attempt is recorded on the Activity
+            // page. Leaving it here too shows a live problem on a message that
+            // has since drafted fine.
+            'error' => null,
         ]);
     }
 

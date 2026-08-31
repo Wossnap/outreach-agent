@@ -76,4 +76,32 @@ class DraftEmailJobTest extends TestCase
         $this->assertSame('Keep me', Message::query()->firstOrFail()->subject);
         Http::assertNothingSent();
     }
+
+    public function test_a_successful_draft_clears_an_earlier_failure(): void
+    {
+        Http::fake([
+            'api.anthropic.com/*' => Http::response([
+                'content' => [['type' => 'text', 'text' => '{"subject": "Hi", "body": "Hello."}']],
+            ]),
+        ]);
+
+        $enrollment = Enrollment::factory()->create();
+        $step = SequenceStep::factory()->create(['automation_id' => $enrollment->automation_id, 'position' => 1]);
+
+        $message = Message::factory()->create([
+            'enrollment_id' => $enrollment->id,
+            'sequence_step_id' => $step->id,
+            'contact_id' => $enrollment->contact_id,
+            'mailbox_id' => $enrollment->mailbox_id,
+            'status' => Message::STATUS_DRAFT_FAILED,
+            'error' => 'Could not parse JSON from Anthropic response:',
+        ]);
+
+        (new DraftEmailJob($enrollment->id, 1))->handle(app(\App\Services\Drafting\AnthropicDrafter::class));
+
+        $message->refresh();
+
+        $this->assertSame(Message::STATUS_PENDING_APPROVAL, $message->status);
+        $this->assertNull($message->error);
+    }
 }
