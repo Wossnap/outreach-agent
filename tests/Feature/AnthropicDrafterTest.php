@@ -26,6 +26,13 @@ class AnthropicDrafterTest extends TestCase
         ]);
     }
 
+    protected function fakeAnthropicBlocks(array $blocks, int $status = 200): void
+    {
+        Http::fake([
+            'api.anthropic.com/*' => Http::response(['content' => $blocks], $status),
+        ]);
+    }
+
     protected function makeEnrollment(): Enrollment
     {
         $contact = Contact::factory()->create(['name' => 'Jane', 'company' => 'Acme']);
@@ -103,5 +110,24 @@ class AnthropicDrafterTest extends TestCase
                 && str_contains($prompt, 'Original body text here.')
                 && str_contains($prompt, 'follow-up');
         });
+    }
+
+    public function test_reads_the_text_block_when_the_model_thinks_first(): void
+    {
+        // What the API actually returns for claude-sonnet-5: an empty thinking
+        // block, then the answer. Reading block zero found nothing and drafting
+        // failed for every contact.
+        $this->fakeAnthropicBlocks([
+            ['type' => 'thinking', 'thinking' => 'considering the angle', 'text' => ''],
+            ['type' => 'text', 'text' => '{"subject": "Quick question", "body": "Hello there."}'],
+        ]);
+
+        $enrollment = $this->makeEnrollment();
+        $step = SequenceStep::factory()->create(['automation_id' => $enrollment->automation_id]);
+
+        $draft = app(AnthropicDrafter::class)->draft($enrollment, $step);
+
+        $this->assertSame('Quick question', $draft['subject']);
+        $this->assertSame('Hello there.', $draft['body']);
     }
 }

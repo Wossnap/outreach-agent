@@ -40,7 +40,11 @@ class AnthropicDrafter implements Drafter
             );
         }
 
-        $text = $response->json('content.0.text', '');
+        // The reply can contain more than one block, and a thinking block comes
+        // first when the model reasons before answering. Taking block zero
+        // picked up that empty block and never saw the draft.
+        $text = collect($response->json('content', []))
+            ->firstWhere('type', 'text')['text'] ?? '';
 
         $parsed = $this->parseJson($text);
 
