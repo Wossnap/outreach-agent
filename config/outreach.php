@@ -13,6 +13,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Sign-up
+    |--------------------------------------------------------------------------
+    | An account on this dashboard can create API keys and approve emails that
+    | send from the connected mailboxes, so registration is closed by default.
+    | Turn it on long enough to create an account, then turn it off again.
+    */
+    'registration_enabled' => (bool) env('OUTREACH_REGISTRATION_ENABLED', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Sending defaults (per mailbox, overridable per mailbox row)
     |--------------------------------------------------------------------------
     | Gaps are second-granular at runtime: a send slot is placed a random

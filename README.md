@@ -42,7 +42,8 @@ docker compose exec app sh -c "npm install && npm run build"
 
 docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate
-# register your login user at http://localhost:8010/register
+# set OUTREACH_REGISTRATION_ENABLED=true, register your login user at
+# http://localhost:8010/register, then set it back to false
 ```
 
 Local (no Docker) needs **PHP 8.4 or newer**: `composer install && npm install && npm run build && php artisan migrate && composer dev` — but you must also run `php artisan queue:work database` and `php artisan schedule:work` for anything to actually draft/send.
@@ -58,6 +59,7 @@ makes the suite run against the live database and drop every table in it.
 
 | Var | Purpose |
 |---|---|
+| `OUTREACH_REGISTRATION_ENABLED` | sign-up page. Closed by default; open it only to create an account |
 | `ANTHROPIC_DRAFTER` | `api` calls Claude; `mock` drafts offline for local testing, no key needed |
 | `ANTHROPIC_API_KEY` | Claude API key for drafting |
 | `ANTHROPIC_MODEL` | default `claude-sonnet-5` |
