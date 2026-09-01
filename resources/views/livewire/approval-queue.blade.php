@@ -111,6 +111,24 @@
                             class="mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm text-sm"></textarea>
                     </div>
 
+                    @php($attachments = $message->sequenceStep?->attachmentList() ?? [])
+
+                    @if ($attachments)
+                        {{-- Shown before the approve button on purpose: approving sends whatever
+                             is attached, so it must not be something you only find out afterwards. --}}
+                        <div class="rounded-md bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm">
+                            <span class="text-xs uppercase tracking-wide text-gray-500">Sends with</span>
+                            <ul class="mt-1 space-y-0.5">
+                                @foreach ($attachments as $attachment)
+                                    <li class="text-gray-700 dark:text-gray-300">
+                                        {{ $attachment['filename'] }}
+                                        <span class="text-xs text-gray-500">({{ number_format($attachment['size'] / 1024, 0) }} KB)</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <button wire:click="approve({{ $message->id }})"

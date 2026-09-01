@@ -5,6 +5,7 @@ namespace App\Services\Gmail;
 use App\Models\Message;
 use Google\Service\Gmail;
 use Google\Service\Gmail\Message as GmailMessage;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use RuntimeException;
 
@@ -112,8 +113,6 @@ class GmailSender
             'Message-ID: '.$rfcMessageId,
             'Date: '.now()->toRfc2822String(),
             'MIME-Version: 1.0',
-            'Content-Type: text/plain; charset=UTF-8',
-            'Content-Transfer-Encoding: base64',
         ];
 
         if ($priorSent->isNotEmpty()) {
@@ -129,7 +128,70 @@ class GmailSender
             $headers[] = 'List-Unsubscribe: <mailto:'.$mailbox->email.'?subject=unsubscribe>';
         }
 
-        return implode("\r\n", $headers)."\r\n\r\n".rtrim(chunk_split(base64_encode($message->body_text), 76, "\r\n"));
+        $attachments = $message->sequenceStep?->attachmentList() ?? [];
+
+        if ($attachments === []) {
+            $headers[] = 'Content-Type: text/plain; charset=UTF-8';
+            $headers[] = 'Content-Transfer-Encoding: base64';
+
+            return implode("\r\n", $headers)."\r\n\r\n".$this->encodeBody($message->body_text);
+        }
+
+        return $this->buildMultipart($headers, $message->body_text, $attachments);
+    }
+
+    /**
+     * multipart/mixed: the text body as the first part, then one part per file.
+     *
+     * @param  array<int, string>  $headers
+     * @param  array<int, array{disk: string, path: string, filename: string, mime: string, size: int}>  $attachments
+     */
+    protected function buildMultipart(array $headers, string $body, array $attachments): string
+    {
+        $boundary = 'outreach-'.Str::random(30);
+
+        $headers[] = 'Content-Type: multipart/mixed; boundary="'.$boundary.'"';
+
+        $parts = [implode("\r\n", [
+            'Content-Type: text/plain; charset=UTF-8',
+            'Content-Transfer-Encoding: base64',
+            '',
+            $this->encodeBody($body),
+        ])];
+
+        foreach ($attachments as $attachment) {
+            $disk = Storage::disk($attachment['disk']);
+
+            // Deliberately fatal. Sending anyway would deliver an email whose
+            // text refers to a file that is not on it, and nobody would know.
+            // Failing puts it on the Activity page with the path that is gone.
+            if (! $disk->exists($attachment['path'])) {
+                throw new RuntimeException(
+                    'Attachment missing from storage: '.$attachment['path'].' ('.$attachment['filename'].')'
+                );
+            }
+
+            // A quote in the filename would close the header parameter early.
+            $filename = $this->encodeHeader(str_replace('"', '', $attachment['filename']));
+
+            $parts[] = implode("\r\n", [
+                'Content-Type: '.$attachment['mime'].'; name="'.$filename.'"',
+                'Content-Disposition: attachment; filename="'.$filename.'"',
+                'Content-Transfer-Encoding: base64',
+                '',
+                rtrim(chunk_split(base64_encode($disk->get($attachment['path'])), 76, "\r\n")),
+            ]);
+        }
+
+        return implode("\r\n", $headers)."\r\n\r\n"
+            .'--'.$boundary."\r\n"
+            .implode("\r\n--".$boundary."\r\n", $parts)
+            ."\r\n--".$boundary."--\r\n";
+    }
+
+    protected function encodeBody(string $body): string
+    {
+        return rtrim(chunk_split(base64_encode($body), 76, "\r\n"));
     }
 
     protected function priorSentMessages(Message $message)

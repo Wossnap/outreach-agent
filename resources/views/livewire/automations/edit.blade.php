@@ -68,6 +68,47 @@
                                 <x-input-error :messages="$errors->get('steps.'.$index.'.drafting_instructions')" class="mt-1" />
                                 <p class="mt-1 text-xs text-gray-500">Claude drafts each email from these instructions plus the contact's data (name, company, website, custom fields). Every draft still needs your approval before it is scheduled.</p>
                             </div>
+
+                            <div class="border-t border-gray-200 dark:border-gray-700 pt-3">
+                                <x-input-label value="Attachments" />
+
+                                @if (! empty($step['attachments']))
+                                    <ul class="mt-2 space-y-1">
+                                        @foreach ($step['attachments'] as $attachment)
+                                            <li class="flex items-center justify-between text-sm bg-gray-50 dark:bg-gray-900 rounded px-3 py-2"
+                                                wire:key="attachment-{{ $attachment['id'] }}">
+                                                <span class="truncate">
+                                                    {{ $attachment['filename'] }}
+                                                    <span class="text-xs text-gray-500">({{ number_format($attachment['size'] / 1024, 0) }} KB)</span>
+                                                </span>
+                                                <button type="button"
+                                                    wire:click="removeAttachment({{ $index }}, '{{ $attachment['id'] }}')"
+                                                    wire:confirm="Remove this attachment? Emails from this step will go out without it."
+                                                    class="text-xs text-red-600 hover:underline shrink-0 ml-3">Remove</button>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+
+                                @if ($step['id'])
+                                    <div class="mt-2 flex items-center gap-3">
+                                        <input type="file" wire:model="newAttachment.{{ $index }}"
+                                            class="text-sm text-gray-600 dark:text-gray-400 file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-gray-100 dark:file:bg-gray-700 dark:file:text-gray-200">
+                                        <button type="button" wire:click="uploadAttachment({{ $index }})"
+                                            class="text-xs px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700">Attach</button>
+                                    </div>
+                                    <div wire:loading wire:target="newAttachment.{{ $index }}" class="mt-1 text-xs text-gray-500">Uploading...</div>
+                                @else
+                                    <p class="mt-2 text-xs text-gray-500">Save the automation first, then you can attach a file to this step.</p>
+                                @endif
+
+                                <x-input-error :messages="$errors->get('newAttachment.'.$index)" class="mt-1" />
+
+                                <p class="mt-1 text-xs text-gray-500">
+                                    Attached to this step's email only. To send the same file with every email in the sequence, add it to each step.
+                                    Max {{ number_format(config('outreach.attachments.max_size_kb') / 1024, 0) }} MB, {{ config('outreach.attachments.max_per_step') }} per step.
+                                </p>
+                            </div>
                         </div>
                     @endforeach
 

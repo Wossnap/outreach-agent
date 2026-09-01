@@ -4,14 +4,19 @@ namespace App\Livewire\Automations;
 
 use App\Models\Automation;
 use App\Models\SequenceStep;
+use App\Services\Attachments\StepAttachmentStore;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use RuntimeException;
 
 #[Layout('layouts.app')]
 class Edit extends Component
 {
+    use WithFileUploads;
+
     public Automation $automation;
 
     public string $name = '';
@@ -22,8 +27,11 @@ class Edit extends Component
 
     public bool $active = true;
 
-    /** @var array<int, array{id: ?int, delay_days: int, delay_hours: int, drafting_instructions: string, active: bool}> */
+    /** @var array<int, array{id: ?int, delay_days: int, delay_hours: int, drafting_instructions: string, active: bool, attachments: array}> */
     public array $steps = [];
+
+    /** Pending upload per step index, keyed the same way as $steps. */
+    public array $newAttachment = [];
 
     public function mount(Automation $automation): void
     {
@@ -38,6 +46,9 @@ class Edit extends Component
             'delay_hours' => $step->delay_hours,
             'drafting_instructions' => $step->drafting_instructions,
             'active' => $step->active,
+            'attachments' => collect($step->attachmentList())
+                ->map(fn (array $a) => ['id' => $a['id'], 'filename' => $a['filename'], 'size' => $a['size']])
+                ->all(),
         ])->all();
 
         if ($this->steps === []) {
@@ -53,7 +64,60 @@ class Edit extends Component
             'delay_hours' => 0,
             'drafting_instructions' => '',
             'active' => true,
+            'attachments' => [],
         ];
+    }
+
+    /**
+     * Attach a file to one step.
+     *
+     * Only on a step that has been saved: the file is stored against a step id,
+     * and an unsaved row does not have one yet.
+     */
+    public function uploadAttachment(int $index, StepAttachmentStore $store): void
+    {
+        $stepId = $this->steps[$index]['id'] ?? null;
+
+        if (! $stepId) {
+            $this->addError('newAttachment.'.$index, 'Save the automation first, then attach a file to this step.');
+
+            return;
+        }
+
+        $this->validate(
+            ['newAttachment.'.$index => ['required', ...StepAttachmentStore::rules()]],
+            attributes: ['newAttachment.'.$index => 'file'],
+        );
+
+        $step = $this->automation->steps()->whereKey($stepId)->firstOrFail();
+
+        try {
+            $store->add($step, $this->newAttachment[$index]);
+        } catch (RuntimeException $e) {
+            $this->addError('newAttachment.'.$index, $e->getMessage());
+
+            return;
+        }
+
+        unset($this->newAttachment[$index]);
+        $this->mount($this->automation->refresh());
+    }
+
+    public function removeAttachment(int $index, string $attachmentId, StepAttachmentStore $store): void
+    {
+        $stepId = $this->steps[$index]['id'] ?? null;
+
+        if (! $stepId) {
+            return;
+        }
+
+        $step = $this->automation->steps()->whereKey($stepId)->first();
+
+        if ($step) {
+            $store->remove($step, $attachmentId);
+        }
+
+        $this->mount($this->automation->refresh());
     }
 
     public function removeStep(int $index): void
