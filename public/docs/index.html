@@ -284,7 +284,7 @@ accepted and then silently does nothing, so a caller that does not check keeps
 offering people who already opted out and never learns why.</code></pre>
 
         <h1 id="authenticating-requests">Authenticating requests</h1>
-<p>To authenticate requests, include an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_KEY}"</code></strong>.</p>
+<p>To authenticate requests, include an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer YOUR_API_KEY"</code></strong>.</p>
 <p>All authenticated endpoints are marked with a <code>requires authentication</code> badge in the documentation below.</p>
 <p>Create a key in the dashboard under <b>Settings &rarr; API keys</b>. It is shown once.</p>
 <p>Each key carries one or more abilities and an endpoint accepts only the ones it lists:</p>
@@ -446,7 +446,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/contacts?email=jane.doe%40acme.example&amp;company=Acme&amp;q=acme&amp;tag=seo-backlinks&amp;status=active&amp;suppressed=1&amp;since=2026-08-01&amp;per_page=50&amp;page=1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -471,7 +471,7 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -564,10 +564,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-contacts"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -730,7 +730,7 @@ reply received, in one request.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/contacts/jane.doe@acme.example" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -741,7 +741,7 @@ reply received, in one request.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -784,8 +784,8 @@ access-control-allow-origin: *
             &quot;employees&quot;: 40
         },
         &quot;suppressed&quot;: false,
-        &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;,
-        &quot;updated_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;,
+        &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;,
+        &quot;updated_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;,
         &quot;enrollments&quot;: [
             {
                 &quot;id&quot;: 1,
@@ -798,7 +798,7 @@ access-control-allow-origin: *
                 &quot;current_step&quot;: 1,
                 &quot;stopped_at&quot;: null,
                 &quot;stop_reason&quot;: null,
-                &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
             }
         ],
         &quot;messages&quot;: [
@@ -815,12 +815,12 @@ access-control-allow-origin: *
                 &quot;body_text&quot;: &quot;Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex&quot;,
                 &quot;edited_by_user&quot;: false,
                 &quot;scheduled_at&quot;: null,
-                &quot;sent_at&quot;: &quot;2026-08-31T14:07:34+00:00&quot;,
+                &quot;sent_at&quot;: &quot;2026-08-31T15:13:04+00:00&quot;,
                 &quot;approved_at&quot;: null,
                 &quot;rejected_at&quot;: null,
                 &quot;rejection_note&quot;: null,
                 &quot;error&quot;: null,
-                &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
             }
         ],
         &quot;replies&quot;: [
@@ -835,7 +835,7 @@ access-control-allow-origin: *
                 &quot;snippet&quot;: &quot;Happy to take a look, send it over.&quot;,
                 &quot;body_text&quot;: &quot;Happy to take a look, send it over.\n\nJane&quot;,
                 &quot;classification&quot;: &quot;reply&quot;,
-                &quot;received_at&quot;: &quot;2026-09-01T08:07:34+00:00&quot;,
+                &quot;received_at&quot;: &quot;2026-09-01T09:13:04+00:00&quot;,
                 &quot;read_at&quot;: null
             }
         ]
@@ -897,10 +897,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-contacts--contact-"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -958,7 +958,7 @@ GET /api/suppressions first if you need to know that happened.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "https://outreach.seannocode.com/api/contacts" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -985,7 +985,7 @@ GET /api/suppressions first if you need to know that happened.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -1070,10 +1070,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="POSTapi-contacts"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -1231,7 +1231,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/automations?active=1&amp;tag=seo-backlinks&amp;per_page=50&amp;page=1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -1251,7 +1251,7 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -1287,8 +1287,8 @@ access-control-allow-origin: *
             &quot;name&quot;: &quot;SEO backlinks outreach&quot;,
             &quot;description&quot;: &quot;Three touches for sites that could carry a link back to us.&quot;,
             &quot;active&quot;: true,
-            &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;,
+            &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;,
             &quot;steps&quot;: [
                 {
                     &quot;id&quot;: 1,
@@ -1299,7 +1299,7 @@ access-control-allow-origin: *
                     &quot;drafting_instructions&quot;: &quot;Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.&quot;,
                     &quot;active&quot;: true,
                     &quot;attachments&quot;: [],
-                    &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+                    &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
                 },
                 {
                     &quot;id&quot;: 2,
@@ -1310,7 +1310,7 @@ access-control-allow-origin: *
                     &quot;drafting_instructions&quot;: &quot;Short nudge referencing the first note. Do not re-introduce yourself.&quot;,
                     &quot;active&quot;: true,
                     &quot;attachments&quot;: [],
-                    &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+                    &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
                 }
             ]
         }
@@ -1378,10 +1378,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-automations"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -1483,7 +1483,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/automations/seo-backlinks" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -1494,7 +1494,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -1529,8 +1529,8 @@ access-control-allow-origin: *
         &quot;name&quot;: &quot;SEO backlinks outreach&quot;,
         &quot;description&quot;: &quot;Three touches for sites that could carry a link back to us.&quot;,
         &quot;active&quot;: true,
-        &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;,
-        &quot;updated_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;,
+        &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;,
+        &quot;updated_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;,
         &quot;steps&quot;: [
             {
                 &quot;id&quot;: 1,
@@ -1541,7 +1541,7 @@ access-control-allow-origin: *
                 &quot;drafting_instructions&quot;: &quot;Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.&quot;,
                 &quot;active&quot;: true,
                 &quot;attachments&quot;: [],
-                &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
             },
             {
                 &quot;id&quot;: 2,
@@ -1552,7 +1552,7 @@ access-control-allow-origin: *
                 &quot;drafting_instructions&quot;: &quot;Short nudge referencing the first note. Do not re-introduce yourself.&quot;,
                 &quot;active&quot;: true,
                 &quot;attachments&quot;: [],
-                &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
             }
         ]
     }
@@ -1613,10 +1613,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-automations--automation-"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -1672,7 +1672,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/automations/seo-backlinks/steps" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -1683,7 +1683,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -1722,7 +1722,7 @@ access-control-allow-origin: *
             &quot;drafting_instructions&quot;: &quot;Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.&quot;,
             &quot;active&quot;: true,
             &quot;attachments&quot;: [],
-            &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
         },
         {
             &quot;id&quot;: 2,
@@ -1733,7 +1733,7 @@ access-control-allow-origin: *
             &quot;drafting_instructions&quot;: &quot;Short nudge referencing the first note. Do not re-introduce yourself.&quot;,
             &quot;active&quot;: true,
             &quot;attachments&quot;: [],
-            &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
         }
     ]
 }</code>
@@ -1793,10 +1793,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-automations--automation--steps"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -1854,7 +1854,7 @@ POST /api/contacts starts them on this sequence.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "https://outreach.seannocode.com/api/automations" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -1881,7 +1881,7 @@ POST /api/contacts starts them on this sequence.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -1966,10 +1966,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="POSTapi-automations"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -2153,7 +2153,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
     "https://outreach.seannocode.com/api/automations/seo-backlinks" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -2171,7 +2171,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -2247,10 +2247,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="PATCHapi-automations--automation-"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -2366,7 +2366,7 @@ delay_days and delay_hours after the previous one.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "https://outreach.seannocode.com/api/automations/seo-backlinks/steps" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -2385,7 +2385,7 @@ delay_days and delay_hours after the previous one.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -2462,10 +2462,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="POSTapi-automations--automation--steps"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -2592,7 +2592,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
     "https://outreach.seannocode.com/api/automations/seo-backlinks/steps/1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -2611,7 +2611,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -2688,10 +2688,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="PATCHapi-automations--automation--steps--step-"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -2830,7 +2830,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
     "https://outreach.seannocode.com/api/automations/seo-backlinks/steps/1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -2841,7 +2841,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -2910,10 +2910,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="DELETEapi-automations--automation--steps--step-"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -2985,10 +2985,10 @@ quarantine them, and that cost lands on the whole sending domain.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "https://outreach.seannocode.com/api/automations/seo-backlinks/steps/1/attachments" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "file=@/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/php935h84mrg9si6ddnMXw" </code></pre></div>
+    --form "file=@/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/phphdfvad1bcu1q1vMQmBf" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -2997,7 +2997,7 @@ quarantine them, and that cost lands on the whole sending domain.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "multipart/form-data",
     "Accept": "application/json",
 };
@@ -3069,10 +3069,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="POSTapi-automations--automation--steps--step--attachments"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -3134,7 +3134,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>The file to attach. Choose it in Postman's Body tab. Example: <code>/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/php935h84mrg9si6ddnMXw</code></p>
+<p>The file to attach. Choose it in Postman's Body tab. Example: <code>/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/phphdfvad1bcu1q1vMQmBf</code></p>
         </div>
         </form>
 
@@ -3153,7 +3153,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
     "https://outreach.seannocode.com/api/automations/seo-backlinks/steps/1/attachments/9b1c7e2a4f6d4c8e9a0b1c2d3e4f5a6b" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -3164,7 +3164,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -3233,10 +3233,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="DELETEapi-automations--automation--steps--step--attachments--attachment-"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -3320,7 +3320,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/enrollments?status=active&amp;contact_id=1&amp;automation_id=1&amp;tag=seo-backlinks&amp;mailbox_id=1&amp;per_page=50&amp;page=1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -3343,7 +3343,7 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -3384,7 +3384,7 @@ access-control-allow-origin: *
             &quot;current_step&quot;: 1,
             &quot;stopped_at&quot;: null,
             &quot;stop_reason&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;,
+            &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;,
             &quot;contact&quot;: {
                 &quot;id&quot;: 1,
                 &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
@@ -3398,8 +3398,8 @@ access-control-allow-origin: *
                     &quot;industry&quot;: &quot;SaaS&quot;,
                     &quot;employees&quot;: 40
                 },
-                &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;,
+                &quot;updated_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
             }
         }
     ],
@@ -3466,10 +3466,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-enrollments"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -3601,7 +3601,7 @@ automation_id or tag.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "https://outreach.seannocode.com/api/enrollments" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -3617,7 +3617,7 @@ automation_id or tag.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -3691,10 +3691,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="POSTapi-enrollments"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -3787,7 +3787,7 @@ further is sent.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
     "https://outreach.seannocode.com/api/enrollments/1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -3802,7 +3802,7 @@ further is sent.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -3875,10 +3875,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="DELETEapi-enrollments--enrollment-"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -3951,7 +3951,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/messages?status=pending_approval&amp;contact_id=1&amp;enrollment_id=1&amp;mailbox_id=1&amp;since=2026-08-01&amp;per_page=50&amp;page=1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -3974,7 +3974,7 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -4067,10 +4067,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-messages"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -4198,7 +4198,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/messages/1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -4209,7 +4209,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -4251,12 +4251,12 @@ access-control-allow-origin: *
         &quot;body_text&quot;: &quot;Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex&quot;,
         &quot;edited_by_user&quot;: false,
         &quot;scheduled_at&quot;: null,
-        &quot;sent_at&quot;: &quot;2026-08-31T14:07:34+00:00&quot;,
+        &quot;sent_at&quot;: &quot;2026-08-31T15:13:04+00:00&quot;,
         &quot;approved_at&quot;: null,
         &quot;rejected_at&quot;: null,
         &quot;rejection_note&quot;: null,
         &quot;error&quot;: null,
-        &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;,
+        &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;,
         &quot;contact&quot;: {
             &quot;id&quot;: 1,
             &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
@@ -4270,8 +4270,8 @@ access-control-allow-origin: *
                 &quot;industry&quot;: &quot;SaaS&quot;,
                 &quot;employees&quot;: 40
             },
-            &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
         }
     }
 }</code>
@@ -4331,10 +4331,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-messages--message-"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -4392,7 +4392,7 @@ and a later edit would change an email that is already on its way out.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
     "https://outreach.seannocode.com/api/messages/1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -4408,7 +4408,7 @@ and a later edit would change an email that is already on its way out.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -4482,10 +4482,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="PATCHapi-messages--message-"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -4574,7 +4574,7 @@ nothing left to advance it.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "https://outreach.seannocode.com/api/messages/1/reject" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -4589,7 +4589,7 @@ nothing left to advance it.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -4662,10 +4662,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="POSTapi-messages--message--reject"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -4740,7 +4740,7 @@ sendable at that moment, and the reconciler picks it up later.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "https://outreach.seannocode.com/api/messages/1/approve" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -4751,7 +4751,7 @@ sendable at that moment, and the reconciler picks it up later.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -4820,10 +4820,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="POSTapi-messages--message--approve"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -4883,7 +4883,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/replies?classification=reply&amp;mailbox_id=1&amp;contact_id=1&amp;enrollment_id=1&amp;unread=1&amp;since=2026-08-01&amp;per_page=50&amp;page=1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -4907,7 +4907,7 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -4948,7 +4948,7 @@ access-control-allow-origin: *
             &quot;snippet&quot;: &quot;Happy to take a look, send it over.&quot;,
             &quot;body_text&quot;: &quot;Happy to take a look, send it over.\n\nJane&quot;,
             &quot;classification&quot;: &quot;reply&quot;,
-            &quot;received_at&quot;: &quot;2026-09-01T08:07:34+00:00&quot;,
+            &quot;received_at&quot;: &quot;2026-09-01T09:13:04+00:00&quot;,
             &quot;read_at&quot;: null,
             &quot;contact&quot;: {
                 &quot;id&quot;: 1,
@@ -4963,8 +4963,8 @@ access-control-allow-origin: *
                     &quot;industry&quot;: &quot;SaaS&quot;,
                     &quot;employees&quot;: 40
                 },
-                &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;,
+                &quot;updated_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
             }
         }
     ],
@@ -5031,10 +5031,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-replies"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -5184,7 +5184,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/replies/1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -5195,7 +5195,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -5235,7 +5235,7 @@ access-control-allow-origin: *
         &quot;snippet&quot;: &quot;Happy to take a look, send it over.&quot;,
         &quot;body_text&quot;: &quot;Happy to take a look, send it over.\n\nJane&quot;,
         &quot;classification&quot;: &quot;reply&quot;,
-        &quot;received_at&quot;: &quot;2026-09-01T08:07:34+00:00&quot;,
+        &quot;received_at&quot;: &quot;2026-09-01T09:13:04+00:00&quot;,
         &quot;read_at&quot;: null,
         &quot;contact&quot;: {
             &quot;id&quot;: 1,
@@ -5250,8 +5250,8 @@ access-control-allow-origin: *
                 &quot;industry&quot;: &quot;SaaS&quot;,
                 &quot;employees&quot;: 40
             },
-            &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
         }
     }
 }</code>
@@ -5311,10 +5311,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-replies--reply-"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -5377,7 +5377,7 @@ people who already opted out and never learns why nothing happens.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/suppressions?reason=unsubscribed&amp;email=no.thanks%40globex.example&amp;since=2026-08-01&amp;per_page=50&amp;page=1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -5398,7 +5398,7 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -5433,7 +5433,7 @@ access-control-allow-origin: *
             &quot;email&quot;: &quot;no.thanks@globex.example&quot;,
             &quot;reason&quot;: &quot;unsubscribed&quot;,
             &quot;source_reply_id&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
         }
     ],
     &quot;meta&quot;: {
@@ -5499,10 +5499,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-suppressions"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -5608,7 +5608,7 @@ emails queued behind it, so the address would still be written to.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "https://outreach.seannocode.com/api/suppressions" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -5624,7 +5624,7 @@ emails queued behind it, so the address would still be written to.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -5698,10 +5698,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="POSTapi-suppressions"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -5772,7 +5772,7 @@ carries.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
     "https://outreach.seannocode.com/api/suppressions/no.thanks@globex.example" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -5783,7 +5783,7 @@ carries.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -5852,10 +5852,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="DELETEapi-suppressions--email-"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -5918,7 +5918,7 @@ Google's own consent screen, in the dashboard.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/mailboxes?status=active&amp;per_page=50&amp;page=1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -5937,7 +5937,7 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -5988,7 +5988,7 @@ access-control-allow-origin: *
                 &quot;bounce_rate&quot;: 0.0119,
                 &quot;reply_rate&quot;: 0.0714
             },
-            &quot;last_polled_at&quot;: &quot;2026-09-01T14:05:34+00:00&quot;,
+            &quot;last_polled_at&quot;: &quot;2026-09-01T15:11:04+00:00&quot;,
             &quot;last_send_error&quot;: null
         }
     ],
@@ -6055,10 +6055,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-mailboxes"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -6138,7 +6138,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/mailboxes/1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -6149,7 +6149,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -6199,7 +6199,7 @@ access-control-allow-origin: *
             &quot;bounce_rate&quot;: 0.0119,
             &quot;reply_rate&quot;: 0.0714
         },
-        &quot;last_polled_at&quot;: &quot;2026-09-01T14:05:34+00:00&quot;,
+        &quot;last_polled_at&quot;: &quot;2026-09-01T15:11:04+00:00&quot;,
         &quot;last_send_error&quot;: null
     }
 }</code>
@@ -6259,10 +6259,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-mailboxes--mailbox-"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -6318,7 +6318,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "https://outreach.seannocode.com/api/mailboxes/1/pause" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -6333,7 +6333,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -6406,10 +6406,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="POSTapi-mailboxes--mailbox--pause"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -6480,7 +6480,7 @@ in the dashboard instead.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "https://outreach.seannocode.com/api/mailboxes/1/resume" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -6491,7 +6491,7 @@ in the dashboard instead.</p>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -6560,10 +6560,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="POSTapi-mailboxes--mailbox--resume"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -6626,7 +6626,7 @@ because 0 would read as "nobody replied" instead of "no data yet".</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/stats?since=2026-08-01" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -6643,7 +6643,7 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -6760,10 +6760,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-stats"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
@@ -6824,7 +6824,7 @@ polling errors. This is what to watch for problems.</p>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
     --get "https://outreach.seannocode.com/api/activity?level=error&amp;event=send_failed&amp;retryable=1&amp;since=2026-08-01&amp;per_page=50&amp;page=1" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -6846,7 +6846,7 @@ Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -6886,7 +6886,7 @@ access-control-allow-origin: *
             &quot;subject_id&quot;: null,
             &quot;retryable&quot;: true,
             &quot;retried_at&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-01T14:07:34+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-01T15:13:04+00:00&quot;
         }
     ],
     &quot;meta&quot;: {
@@ -6952,10 +6952,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Authorization" class="auth-value"               data-endpoint="GETapi-activity"
-               value="Bearer {YOUR_AUTH_KEY}"
+               value="Bearer YOUR_API_KEY"
                data-component="header">
     <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+<p>Example: <code>Bearer YOUR_API_KEY</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;

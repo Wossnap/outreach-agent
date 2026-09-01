@@ -13,6 +13,7 @@ use App\Models\SequenceStep;
 use App\Models\Suppression;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class ReadApiTest extends TestCase
@@ -35,6 +36,37 @@ class ReadApiTest extends TestCase
             '/api/enrollments', '/api/automations', '/api/mailboxes', '/api/activity', '/api/stats'] as $route) {
             $this->getJson($route)->assertStatus(401);
         }
+    }
+
+    public function test_a_malformed_key_is_refused_without_reaching_the_database(): void
+    {
+        $queries = [];
+        DB::listen(function ($q) use (&$queries) {
+            $queries[] = $q->sql.' '.json_encode($q->bindings);
+        });
+
+        // Braces left behind after pasting over the documentation page's
+        // placeholder. The id part is then "{2" rather than a number.
+        $this->getJson('/api/contacts', ['Authorization' => 'Bearer {2|lLv6oWTLCPjry5fsqC1rN4cm}'])
+            ->assertStatus(401)
+            ->assertJsonPath('message', 'Invalid API key.');
+
+        // Asserting the 401 alone is not enough: SQLite is loosely typed and
+        // would return no rows either way. Postgres rejects a non-numeric id
+        // outright, so reaching the database at all is what turned a mistyped
+        // key into a 500 with the database host in the log.
+        foreach ($queries as $query) {
+            $this->assertStringNotContainsString('{2', $query);
+        }
+    }
+
+    public function test_a_key_that_is_merely_wrong_is_still_refused(): void
+    {
+        $this->getJson('/api/contacts', ['Authorization' => 'Bearer 999|nosuchsecret'])
+            ->assertStatus(401);
+
+        $this->getJson('/api/contacts', ['Authorization' => 'Bearer nonsense-with-no-pipe'])
+            ->assertStatus(401);
     }
 
     public function test_contacts_are_listed_and_filterable(): void

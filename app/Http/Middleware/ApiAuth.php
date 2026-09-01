@@ -35,7 +35,7 @@ class ApiAuth
             return $this->unauthorized('Missing API key.');
         }
 
-        $token = PersonalAccessToken::findToken($bearer);
+        $token = $this->findToken($bearer);
 
         if (! $token) {
             return $this->unauthorized('Invalid API key.');
@@ -54,6 +54,29 @@ class ApiAuth
         $request->setUserResolver(fn () => $token->tokenable);
 
         return $next($request);
+    }
+
+    /**
+     * Look up a key, treating a malformed one as simply not found.
+     *
+     * A key reads "<id>|<secret>", and Sanctum looks the id up directly. When
+     * the id is not a number, Postgres rejects the query outright rather than
+     * returning no rows, so a mistyped key came back as a 500 with the
+     * database host in the log instead of a 401. Pasting over the middle of
+     * the documentation page's {YOUR_AUTH_KEY} placeholder does exactly that,
+     * leaving the braces attached.
+     */
+    protected function findToken(string $bearer): ?PersonalAccessToken
+    {
+        if (str_contains($bearer, '|')) {
+            [$id] = explode('|', $bearer, 2);
+
+            if (! ctype_digit($id)) {
+                return null;
+            }
+        }
+
+        return PersonalAccessToken::findToken($bearer);
     }
 
     protected function unauthorized(string $message): Response

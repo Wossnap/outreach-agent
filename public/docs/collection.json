@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Outreach Agent API",
-        "_postman_id": "b4364282-0ee6-4034-a107-239fcd3337d1",
+        "_postman_id": "350c929c-c9f2-441b-a8bd-83c3aa5a439f",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -208,7 +208,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"suppressed\":false,\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\",\"enrollments\":[{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-01T14:07:34+00:00\"}],\"messages\":[{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-08-31T14:07:34+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-01T14:07:34+00:00\"}],\"replies\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-01T08:07:34+00:00\",\"read_at\":null}]}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"suppressed\":false,\"created_at\":\"2026-09-01T15:13:04+00:00\",\"updated_at\":\"2026-09-01T15:13:04+00:00\",\"enrollments\":[{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-01T15:13:04+00:00\"}],\"messages\":[{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-08-31T15:13:04+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-01T15:13:04+00:00\"}],\"replies\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-01T09:13:04+00:00\",\"read_at\":null}]}}",
                             "name": ""
                         }
                     ]
@@ -312,7 +312,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T14:07:34+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T14:07:34+00:00\"}]}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-01T15:13:04+00:00\",\"updated_at\":\"2026-09-01T15:13:04+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T15:13:04+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T15:13:04+00:00\"}]}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -365,7 +365,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T14:07:34+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T14:07:34+00:00\"}]}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-01T15:13:04+00:00\",\"updated_at\":\"2026-09-01T15:13:04+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T15:13:04+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T15:13:04+00:00\"}]}}",
                             "name": ""
                         }
                     ]
@@ -418,7 +418,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T14:07:34+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T14:07:34+00:00\"}]}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T15:13:04+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T15:13:04+00:00\"}]}",
                             "name": ""
                         }
                     ]
@@ -786,7 +786,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-01T14:07:34+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-01T15:13:04+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-01T15:13:04+00:00\",\"updated_at\":\"2026-09-01T15:13:04+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -997,7 +997,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-08-31T14:07:34+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-01T14:07:34+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\"}}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-08-31T15:13:04+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-01T15:13:04+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-01T15:13:04+00:00\",\"updated_at\":\"2026-09-01T15:13:04+00:00\"}}}",
                             "name": ""
                         }
                     ]
@@ -1202,7 +1202,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-01T08:07:34+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-01T09:13:04+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-01T15:13:04+00:00\",\"updated_at\":\"2026-09-01T15:13:04+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -1255,7 +1255,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-01T08:07:34+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\"}}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-01T09:13:04+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-01T15:13:04+00:00\",\"updated_at\":\"2026-09-01T15:13:04+00:00\"}}}",
                             "name": ""
                         }
                     ]
@@ -1337,7 +1337,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"no.thanks@globex.example\",\"reason\":\"unsubscribed\",\"source_reply_id\":null,\"created_at\":\"2026-09-01T14:07:34+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"no.thanks@globex.example\",\"reason\":\"unsubscribed\",\"source_reply_id\":null,\"created_at\":\"2026-09-01T15:13:04+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -1468,7 +1468,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-01T14:05:34+00:00\",\"last_send_error\":null}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-01T15:11:04+00:00\",\"last_send_error\":null}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -1521,7 +1521,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-01T14:05:34+00:00\",\"last_send_error\":null}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-01T15:11:04+00:00\",\"last_send_error\":null}}",
                             "name": ""
                         }
                     ]
@@ -1736,7 +1736,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"event\":\"send_failed\",\"level\":\"error\",\"message\":\"Gmail returned 429 for hello@outreach.example\",\"context\":[],\"subject_type\":null,\"subject_id\":null,\"retryable\":true,\"retried_at\":null,\"created_at\":\"2026-09-01T14:07:34+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"event\":\"send_failed\",\"level\":\"error\",\"message\":\"Gmail returned 429 for hello@outreach.example\",\"context\":[],\"subject_type\":null,\"subject_id\":null,\"retryable\":true,\"retried_at\":null,\"created_at\":\"2026-09-01T15:13:04+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]

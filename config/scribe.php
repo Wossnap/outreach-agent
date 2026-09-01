@@ -161,7 +161,10 @@ return [
 
         // Placeholder your users will see for the auth parameter in the example requests.
         // Set this to null if you want Scribe to use a random value as placeholder instead.
-        'placeholder' => '{YOUR_AUTH_KEY}',
+        // No braces. The default was {YOUR_AUTH_KEY}, and pasting a key over
+        // the middle of it leaves the braces attached, which is not a valid
+        // key and is tedious to spot.
+        'placeholder' => 'YOUR_API_KEY',
 
         // Any extra authentication-related info for your users. Markdown and HTML are supported.
         'extra_info' => <<<'AUTH'
