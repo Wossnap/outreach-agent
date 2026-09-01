@@ -2,10 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\Enrollment;
 use App\Models\Message;
-use App\Services\Sending\EnrollmentStopper;
-use App\Services\Sending\SendScheduler;
+use App\Services\Sending\MessageApprover;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -46,17 +44,17 @@ class ApprovalQueue extends Component
         ]);
     }
 
-    public function approve(int $id, SendScheduler $scheduler): void
+    public function approve(int $id, MessageApprover $approver): void
     {
         $message = Message::query()->with('enrollment')->findOrFail($id);
 
-        if ($message->status !== Message::STATUS_PENDING_APPROVAL) {
+        $result = $approver->approve($message);
+
+        if (! $result['approved']) {
             return;
         }
 
-        $message->update(['status' => Message::STATUS_APPROVED, 'approved_at' => now()]);
-
-        $slot = $scheduler->schedule($message);
+        $slot = $result['scheduled_at'];
 
         unset($this->drafts[$id], $this->selected[$id]);
 
@@ -72,7 +70,7 @@ class ApprovalQueue extends Component
         );
     }
 
-    public function bulkApprove(SendScheduler $scheduler): void
+    public function bulkApprove(MessageApprover $approver): void
     {
         $ids = array_keys(array_filter($this->selected));
 
@@ -82,13 +80,17 @@ class ApprovalQueue extends Component
         foreach ($ids as $id) {
             $message = Message::query()->with('enrollment')->find($id);
 
-            if (! $message || $message->status !== Message::STATUS_PENDING_APPROVAL) {
+            if (! $message) {
                 continue;
             }
 
-            $message->update(['status' => Message::STATUS_APPROVED, 'approved_at' => now()]);
+            $result = $approver->approve($message);
 
-            if ($scheduler->schedule($message) === null) {
+            if (! $result['approved']) {
+                continue;
+            }
+
+            if ($result['scheduled_at'] === null) {
                 $unscheduled++;
             }
 
@@ -106,29 +108,11 @@ class ApprovalQueue extends Component
         $this->rejectionNote = '';
     }
 
-    public function confirmReject(EnrollmentStopper $stopper): void
+    public function confirmReject(MessageApprover $approver): void
     {
         $message = Message::query()->with('enrollment')->findOrFail($this->rejectingId);
 
-        if ($message->status === Message::STATUS_PENDING_APPROVAL) {
-            $message->update([
-                'status' => Message::STATUS_REJECTED,
-                'rejected_at' => now(),
-                'rejection_note' => $this->rejectionNote ?: null,
-            ]);
-
-            // Rejecting takes the contact out of the sequence. Without this the
-            // enrollment stayed active with nothing left to advance it: no
-            // further email was ever drafted, and the ingest API refused to
-            // re-add the contact because it still counted as enrolled.
-            if ($message->enrollment) {
-                $stopper->stop(
-                    $message->enrollment,
-                    Enrollment::STATUS_STOPPED_REJECTED,
-                    'Draft rejected'.($this->rejectionNote ? ': '.$this->rejectionNote : ''),
-                );
-            }
-        }
+        $approver->reject($message, $this->rejectionNote);
 
         unset($this->drafts[$message->id], $this->selected[$message->id]);
         $this->rejectingId = null;
