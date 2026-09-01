@@ -21,7 +21,7 @@ class ContactIngestService
      * creates one enrollment per known tag (skipping tags with an already
      * active enrollment), and kicks off drafting of step 1.
      *
-     * @param  array{email: string, name?: ?string, company?: ?string, website?: ?string, custom?: ?array, source?: ?string, tags: array<string>}  $payload
+     * @param  array{email: string, name?: ?string, first_name?: ?string, last_name?: ?string, company?: ?string, website?: ?string, custom?: ?array, source?: ?string, tags: array<string>}  $payload
      */
     public function ingest(array $payload): array
     {
@@ -64,11 +64,13 @@ class ContactIngestService
     {
         $contact = Contact::query()->firstOrNew(['email' => $email]);
 
-        foreach (['name', 'company', 'website', 'source'] as $field) {
+        foreach (['company', 'website', 'source'] as $field) {
             if (! empty($payload[$field])) {
                 $contact->{$field} = $payload[$field];
             }
         }
+
+        $contact->fill(Contact::resolveNameFields($payload, $contact->only(['name', 'first_name', 'last_name'])));
 
         if (! empty($payload['custom']) && is_array($payload['custom'])) {
             $contact->custom = array_replace($contact->custom ?? [], $payload['custom']);

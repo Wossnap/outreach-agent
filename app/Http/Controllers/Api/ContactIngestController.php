@@ -7,6 +7,11 @@ use App\Services\Ingest\ContactIngestService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Contacts
+ *
+ * People we email, and everything that has passed between us and them.
+ */
 class ContactIngestController extends Controller
 {
     public function store(Request $request, ContactIngestService $service): JsonResponse
@@ -14,6 +19,8 @@ class ContactIngestController extends Controller
         $payload = $request->validate([
             'email' => ['required', 'email'],
             'name' => ['nullable', 'string', 'max:255'],
+            'first_name' => ['nullable', 'string', 'max:255'],
+            'last_name' => ['nullable', 'string', 'max:255'],
             'company' => ['nullable', 'string', 'max:255'],
             'website' => ['nullable', 'string', 'max:2048'],
             'custom' => ['nullable', 'array'],
