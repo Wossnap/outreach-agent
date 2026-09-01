@@ -25,3 +25,9 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Scribe's intermediate extraction files. Not committed: they record the
+# Authorization header used for the response calls, so each generation writes a
+# real-looking bearer token into them. The published docs in public/docs are
+# committed and contain no token; regenerate from DocsExampleSeeder.
+/.scribe

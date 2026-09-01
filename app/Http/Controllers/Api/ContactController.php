@@ -16,11 +16,19 @@ use Illuminate\Http\Request;
 class ContactController extends ApiController
 {
     /**
-     * List contacts, newest first.
+     * List contacts
      *
-     * Filters: ?email=, ?company=, ?q= (matches email, name or company),
-     * ?tag= (contacts enrolled in that automation), ?status= (enrollment
-     * status), ?suppressed=true|false, ?since= (ISO date, created on/after).
+     * Newest first.
+     *
+     * @queryParam email string Exact address. Example: jane.doe@acme.example
+     * @queryParam company string Partial match on company. Example: Acme
+     * @queryParam q string Partial match on email, either name, or company. Example: acme
+     * @queryParam tag string Only contacts enrolled in this automation. Example: seo-backlinks
+     * @queryParam status string Only contacts with an enrollment in this state. Example: active
+     * @queryParam suppressed boolean true for opted-out contacts only, false to exclude them. Example: true
+     * @queryParam since string ISO date. Only rows created on or after it. Example: 2026-08-01
+     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
+     * @queryParam page integer Which page to return. Example: 1
      */
     public function index(Request $request): JsonResponse
     {
@@ -67,8 +75,12 @@ class ContactController extends ApiController
     }
 
     /**
-     * One contact with its enrollments, every email sent to them, and every
-     * reply received. Accepts an id or an email address.
+     * Get one contact
+     *
+     * The contact with its enrollments, every email sent to them and every
+     * reply received, in one request.
+     *
+     * @urlParam contact required An id or an email address. Example: jane.doe@acme.example
      */
     public function show(string $contact): JsonResponse
     {

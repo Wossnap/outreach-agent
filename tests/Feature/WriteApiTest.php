@@ -11,6 +11,7 @@ use App\Models\Message;
 use App\Models\SequenceStep;
 use App\Models\Suppression;
 use App\Models\User;
+use App\Services\Gmail\GmailSender;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
@@ -174,6 +175,42 @@ class WriteApiTest extends TestCase
         // dashboard does, so the enrollment cannot sit active with nothing
         // left to advance it.
         $this->assertSame(Enrollment::STATUS_STOPPED_REJECTED, $enrollment->fresh()->status);
+    }
+
+    public function test_a_multi_line_body_survives_the_api_and_reaches_the_email(): void
+    {
+        $mailbox = Mailbox::factory()->connected()->create();
+        $enrollment = Enrollment::factory()->create([
+            'status' => Enrollment::STATUS_ACTIVE,
+            'mailbox_id' => $mailbox->id,
+        ]);
+        $step = SequenceStep::factory()->create(['automation_id' => $enrollment->automation_id, 'position' => 1]);
+        $message = Message::factory()->pendingApproval()->create([
+            'enrollment_id' => $enrollment->id,
+            'sequence_step_id' => $step->id,
+            'contact_id' => $enrollment->contact_id,
+            'mailbox_id' => $mailbox->id,
+        ]);
+
+        $body = "Hi Jane,\n\nTwo blank lines above this one.\n\nAlex";
+
+        $this->patchJson("/api/messages/{$message->id}", ['body_text' => $body], $this->headers)
+            ->assertOk()
+            ->assertJsonPath('data.body_text', $body);
+
+        // Stored as real line breaks, not the two characters a backslash and
+        // an n. Getting that wrong sends an email with "\n" printed in it.
+        $stored = $message->fresh()->body_text;
+        $this->assertSame($body, $stored);
+        $this->assertStringContainsString("\n\n", $stored);
+        $this->assertStringNotContainsString('\\n', $stored);
+
+        // And they survive into the message that actually leaves.
+        $mime = app(GmailSender::class)->buildMime($message->fresh(), '<id@outreach.test>');
+        $decoded = base64_decode(mb_substr($mime, mb_strpos($mime, "\r\n\r\n") + 4));
+
+        $this->assertStringContainsString('Two blank lines above this one.', $decoded);
+        $this->assertStringNotContainsString('\\n', $decoded);
     }
 
     public function test_a_sent_email_cannot_be_edited(): void

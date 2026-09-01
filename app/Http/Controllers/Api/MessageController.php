@@ -7,6 +7,7 @@ use App\Models\Message;
 use App\Services\Sending\MessageApprover;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Knuckles\Scribe\Attributes\BodyParam;
 
 /**
  * @group Messages
@@ -16,11 +17,17 @@ use Illuminate\Http\Request;
 class MessageController extends ApiController
 {
     /**
-     * List emails, oldest first, in the same order the approval queue shows.
+     * List emails
      *
-     * Filters: ?status= (pending_approval, approved, scheduled, sent,
-     * rejected, failed, ...), ?contact_id=, ?enrollment_id=, ?mailbox_id=,
-     * ?since= (ISO date).
+     * Oldest first, the same order the approval queue shows.
+     *
+     * @queryParam status string One of drafting, pending_approval, approved, scheduled, sending, sent, draft_failed, rejected, cancelled, failed. Example: pending_approval
+     * @queryParam contact_id integer Example: 1
+     * @queryParam enrollment_id integer Example: 1
+     * @queryParam mailbox_id integer Example: 1
+     * @queryParam since string ISO date. Only rows created on or after it. Example: 2026-08-01
+     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
+     * @queryParam page integer Which page to return. Example: 1
      */
     public function index(Request $request): JsonResponse
     {
@@ -45,6 +52,11 @@ class MessageController extends ApiController
         return $this->paged($query->paginate($this->perPage($request)), MessageResource::class);
     }
 
+    /**
+     * Get one email
+     *
+     * @urlParam message integer required Example: 1
+     */
     public function show(int $message): JsonResponse
     {
         $model = Message::query()->with(['contact', 'mailbox', 'sequenceStep'])->find($message);
@@ -55,11 +67,21 @@ class MessageController extends ApiController
     }
 
     /**
-     * Edit a draft's subject or body before it is approved.
+     * Edit a draft
+     *
+     * Changes the subject or body before the draft is approved.
      *
      * Only while it is awaiting approval: once approved it has a send slot,
-     * and a later edit would change an email that is on its way out.
+     * and a later edit would change an email that is already on its way out.
+     *
+     * @urlParam message integer required Example: 1
+     *
+     * @bodyParam subject string Example: Quick thought on your resources page
      */
+    // A docblock's `Example:` ends at the newline, so it cannot carry one. The
+    // attribute takes a real PHP string, which JSON-encodes to a proper \n and
+    // arrives as an actual line break.
+    #[BodyParam('body_text', 'string', 'The plain-text body, stored and sent exactly as given. Line breaks are ordinary JSON newlines.', required: false, example: "Hi Jane,\n\nRewriting this before it goes out.\n\nAlex")]
     public function update(Request $request, int $message): JsonResponse
     {
         $model = Message::query()->find($message);
@@ -87,11 +109,19 @@ class MessageController extends ApiController
     }
 
     /**
-     * Approve a draft so it sends.
+     * Approve a draft
      *
-     * Disabled unless OUTREACH_API_ALLOW_APPROVAL is on, because approving is
-     * the point where a human normally reads the email before a real person
-     * receives it. See the route definition.
+     * Approves the draft and gives it a send slot.
+     *
+     * Returns 403 unless an administrator has set
+     * OUTREACH_API_ALLOW_APPROVAL=true, whatever abilities the key carries.
+     * Approving is the point where a human normally reads the email before a
+     * real person receives it, so a key cannot do it by default.
+     *
+     * A success with no send time is not an error: it means no mailbox was
+     * sendable at that moment, and the reconciler picks it up later.
+     *
+     * @urlParam message integer required Example: 1
      */
     public function approve(int $message, MessageApprover $approver): JsonResponse
     {
@@ -116,8 +146,15 @@ class MessageController extends ApiController
     }
 
     /**
-     * Reject a draft. This also stops the contact's sequence, the same as
-     * rejecting in the dashboard does.
+     * Reject a draft
+     *
+     * Also stops the contact's sequence, the same as rejecting in the
+     * dashboard does. Without that the enrollment would sit active with
+     * nothing left to advance it.
+     *
+     * @urlParam message integer required Example: 1
+     *
+     * @bodyParam note string Why it was rejected. Stored on the message and the stopped enrollment. Example: Wrong angle for this one
      */
     public function reject(Request $request, int $message, MessageApprover $approver): JsonResponse
     {

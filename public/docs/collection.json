@@ -1,0 +1,1756 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "https:\/\/outreach.seannocode.com"
+        }
+    ],
+    "info": {
+        "name": "Outreach Agent API",
+        "_postman_id": "b4364282-0ee6-4034-a107-239fcd3337d1",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Health",
+            "description": "\nIs the API up.",
+            "item": [
+                {
+                    "name": "Health check",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/health",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/health"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Confirms the API is up. The only endpoint that needs no API key, so it\nis safe to poll from a monitor.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"success\": true, \"message\": \"ok\", \"data\": {\"time\": \"2026-09-01T09:00:00+00:00\"}}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Contacts",
+            "description": "\nPeople we email, and everything that has passed between us and them.",
+            "item": [
+                {
+                    "name": "List contacts",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/contacts",
+                            "query": [
+                                {
+                                    "key": "email",
+                                    "value": "jane.doe@acme.example",
+                                    "description": "Exact address.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "company",
+                                    "value": "Acme",
+                                    "description": "Partial match on company.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "q",
+                                    "value": "acme",
+                                    "description": "Partial match on email, either name, or company.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "tag",
+                                    "value": "seo-backlinks",
+                                    "description": "Only contacts enrolled in this automation.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "active",
+                                    "description": "Only contacts with an enrollment in this state.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "suppressed",
+                                    "value": "1",
+                                    "description": "true for opted-out contacts only, false to exclude them.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "since",
+                                    "value": "2026-08-01",
+                                    "description": "ISO date. Only rows created on or after it.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "50",
+                                    "description": "Rows per page. Clamped to 200.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Which page to return.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/contacts?email=jane.doe%40acme.example&company=Acme&q=acme&tag=seo-backlinks&status=active&suppressed=1&since=2026-08-01&per_page=50&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Newest first."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[],\"meta\":{\"page\":1,\"per_page\":50,\"total\":0,\"last_page\":1}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get one contact",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/contacts\/:contact",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/contacts\/:contact",
+                            "variable": [
+                                {
+                                    "id": "contact",
+                                    "key": "contact",
+                                    "value": "jane.doe@acme.example",
+                                    "description": "An id or an email address."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "The contact with its enrollments, every email sent to them and every\nreply received, in one request."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"suppressed\":false,\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\",\"enrollments\":[{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-01T14:07:34+00:00\"}],\"messages\":[{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-08-31T14:07:34+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-01T14:07:34+00:00\"}],\"replies\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-01T08:07:34+00:00\",\"read_at\":null}]}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Push a contact",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/contacts",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/contacts"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"custom\":{\"industry\":\"SaaS\"},\"source\":\"tube-trend-tool\",\"tags\":[\"seo-backlinks\"]}"
+                        },
+                        "description": "Upserts the contact and enrolls them in the automation matching each\ntag. A suppressed address is accepted and nothing is enrolled, so read\nGET \/api\/suppressions first if you need to know that happened."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Automations",
+            "description": "\nA sequence of emails, identified by the tag that enrolls contacts into it.",
+            "item": [
+                {
+                    "name": "List automations",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/automations",
+                            "query": [
+                                {
+                                    "key": "active",
+                                    "value": "1",
+                                    "description": "Only switched-on or switched-off automations.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "tag",
+                                    "value": "seo-backlinks",
+                                    "description": "Exact tag.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "50",
+                                    "description": "Rows per page. Clamped to 200.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Which page to return.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/automations?active=1&tag=seo-backlinks&per_page=50&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Each with its steps."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T14:07:34+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T14:07:34+00:00\"}]}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get one automation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/automations\/:automation",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/automations\/:automation",
+                            "variable": [
+                                {
+                                    "id": "automation",
+                                    "key": "automation",
+                                    "value": "seo-backlinks",
+                                    "description": "An id or a tag."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T14:07:34+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T14:07:34+00:00\"}]}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List steps",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/automations\/:automation\/steps",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/automations\/:automation\/steps",
+                            "variable": [
+                                {
+                                    "id": "automation",
+                                    "key": "automation",
+                                    "value": "seo-backlinks",
+                                    "description": "An id or a tag."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Every step of one automation, with the files attached to each."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T14:07:34+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-01T14:07:34+00:00\"}]}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create an automation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/automations",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/automations"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Two touches for sites that could carry a link back to us.\",\"active\":true,\"steps\":[{\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Short, friendly cold email asking if they would consider a guest post. Two sentences, no pitch.\",\"active\":true}]}"
+                        },
+                        "description": "Optionally with its steps in the same call.\n\nThe tag is how contacts get enrolled: pushing a contact with that tag to\nPOST \/api\/contacts starts them on this sequence."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update an automation",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/automations\/:automation",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/automations\/:automation",
+                            "variable": [
+                                {
+                                    "id": "automation",
+                                    "key": "automation",
+                                    "value": "seo-backlinks",
+                                    "description": "An id or a tag."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Two touches for sites that could carry a link back to us.\",\"active\":false}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Add a step",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/automations\/:automation\/steps",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/automations\/:automation\/steps",
+                            "variable": [
+                                {
+                                    "id": "automation",
+                                    "key": "automation",
+                                    "value": "seo-backlinks",
+                                    "description": "An id or a tag."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Brief follow-up. Reference the first email, ask if they saw it.\",\"active\":true}"
+                        },
+                        "description": "Position 1 is the first email; later positions are the follow-ups, sent\ndelay_days and delay_hours after the previous one."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update a step",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/automations\/:automation\/steps\/:step",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/automations\/:automation\/steps\/:step",
+                            "variable": [
+                                {
+                                    "id": "automation",
+                                    "key": "automation",
+                                    "value": "seo-backlinks",
+                                    "description": "An id or a tag."
+                                },
+                                {
+                                    "id": "step",
+                                    "key": "step",
+                                    "value": 1,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Brief follow-up. Reference the first email, ask if they saw it.\",\"active\":false}"
+                        },
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete a step",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/automations\/:automation\/steps\/:step",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/automations\/:automation\/steps\/:step",
+                            "variable": [
+                                {
+                                    "id": "automation",
+                                    "key": "automation",
+                                    "value": "seo-backlinks",
+                                    "description": "An id or a tag."
+                                },
+                                {
+                                    "id": "step",
+                                    "key": "step",
+                                    "value": 1,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Attach a file to a step",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/automations\/:automation\/steps\/:step\/attachments",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/automations\/:automation\/steps\/:step\/attachments",
+                            "variable": [
+                                {
+                                    "id": "automation",
+                                    "key": "automation",
+                                    "value": "seo-backlinks",
+                                    "description": "An id or a tag."
+                                },
+                                {
+                                    "id": "step",
+                                    "key": "step",
+                                    "value": 1,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "Send it as multipart\/form-data under `file`.\n\nThe file goes out with this step's email only. To attach the same file\nto every email in the sequence, upload it to each step.\n\nExecutables and archives are refused: recipients' gateways strip or\nquarantine them, and that cost lands on the whole sending domain."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Remove an attachment",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/automations\/:automation\/steps\/:step\/attachments\/:attachment",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/automations\/:automation\/steps\/:step\/attachments\/:attachment",
+                            "variable": [
+                                {
+                                    "id": "automation",
+                                    "key": "automation",
+                                    "value": "seo-backlinks",
+                                    "description": "An id or a tag."
+                                },
+                                {
+                                    "id": "step",
+                                    "key": "step",
+                                    "value": 1,
+                                    "description": ""
+                                },
+                                {
+                                    "id": "attachment",
+                                    "key": "attachment",
+                                    "value": "9b1c7e2a4f6d4c8e9a0b1c2d3e4f5a6b",
+                                    "description": "The attachment id from the step's attachments array."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Deletes the file as well as the reference to it."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Enrollments",
+            "description": "\nA contact moving through an automation.",
+            "item": [
+                {
+                    "name": "List enrollments",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/enrollments",
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "active",
+                                    "description": "One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "contact_id",
+                                    "value": "1",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "automation_id",
+                                    "value": "1",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "tag",
+                                    "value": "seo-backlinks",
+                                    "description": "Automation tag.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "mailbox_id",
+                                    "value": "1",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "50",
+                                    "description": "Rows per page. Clamped to 200.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Which page to return.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/enrollments?status=active&contact_id=1&automation_id=1&tag=seo-backlinks&mailbox_id=1&per_page=50&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Newest first."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-01T14:07:34+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Enroll a contact",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/enrollments",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/enrollments"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"jane.doe@acme.example\",\"tag\":\"seo-backlinks\"}"
+                        },
+                        "description": "Puts a contact already on file into an automation and starts drafting\nstep 1. POST \/api\/contacts is the route for new leads; this one is for\nsomeone who should also go through another sequence.\n\nIdentify the contact by contact_id or email, and the automation by\nautomation_id or tag."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Stop an enrollment",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/enrollments\/:enrollment",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/enrollments\/:enrollment",
+                            "variable": [
+                                {
+                                    "id": "enrollment",
+                                    "key": "enrollment",
+                                    "value": 1,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"reason\":\"Replied on another channel\"}"
+                        },
+                        "description": "Anything already drafted or scheduled for it is cancelled, so nothing\nfurther is sent."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Messages",
+            "description": "\nIndividual emails, from draft through to sent.",
+            "item": [
+                {
+                    "name": "List emails",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/messages",
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "pending_approval",
+                                    "description": "One of drafting, pending_approval, approved, scheduled, sending, sent, draft_failed, rejected, cancelled, failed.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "contact_id",
+                                    "value": "1",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "enrollment_id",
+                                    "value": "1",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "mailbox_id",
+                                    "value": "1",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "since",
+                                    "value": "2026-08-01",
+                                    "description": "ISO date. Only rows created on or after it.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "50",
+                                    "description": "Rows per page. Clamped to 200.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Which page to return.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/messages?status=pending_approval&contact_id=1&enrollment_id=1&mailbox_id=1&since=2026-08-01&per_page=50&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Oldest first, the same order the approval queue shows."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[],\"meta\":{\"page\":1,\"per_page\":50,\"total\":0,\"last_page\":1}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get one email",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/messages\/:message",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/messages\/:message",
+                            "variable": [
+                                {
+                                    "id": "message",
+                                    "key": "message",
+                                    "value": 1,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-08-31T14:07:34+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-01T14:07:34+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\"}}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Edit a draft",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/messages\/:message",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/messages\/:message",
+                            "variable": [
+                                {
+                                    "id": "message",
+                                    "key": "message",
+                                    "value": 1,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"subject\":\"Quick thought on your resources page\",\"body_text\":\"Hi Jane,\\n\\nRewriting this before it goes out.\\n\\nAlex\"}"
+                        },
+                        "description": "Changes the subject or body before the draft is approved.\n\nOnly while it is awaiting approval: once approved it has a send slot,\nand a later edit would change an email that is already on its way out."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Reject a draft",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/messages\/:message\/reject",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/messages\/:message\/reject",
+                            "variable": [
+                                {
+                                    "id": "message",
+                                    "key": "message",
+                                    "value": 1,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"note\":\"Wrong angle for this one\"}"
+                        },
+                        "description": "Also stops the contact's sequence, the same as rejecting in the\ndashboard does. Without that the enrollment would sit active with\nnothing left to advance it."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Approve a draft",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/messages\/:message\/approve",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/messages\/:message\/approve",
+                            "variable": [
+                                {
+                                    "id": "message",
+                                    "key": "message",
+                                    "value": 1,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Approves the draft and gives it a send slot.\n\nReturns 403 unless an administrator has set\nOUTREACH_API_ALLOW_APPROVAL=true, whatever abilities the key carries.\nApproving is the point where a human normally reads the email before a\nreal person receives it, so a key cannot do it by default.\n\nA success with no send time is not an error: it means no mailbox was\nsendable at that moment, and the reconciler picks it up later."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Replies",
+            "description": "\nWhat came back: genuine replies, bounces, auto-responders and opt-outs.",
+            "item": [
+                {
+                    "name": "List replies",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/replies",
+                            "query": [
+                                {
+                                    "key": "classification",
+                                    "value": "reply",
+                                    "description": "One of reply, bounce, auto_reply, unsubscribe.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "mailbox_id",
+                                    "value": "1",
+                                    "description": "Only replies to this mailbox.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "contact_id",
+                                    "value": "1",
+                                    "description": "Only replies from this contact.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "enrollment_id",
+                                    "value": "1",
+                                    "description": "Only replies on this enrollment.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "unread",
+                                    "value": "1",
+                                    "description": "Only replies nobody has opened yet.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "since",
+                                    "value": "2026-08-01",
+                                    "description": "ISO date. Only replies received on or after it.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "50",
+                                    "description": "Rows per page. Clamped to 200.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Which page to return.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/replies?classification=reply&mailbox_id=1&contact_id=1&enrollment_id=1&unread=1&since=2026-08-01&per_page=50&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Newest first."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-01T08:07:34+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get one reply",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/replies\/:reply",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/replies\/:reply",
+                            "variable": [
+                                {
+                                    "id": "reply",
+                                    "key": "reply",
+                                    "value": 1,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-01T08:07:34+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-01T14:07:34+00:00\",\"updated_at\":\"2026-09-01T14:07:34+00:00\"}}}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Suppressions",
+            "description": "\nThe do-not-email list. Read it before pushing contacts.",
+            "item": [
+                {
+                    "name": "List suppressions",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/suppressions",
+                            "query": [
+                                {
+                                    "key": "reason",
+                                    "value": "unsubscribed",
+                                    "description": "One of unsubscribed, bounced, manual, complaint.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "email",
+                                    "value": "no.thanks@globex.example",
+                                    "description": "Check one exact address.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "since",
+                                    "value": "2026-08-01",
+                                    "description": "ISO date. Only addresses suppressed on or after it.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "50",
+                                    "description": "Rows per page. Clamped to 200.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Which page to return.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/suppressions?reason=unsubscribed&email=no.thanks%40globex.example&since=2026-08-01&per_page=50&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Everyone who must not be emailed.\n\nWorth reading before pushing contacts: ingest silently skips a\nsuppressed address, so a caller that does not check keeps offering\npeople who already opted out and never learns why nothing happens."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"no.thanks@globex.example\",\"reason\":\"unsubscribed\",\"source_reply_id\":null,\"created_at\":\"2026-09-01T14:07:34+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Suppress an address",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/suppressions",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/suppressions"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"no.thanks@globex.example\",\"reason\":\"unsubscribed\"}"
+                        },
+                        "description": "Adds the address to the do-not-email list and stops any sequence it is\ncurrently in. Suppressing without stopping would leave already-drafted\nemails queued behind it, so the address would still be written to."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Un-suppress an address",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/suppressions\/:email",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/suppressions\/:email",
+                            "variable": [
+                                {
+                                    "id": "email",
+                                    "key": "email",
+                                    "value": "no.thanks@globex.example",
+                                    "description": "The address to remove."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Allows emailing someone who was on the opt-out list.\n\nReturns 403 unless an administrator has set\nOUTREACH_API_ALLOW_SUPPRESSION_REMOVAL=true, whatever abilities the key\ncarries."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Mailboxes",
+            "description": "\nThe Gmail accounts that send. Connected in the dashboard, managed here.",
+            "item": [
+                {
+                    "name": "List mailboxes",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/mailboxes",
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "active",
+                                    "description": "One of active, paused, disconnected, error.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "50",
+                                    "description": "Rows per page. Clamped to 200.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Which page to return.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/mailboxes?status=active&per_page=50&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "The connected sending accounts with their health and 7-day stats.\nGoogle tokens are never included.\n\nThere is no endpoint to add one: connecting a mailbox needs a human at\nGoogle's own consent screen, in the dashboard."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-01T14:05:34+00:00\",\"last_send_error\":null}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Get one mailbox",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/mailboxes\/:mailbox",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/mailboxes\/:mailbox",
+                            "variable": [
+                                {
+                                    "id": "mailbox",
+                                    "key": "mailbox",
+                                    "value": 1,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-01T14:05:34+00:00\",\"last_send_error\":null}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Pause a mailbox",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/mailboxes\/:mailbox\/pause",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/mailboxes\/:mailbox\/pause",
+                            "variable": [
+                                {
+                                    "id": "mailbox",
+                                    "key": "mailbox",
+                                    "value": 1,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"reason\":\"Paused while we check deliverability\"}"
+                        },
+                        "description": "Stops it sending. Anything already scheduled on it stays queued."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Resume a mailbox",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/mailboxes\/:mailbox\/resume",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/mailboxes\/:mailbox\/resume",
+                            "variable": [
+                                {
+                                    "id": "mailbox",
+                                    "key": "mailbox",
+                                    "value": 1,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "A disconnected mailbox cannot be resumed here: its Google token is gone,\nand flipping the status would only queue sends that fail. Reconnect it\nin the dashboard instead."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Stats",
+            "description": "\nCounts across the system in one request.",
+            "item": [
+                {
+                    "name": "Overview",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/stats",
+                            "query": [
+                                {
+                                    "key": "since",
+                                    "value": "2026-08-01",
+                                    "description": "ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/stats?since=2026-08-01"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Counts across the system in one request, instead of paging through\nevery list to work them out.\n\nA rate comes back as null rather than 0 when nothing has been sent,\nbecause 0 would read as \"nobody replied\" instead of \"no data yet\"."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"window_since\":\"2026-08-01\",\"contacts\":{\"total\":2,\"suppressed\":1},\"enrollments\":{\"active\":2,\"total\":2},\"queue\":{\"pending_approval\":1,\"scheduled\":0,\"draft_failed\":0,\"send_failed\":0},\"sending\":{\"sent\":1,\"replies\":1,\"bounces\":0,\"unsubscribes\":0,\"reply_rate\":1,\"bounce_rate\":0},\"mailboxes\":{\"total\":1,\"active\":1,\"paused\":0,\"disconnected\":0}}}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Activity",
+            "description": "\nThe system log: sends, failures, bounces, opt-outs and polling errors.",
+            "item": [
+                {
+                    "name": "List activity",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/activity",
+                            "query": [
+                                {
+                                    "key": "level",
+                                    "value": "error",
+                                    "description": "One of info, warning, error.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "event",
+                                    "value": "send_failed",
+                                    "description": "Exact event name.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "retryable",
+                                    "value": "1",
+                                    "description": "Only entries the system can retry.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "since",
+                                    "value": "2026-08-01",
+                                    "description": "ISO date. Only entries logged on or after it.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "50",
+                                    "description": "Rows per page. Clamped to 200.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Which page to return.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/activity?level=error&event=send_failed&retryable=1&since=2026-08-01&per_page=50&page=1"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "The system log, newest first: sends, failures, bounces, opt-outs and\npolling errors. This is what to watch for problems."
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"event\":\"send_failed\",\"level\":\"error\",\"message\":\"Gmail returned 429 for hello@outreach.example\",\"context\":[],\"subject_type\":null,\"subject_id\":null,\"retryable\":true,\"retried_at\":null,\"created_at\":\"2026-09-01T14:07:34+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "Authorization",
+                "type": "string"
+            }
+        ]
+    }
+}

@@ -40,12 +40,15 @@ class GuardedApiActionsTest extends TestCase
         ]);
     }
 
-    public function test_both_actions_are_off_unless_someone_turns_them_on(): void
+    public function test_a_fresh_install_ships_with_both_actions_off(): void
     {
-        // Not config() overrides: the shipped defaults, so a fresh install is
-        // never accidentally letting a key send mail or un-suppress an address.
-        $this->assertFalse(config('outreach.api.allow_approval'));
-        $this->assertFalse(config('outreach.api.allow_suppression_removal'));
+        // Asserted against .env.example rather than config(), which would only
+        // report whatever this machine happens to have set. .env.example is
+        // what a new install copies, so it is the actual shipped default.
+        $example = file_get_contents(base_path('.env.example'));
+
+        $this->assertStringContainsString('OUTREACH_API_ALLOW_APPROVAL=false', $example);
+        $this->assertStringContainsString('OUTREACH_API_ALLOW_SUPPRESSION_REMOVAL=false', $example);
     }
 
     public function test_approval_is_refused_while_the_switch_is_off(): void

@@ -15,11 +15,17 @@ use Illuminate\Http\Request;
 class ActivityController extends ApiController
 {
     /**
-     * The activity log, newest first: sends, failures, bounces, opt-outs and
-     * polling errors.
+     * List activity
      *
-     * Filters: ?level=info|warning|error, ?event=, ?retryable=true,
-     * ?since= (ISO date).
+     * The system log, newest first: sends, failures, bounces, opt-outs and
+     * polling errors. This is what to watch for problems.
+     *
+     * @queryParam level string One of info, warning, error. Example: error
+     * @queryParam event string Exact event name. Example: send_failed
+     * @queryParam retryable boolean Only entries the system can retry. Example: true
+     * @queryParam since string ISO date. Only entries logged on or after it. Example: 2026-08-01
+     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
+     * @queryParam page integer Which page to return. Example: 1
      */
     public function index(Request $request): JsonResponse
     {

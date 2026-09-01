@@ -21,9 +21,17 @@ use Illuminate\Http\Request;
 class EnrollmentController extends ApiController
 {
     /**
-     * List enrollments, newest first.
+     * List enrollments
      *
-     * Filters: ?status=, ?contact_id=, ?automation_id=, ?tag=, ?mailbox_id=.
+     * Newest first.
+     *
+     * @queryParam status string One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. Example: active
+     * @queryParam contact_id integer Example: 1
+     * @queryParam automation_id integer Example: 1
+     * @queryParam tag string Automation tag. Example: seo-backlinks
+     * @queryParam mailbox_id integer Example: 1
+     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
+     * @queryParam page integer Which page to return. Example: 1
      */
     public function index(Request $request): JsonResponse
     {
@@ -45,10 +53,19 @@ class EnrollmentController extends ApiController
     }
 
     /**
-     * Put an existing contact into an automation and start drafting step 1.
+     * Enroll a contact
      *
-     * POST /api/contacts is the route for new leads; this one is for a contact
-     * already on file that should also go through another sequence.
+     * Puts a contact already on file into an automation and starts drafting
+     * step 1. POST /api/contacts is the route for new leads; this one is for
+     * someone who should also go through another sequence.
+     *
+     * Identify the contact by contact_id or email, and the automation by
+     * automation_id or tag.
+     *
+     * @bodyParam email string The contact's address. Send this or contact_id. Example: jane.doe@acme.example
+     * @bodyParam tag string The automation's tag. Send this or automation_id. Example: seo-backlinks
+     * @bodyParam contact_id integer Alternative to email. Left out of the example below so the request is sendable as it stands. No-example
+     * @bodyParam automation_id integer Alternative to tag. Left out of the example below so the request is sendable as it stands. No-example
      */
     public function store(Request $request, MailboxSelector $selector): JsonResponse
     {
@@ -111,8 +128,14 @@ class EnrollmentController extends ApiController
     }
 
     /**
-     * Stop an enrollment. Anything already drafted or scheduled for it is
-     * cancelled, so nothing further is sent.
+     * Stop an enrollment
+     *
+     * Anything already drafted or scheduled for it is cancelled, so nothing
+     * further is sent.
+     *
+     * @urlParam enrollment integer required Example: 1
+     *
+     * @bodyParam reason string Recorded against the stopped enrollment. Example: Replied on another channel
      */
     public function destroy(Request $request, int $enrollment, EnrollmentStopper $stopper): JsonResponse
     {

@@ -47,5 +47,9 @@
         <server name="SESSION_DRIVER" value="array" force="true"/>
         <server name="MAIL_MAILER" value="array" force="true"/>
         <server name="APP_ENV" value="testing" force="true"/>
+        <!-- The two guarded API actions are pinned off so the suite does not
+             depend on whatever a developer left in their own .env. -->
+        <server name="OUTREACH_API_ALLOW_APPROVAL" value="false" force="true"/>
+        <server name="OUTREACH_API_ALLOW_SUPPRESSION_REMOVAL" value="false" force="true"/>
     </php>
 </phpunit>

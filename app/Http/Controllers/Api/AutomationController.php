@@ -15,7 +15,16 @@ use Illuminate\Validation\Rule;
  */
 class AutomationController extends ApiController
 {
-    /** List automations with their steps. Filters: ?active=true|false, ?tag=. */
+    /**
+     * List automations
+     *
+     * Each with its steps.
+     *
+     * @queryParam active boolean Only switched-on or switched-off automations. Example: true
+     * @queryParam tag string Exact tag. Example: seo-backlinks
+     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
+     * @queryParam page integer Which page to return. Example: 1
+     */
     public function index(Request $request): JsonResponse
     {
         $query = Automation::query()->with('steps')->latest('id');
@@ -31,7 +40,11 @@ class AutomationController extends ApiController
         return $this->paged($query->paginate($this->perPage($request)), AutomationResource::class);
     }
 
-    /** One automation with its steps. Accepts an id or a tag. */
+    /**
+     * Get one automation
+     *
+     * @urlParam automation required An id or a tag. Example: seo-backlinks
+     */
     public function show(string $automation): JsonResponse
     {
         $model = $this->resolve($automation);
@@ -42,10 +55,23 @@ class AutomationController extends ApiController
     }
 
     /**
-     * Create an automation, optionally with its steps in the same call.
+     * Create an automation
+     *
+     * Optionally with its steps in the same call.
      *
      * The tag is how contacts get enrolled: pushing a contact with that tag to
      * POST /api/contacts starts them on this sequence.
+     *
+     * @bodyParam tag string required Example: seo-backlinks
+     * @bodyParam name string required Example: SEO backlinks outreach
+     * @bodyParam description string Example: Two touches for sites that could carry a link back to us.
+     * @bodyParam active boolean Defaults to true. Example: true
+     * @bodyParam steps object[] The sequence, optional here and addable later.
+     * @bodyParam steps[].position integer required 1 is the first email. Example: 1
+     * @bodyParam steps[].delay_days integer Days after the previous step. Example: 0
+     * @bodyParam steps[].delay_hours integer Hours after the previous step. Example: 0
+     * @bodyParam steps[].drafting_instructions string required What Claude should write. Example: Short, friendly cold email asking if they would consider a guest post. Two sentences, no pitch.
+     * @bodyParam steps[].active boolean Example: true
      */
     public function store(Request $request): JsonResponse
     {
@@ -76,6 +102,16 @@ class AutomationController extends ApiController
         return $this->ok(new AutomationResource($automation->load('steps')), 'Automation created.', 201);
     }
 
+    /**
+     * Update an automation
+     *
+     * @urlParam automation required An id or a tag. Example: seo-backlinks
+     *
+     * @bodyParam tag string Example: seo-backlinks
+     * @bodyParam name string Example: SEO backlinks outreach
+     * @bodyParam description string Example: Two touches for sites that could carry a link back to us.
+     * @bodyParam active boolean Switch the whole sequence off without deleting it. Example: false
+     */
     public function update(Request $request, string $automation): JsonResponse
     {
         $model = $this->resolve($automation);

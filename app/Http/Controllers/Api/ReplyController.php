@@ -15,10 +15,18 @@ use Illuminate\Http\Request;
 class ReplyController extends ApiController
 {
     /**
-     * List replies received, newest first.
+     * List replies
      *
-     * Filters: ?classification=reply|bounce|auto_reply|unsubscribe,
-     * ?mailbox_id=, ?contact_id=, ?unread=true, ?since= (ISO date).
+     * Newest first.
+     *
+     * @queryParam classification string One of reply, bounce, auto_reply, unsubscribe. Example: reply
+     * @queryParam mailbox_id integer Only replies to this mailbox. Example: 1
+     * @queryParam contact_id integer Only replies from this contact. Example: 1
+     * @queryParam enrollment_id integer Only replies on this enrollment. Example: 1
+     * @queryParam unread boolean Only replies nobody has opened yet. Example: true
+     * @queryParam since string ISO date. Only replies received on or after it. Example: 2026-08-01
+     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
+     * @queryParam page integer Which page to return. Example: 1
      */
     public function index(Request $request): JsonResponse
     {
@@ -41,6 +49,11 @@ class ReplyController extends ApiController
         return $this->paged($query->paginate($this->perPage($request)), ReplyResource::class);
     }
 
+    /**
+     * Get one reply
+     *
+     * @urlParam reply integer required Example: 1
+     */
     public function show(int $reply): JsonResponse
     {
         $model = Reply::query()->with('contact')->find($reply);

@@ -19,11 +19,15 @@ use Illuminate\Http\Request;
 class StatsController extends ApiController
 {
     /**
-     * Counts across the system, so a caller can see the state of things in one
-     * request instead of paging through every list.
+     * Overview
      *
-     * ?since= (ISO date) narrows the sent/reply/bounce counts to that window.
-     * It does not narrow the totals or the queue, which are current state.
+     * Counts across the system in one request, instead of paging through
+     * every list to work them out.
+     *
+     * A rate comes back as null rather than 0 when nothing has been sent,
+     * because 0 would read as "nobody replied" instead of "no data yet".
+     *
+     * @queryParam since string ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed. Example: 2026-08-01
      */
     public function index(Request $request): JsonResponse
     {

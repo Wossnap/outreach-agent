@@ -120,6 +120,91 @@ Mail is sent through the **Gmail API**, so it leaves **Google's IP ranges** — 
 | `health:check-dns` / `--dnsbl` | daily | SPF/DKIM/DMARC + blocklists |
 | `mailboxes:refresh-tokens` | daily | surface dead Google refresh tokens early |
 
+## The API
+
+Full reference at `/docs`, with an OpenAPI spec at `/docs/openapi.yaml` and a
+Postman collection at `/docs/collection.json`.
+
+Keys are created in the dashboard under **Settings → API keys** and carry
+abilities. An endpoint accepts only the ones it lists, so a key can be given
+exactly what its caller needs and nothing more.
+
+| Ability | Covers |
+|---|---|
+| `read` | every GET: contacts, replies, suppressions, messages, enrollments, automations, mailboxes, activity, stats |
+| `write` | push contacts, edit and reject drafts, manage automations, steps, attachments, enrollments and mailboxes |
+| `approve` | approve a draft so it sends |
+| `ingest` | legacy, accepted on `POST /api/contacts` only, so keys issued before abilities existed keep working |
+
+A wrong key gives 401. A valid key without the right ability gives 403, and the
+message names the ability that was missing.
+
+### Two actions are off by default
+
+Both remove a safeguard rather than just moving data, so each needs a config
+switch as well as the right ability. While off they return 403 whatever the key
+carries.
+
+| Action | Switch | Why it is held back |
+|---|---|---|
+| `POST /api/messages/{id}/approve` | `OUTREACH_API_ALLOW_APPROVAL` | sends a real email with nobody having read it |
+| `DELETE /api/suppressions/{email}` | `OUTREACH_API_ALLOW_SUPPRESSION_REMOVAL` | resumes emailing a person who asked us to stop |
+
+### Regenerating the docs
+
+Scribe is a dev dependency and the built page in `public/docs` is committed, so
+the server serves it as static files with the package absent. `config/scribe.php`
+returns early when Scribe is not installed, so `config:cache` still works there.
+
+Scribe calls the real GET endpoints to capture example responses, so generate
+against a throwaway database seeded with sample data — never a real one:
+
+```bash
+export DB_CONNECTION=sqlite DB_DATABASE=/tmp/docs.sqlite
+touch /tmp/docs.sqlite
+php artisan migrate --force
+TOKEN_OUT=/tmp/docs-token php artisan db:seed --class=DocsExampleSeeder --force
+
+SCRIBE_BASE_URL=https://your-host SCRIBE_AUTH_KEY=$(cat /tmp/docs-token)   php artisan scribe:generate
+```
+
+The URL is baked into the examples at generation time, so pass the host the
+docs are for. The seeded key is used to make the calls and is not written into
+the output.
+
+## Attachments
+
+A file can be attached to a **sequence step**, not to the automation as a whole:
+a step-level field can express "attach to every email" by repeating it, but an
+automation-level one cannot express "attach to the first email only".
+
+Upload on the automation page, or `POST /api/automations/{automation}/steps/{step}/attachments`.
+Attachments are listed on the Approvals page above the approve button, so an
+email is never released without its attachments being visible.
+
+Executables and archives are refused: recipients' gateways strip or quarantine
+them, and that costs deliverability across the whole sending domain. Limits are
+in `config/outreach.php`.
+
+If a file is missing from storage at send time the send fails rather than going
+out without it, so the error is visible on the Activity page instead of a
+recipient receiving an email whose text refers to an attachment that is not
+there.
+
+## Contact names
+
+Contacts carry `name` alongside `first_name` and `last_name`. Whatever a caller
+supplies wins; anything omitted is derived from what was supplied, but only when
+the stored value is blank, so re-sending one part never rewrites a name already
+on record.
+
+`name` is kept rather than derived because not every contact splits into two
+parts: mononyms and role addresses ("Support Team") would be mangled by it.
+
 ## Tests
 
-`php artisan test` — 125 tests over the ingest API, drafting, approval, scheduling math (frozen-time jitter/window/cap/warmup), Gmail MIME/threading, atomic dispatch, inbound classification (bounce DSNs, opt-out phrases, OOO), health checks (stubbed DNS), and the dashboard pages.
+`php artisan test` — 214 tests over the API (read, write, abilities and the two
+guarded actions), the ingest endpoint, drafting, approval, scheduling math
+(frozen-time jitter/window/cap/warmup), Gmail MIME/threading including
+multipart attachments, atomic dispatch, inbound classification (bounce DSNs,
+opt-out phrases, OOO), health checks (stubbed DNS), and the dashboard pages.

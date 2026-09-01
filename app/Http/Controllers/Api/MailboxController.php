@@ -15,11 +15,17 @@ use Illuminate\Http\Request;
 class MailboxController extends ApiController
 {
     /**
-     * Connected sending mailboxes with their health and 7-day stats.
+     * List mailboxes
      *
-     * Mailboxes are connected in the dashboard through Google sign-in, so
-     * there is no endpoint to create one: it needs a human at a Google
-     * consent screen.
+     * The connected sending accounts with their health and 7-day stats.
+     * Google tokens are never included.
+     *
+     * There is no endpoint to add one: connecting a mailbox needs a human at
+     * Google's own consent screen, in the dashboard.
+     *
+     * @queryParam status string One of active, paused, disconnected, error. Example: active
+     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
+     * @queryParam page integer Which page to return. Example: 1
      */
     public function index(Request $request): JsonResponse
     {
@@ -32,6 +38,11 @@ class MailboxController extends ApiController
         return $this->paged($query->paginate($this->perPage($request)), MailboxResource::class);
     }
 
+    /**
+     * Get one mailbox
+     *
+     * @urlParam mailbox integer required Example: 1
+     */
     public function show(int $mailbox): JsonResponse
     {
         $model = Mailbox::query()->with('domain')->find($mailbox);
@@ -41,7 +52,15 @@ class MailboxController extends ApiController
             : $this->fail('Mailbox not found.', 404);
     }
 
-    /** Stop this mailbox sending. Anything already scheduled on it stays queued. */
+    /**
+     * Pause a mailbox
+     *
+     * Stops it sending. Anything already scheduled on it stays queued.
+     *
+     * @urlParam mailbox integer required Example: 1
+     *
+     * @bodyParam reason string Shown on the Mailboxes page. Example: Paused while we check deliverability
+     */
     public function pause(Request $request, int $mailbox): JsonResponse
     {
         $model = Mailbox::query()->find($mailbox);
@@ -61,10 +80,13 @@ class MailboxController extends ApiController
     }
 
     /**
-     * Resume sending.
+     * Resume a mailbox
      *
-     * A disconnected mailbox cannot be resumed here: its Google token is gone
-     * and only re-connecting in the dashboard restores it.
+     * A disconnected mailbox cannot be resumed here: its Google token is gone,
+     * and flipping the status would only queue sends that fail. Reconnect it
+     * in the dashboard instead.
+     *
+     * @urlParam mailbox integer required Example: 1
      */
     public function resume(int $mailbox): JsonResponse
     {
