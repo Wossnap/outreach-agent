@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\ApiAuth;
+use App\Http\Middleware\EnsureApiActionIsEnabled;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -8,6 +9,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -60,6 +62,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'api.auth' => ApiAuth::class,
+            'api.enabled' => EnsureApiActionIsEnabled::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
@@ -75,5 +78,24 @@ return Application::configure(basePath: dirname(__DIR__))
                     'errors' => $e->errors(),
                 ], 422);
             }
+        });
+
+        // Everything under /api answers in the same {success, message} shape,
+        // so a client can read one field to tell success from failure instead
+        // of parsing Laravel's default HTML or bare-message JSON.
+        $exceptions->render(function (HttpExceptionInterface $e, Request $request) {
+            if (! $request->is('api/*')) {
+                return null;
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage() ?: match ($e->getStatusCode()) {
+                    404 => 'Not found.',
+                    405 => 'Method not allowed.',
+                    429 => 'Too many requests.',
+                    default => 'Request failed.',
+                },
+            ], $e->getStatusCode());
         });
     })->create();

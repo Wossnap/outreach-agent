@@ -8,12 +8,22 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Bearer API-key auth for the ingest API. Keys are Sanctum personal access
- * tokens with the "ingest" ability, created from the dashboard settings page.
+ * Bearer API-key auth. Keys are Sanctum personal access tokens created from
+ * the dashboard settings page, each carrying one or more abilities.
+ *
+ * Abilities:
+ *   read     - GET anything
+ *   write    - create and change data, including pushing contacts
+ *   approve  - approve a draft so it sends (also gated by config, see below)
+ *   ingest   - legacy, kept so keys issued before abilities existed still
+ *              reach POST /api/contacts
+ *
+ * Routes list the abilities that satisfy them and the key needs any one:
+ * `api.auth:write,ingest`.
  */
 class ApiAuth
 {
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, string ...$abilities): Response
     {
         if ($request->getMethod() === 'OPTIONS') {
             return response()->noContent(204);
@@ -31,10 +41,12 @@ class ApiAuth
             return $this->unauthorized('Invalid API key.');
         }
 
-        if (! $token->can('ingest')) {
+        $abilities = $abilities ?: ['read'];
+
+        if (! collect($abilities)->contains(fn (string $ability) => $token->can($ability))) {
             return response()->json([
                 'success' => false,
-                'message' => 'This API key does not have ingest access.',
+                'message' => 'This API key does not have '.implode(' or ', $abilities).' access.',
             ], 403);
         }
 

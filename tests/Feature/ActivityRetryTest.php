@@ -6,6 +6,7 @@ use App\Jobs\DraftEmailJob;
 use App\Livewire\Activity\Index;
 use App\Livewire\Settings\ApiKeys;
 use App\Models\ActivityLog;
+use App\Models\Automation;
 use App\Models\Enrollment;
 use App\Models\Mailbox;
 use App\Models\Message;
@@ -94,13 +95,14 @@ class ActivityRetryTest extends TestCase
     {
         $component = Livewire::test(ApiKeys::class)
             ->set('newKeyName', 'my-app')
+            ->set('newKeyAbilities', ['write'])
             ->call('create');
 
         $plain = $component->get('plainTextKey');
         $this->assertNotNull($plain);
 
         // The created key actually works against the ingest API.
-        \App\Models\Automation::factory()->create(['tag' => 't']);
+        Automation::factory()->create(['tag' => 't']);
         $this->postJson('/api/contacts', ['email' => 'a@b.com', 'tags' => ['t']], [
             'Authorization' => 'Bearer '.$plain,
         ])->assertOk();
@@ -111,5 +113,31 @@ class ActivityRetryTest extends TestCase
         $this->postJson('/api/contacts', ['email' => 'a@b.com', 'tags' => ['t']], [
             'Authorization' => 'Bearer '.$plain,
         ])->assertStatus(401);
+    }
+
+    public function test_a_read_only_key_cannot_push_contacts(): void
+    {
+        $plain = Livewire::test(ApiKeys::class)
+            ->set('newKeyName', 'reporting-bot')
+            ->set('newKeyAbilities', ['read'])
+            ->call('create')
+            ->get('plainTextKey');
+
+        Automation::factory()->create(['tag' => 't']);
+
+        $this->postJson('/api/contacts', ['email' => 'a@b.com', 'tags' => ['t']], [
+            'Authorization' => 'Bearer '.$plain,
+        ])->assertStatus(403);
+
+        $this->getJson('/api/contacts', ['Authorization' => 'Bearer '.$plain])->assertOk();
+    }
+
+    public function test_a_key_needs_at_least_one_ability(): void
+    {
+        Livewire::test(ApiKeys::class)
+            ->set('newKeyName', 'no-powers')
+            ->set('newKeyAbilities', [])
+            ->call('create')
+            ->assertHasErrors('newKeyAbilities');
     }
 }

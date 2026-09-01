@@ -73,6 +73,49 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | API surface
+    |--------------------------------------------------------------------------
+    | Two actions are withheld from API keys by default because they remove a
+    | safeguard rather than just moving data:
+    |
+    | allow_approval - a key may approve a draft, which sends a real email with
+    | no human ever reading it. Every email otherwise passes a person first.
+    |
+    | allow_suppression_removal - a key may take someone off the opt-out list,
+    | i.e. resume emailing a person who asked us to stop.
+    |
+    | Turn either on deliberately. Both routes 403 while off, whatever
+    | abilities the key carries.
+    */
+    'api' => [
+        'allow_approval' => (bool) env('OUTREACH_API_ALLOW_APPROVAL', false),
+        'allow_suppression_removal' => (bool) env('OUTREACH_API_ALLOW_SUPPRESSION_REMOVAL', false),
+        'page_size' => (int) env('OUTREACH_API_PAGE_SIZE', 50),
+        'max_page_size' => (int) env('OUTREACH_API_MAX_PAGE_SIZE', 200),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Step attachments
+    |--------------------------------------------------------------------------
+    | Files attached to a sequence step travel base64-encoded inside the
+    | message, so the encoded size is roughly a third larger than the file.
+    | Gmail rejects a message over 35MB total.
+    */
+    'attachments' => [
+        'disk' => env('OUTREACH_ATTACHMENT_DISK', 'local'),
+        'max_size_kb' => (int) env('OUTREACH_ATTACHMENT_MAX_KB', 10240),
+        'max_per_step' => (int) env('OUTREACH_ATTACHMENT_MAX_PER_STEP', 5),
+        // Executables and archives are excluded: recipients' gateways strip or
+        // quarantine them, which costs deliverability on the whole domain.
+        'allowed_extensions' => [
+            'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx',
+            'csv', 'txt', 'png', 'jpg', 'jpeg', 'gif', 'webp',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Unsubscribe phrase detection (inbound replies)
     |--------------------------------------------------------------------------
     | A reply whose body/subject contains one of these (case-insensitive) is
