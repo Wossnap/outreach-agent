@@ -79,7 +79,7 @@ class Edit extends Component
         $stepId = $this->steps[$index]['id'] ?? null;
 
         if (! $stepId) {
-            $this->addError('newAttachment.'.$index, 'Save the automation first, then attach a file to this step.');
+            $this->addError('newAttachment.'.$index, 'This step has not been saved yet. Save the automation, then attach a file to it.');
 
             return;
         }

@@ -99,7 +99,10 @@
                                     </div>
                                     <div wire:loading wire:target="newAttachment.{{ $index }}" class="mt-1 text-xs text-gray-500">Uploading...</div>
                                 @else
-                                    <p class="mt-2 text-xs text-gray-500">Save the automation first, then you can attach a file to this step.</p>
+                                    {{-- The automation may well be saved already; this particular step is not,
+                                         and a file attaches to a step. Say that, rather than "save the
+                                         automation first", which reads as nonsense on an edit page. --}}
+                                    <p class="mt-2 text-xs text-gray-500">This step has not been saved yet. Fill it in and press "Save automation", then come back to attach a file.</p>
                                 @endif
 
                                 <x-input-error :messages="$errors->get('newAttachment.'.$index)" class="mt-1" />
