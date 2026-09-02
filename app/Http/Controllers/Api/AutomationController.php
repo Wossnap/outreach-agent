@@ -20,10 +20,10 @@ class AutomationController extends ApiController
      *
      * Each with its steps.
      *
-     * @queryParam active boolean Only switched-on or switched-off automations. Example: true
-     * @queryParam tag string Exact tag. Example: seo-backlinks
-     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
-     * @queryParam page integer Which page to return. Example: 1
+     * @queryParam active boolean Only switched-on or switched-off automations. e.g. true. No-example
+     * @queryParam tag string Exact tag. e.g. seo-backlinks. No-example
+     * @queryParam per_page integer Rows per page. Clamped to 200. e.g. 50. No-example
+     * @queryParam page integer Which page to return. e.g. 1. No-example
      */
     public function index(Request $request): JsonResponse
     {

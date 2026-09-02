@@ -448,7 +448,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/contacts?email=jane.doe%40acme.example&amp;company=Acme&amp;q=acme&amp;tag=seo-backlinks&amp;status=active&amp;suppressed=1&amp;since=2026-08-01&amp;per_page=50&amp;page=1" \
+    --get "https://outreach.seannocode.com/api/contacts" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -458,20 +458,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <pre><code class="language-javascript">const url = new URL(
     "https://outreach.seannocode.com/api/contacts"
 );
-
-const params = {
-    "email": "jane.doe@acme.example",
-    "company": "Acme",
-    "q": "acme",
-    "tag": "seo-backlinks",
-    "status": "active",
-    "suppressed": "1",
-    "since": "2026-08-01",
-    "per_page": "50",
-    "page": "1",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer YOUR_API_KEY",
@@ -503,11 +489,41 @@ access-control-allow-origin: *
 <code class="language-json" style="max-height: 300px;">{
     &quot;success&quot;: true,
     &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: [],
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 2,
+            &quot;email&quot;: &quot;sam.patel@globex.example&quot;,
+            &quot;name&quot;: &quot;Sam Patel&quot;,
+            &quot;first_name&quot;: &quot;Sam&quot;,
+            &quot;last_name&quot;: &quot;Patel&quot;,
+            &quot;company&quot;: &quot;Globex&quot;,
+            &quot;website&quot;: &quot;https://globex.example&quot;,
+            &quot;source&quot;: &quot;tube-trend-tool&quot;,
+            &quot;custom&quot;: [],
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
+        },
+        {
+            &quot;id&quot;: 1,
+            &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
+            &quot;name&quot;: &quot;Jane Doe&quot;,
+            &quot;first_name&quot;: &quot;Jane&quot;,
+            &quot;last_name&quot;: &quot;Doe&quot;,
+            &quot;company&quot;: &quot;Acme Ltd&quot;,
+            &quot;website&quot;: &quot;https://acme.example&quot;,
+            &quot;source&quot;: &quot;tube-trend-tool&quot;,
+            &quot;custom&quot;: {
+                &quot;industry&quot;: &quot;SaaS&quot;,
+                &quot;employees&quot;: 40
+            },
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
+        }
+    ],
     &quot;meta&quot;: {
         &quot;page&quot;: 1,
         &quot;per_page&quot;: 50,
-        &quot;total&quot;: 0,
+        &quot;total&quot;: 2,
         &quot;last_page&quot;: 1
     }
 }</code>
@@ -604,10 +620,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="GETapi-contacts"
-               value="jane.doe@acme.example"
+               value=""
                data-component="query">
     <br>
-<p>Exact address. Example: <code>jane.doe@acme.example</code></p>
+<p>Exact address. e.g. jane.doe@acme.example.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>company</code></b>&nbsp;&nbsp;
@@ -616,10 +632,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="company"                data-endpoint="GETapi-contacts"
-               value="Acme"
+               value=""
                data-component="query">
     <br>
-<p>Partial match on company. Example: <code>Acme</code></p>
+<p>Partial match on company. e.g. Acme.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>q</code></b>&nbsp;&nbsp;
@@ -628,10 +644,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="q"                data-endpoint="GETapi-contacts"
-               value="acme"
+               value=""
                data-component="query">
     <br>
-<p>Partial match on email, either name, or company. Example: <code>acme</code></p>
+<p>Partial match on email, either name, or company. e.g. acme.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>tag</code></b>&nbsp;&nbsp;
@@ -640,10 +656,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="tag"                data-endpoint="GETapi-contacts"
-               value="seo-backlinks"
+               value=""
                data-component="query">
     <br>
-<p>Only contacts enrolled in this automation. Example: <code>seo-backlinks</code></p>
+<p>Only contacts enrolled in this automation. e.g. seo-backlinks.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
@@ -652,10 +668,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="GETapi-contacts"
-               value="active"
+               value=""
                data-component="query">
     <br>
-<p>Only contacts with an enrollment in this state. Example: <code>active</code></p>
+<p>Only contacts with an enrollment in this state. e.g. active.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>suppressed</code></b>&nbsp;&nbsp;
@@ -677,7 +693,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>true for opted-out contacts only, false to exclude them. Example: <code>true</code></p>
+<p>true for opted-out contacts only, false to exclude them. e.g. true.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>since</code></b>&nbsp;&nbsp;
@@ -686,10 +702,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="since"                data-endpoint="GETapi-contacts"
-               value="2026-08-01"
+               value=""
                data-component="query">
     <br>
-<p>ISO date. Only rows created on or after it. Example: <code>2026-08-01</code></p>
+<p>ISO date. Only rows created on or after it. e.g. 2026-08-01.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
@@ -698,10 +714,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="per_page"                data-endpoint="GETapi-contacts"
-               value="50"
+               value=""
                data-component="query">
     <br>
-<p>Rows per page. Clamped to 200. Example: <code>50</code></p>
+<p>Rows per page. Clamped to 200. e.g. 50.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
@@ -710,10 +726,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="page"                data-endpoint="GETapi-contacts"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Which page to return. Example: <code>1</code></p>
+<p>Which page to return. e.g. 1.</p>
             </div>
                 </form>
 
@@ -787,8 +803,8 @@ access-control-allow-origin: *
             &quot;employees&quot;: 40
         },
         &quot;suppressed&quot;: false,
-        &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;,
-        &quot;updated_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;,
+        &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+        &quot;updated_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
         &quot;enrollments&quot;: [
             {
                 &quot;id&quot;: 1,
@@ -801,7 +817,7 @@ access-control-allow-origin: *
                 &quot;current_step&quot;: 1,
                 &quot;stopped_at&quot;: null,
                 &quot;stop_reason&quot;: null,
-                &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
             }
         ],
         &quot;messages&quot;: [
@@ -818,12 +834,12 @@ access-control-allow-origin: *
                 &quot;body_text&quot;: &quot;Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex&quot;,
                 &quot;edited_by_user&quot;: false,
                 &quot;scheduled_at&quot;: null,
-                &quot;sent_at&quot;: &quot;2026-09-01T08:51:35+00:00&quot;,
+                &quot;sent_at&quot;: &quot;2026-09-01T09:52:27+00:00&quot;,
                 &quot;approved_at&quot;: null,
                 &quot;rejected_at&quot;: null,
                 &quot;rejection_note&quot;: null,
                 &quot;error&quot;: null,
-                &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
             }
         ],
         &quot;replies&quot;: [
@@ -838,7 +854,7 @@ access-control-allow-origin: *
                 &quot;snippet&quot;: &quot;Happy to take a look, send it over.&quot;,
                 &quot;body_text&quot;: &quot;Happy to take a look, send it over.\n\nJane&quot;,
                 &quot;classification&quot;: &quot;reply&quot;,
-                &quot;received_at&quot;: &quot;2026-09-02T02:51:35+00:00&quot;,
+                &quot;received_at&quot;: &quot;2026-09-02T03:52:27+00:00&quot;,
                 &quot;read_at&quot;: null
             }
         ]
@@ -1233,7 +1249,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/automations?active=1&amp;tag=seo-backlinks&amp;per_page=50&amp;page=1" \
+    --get "https://outreach.seannocode.com/api/automations" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1243,15 +1259,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <pre><code class="language-javascript">const url = new URL(
     "https://outreach.seannocode.com/api/automations"
 );
-
-const params = {
-    "active": "1",
-    "tag": "seo-backlinks",
-    "per_page": "50",
-    "page": "1",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer YOUR_API_KEY",
@@ -1290,8 +1297,8 @@ access-control-allow-origin: *
             &quot;name&quot;: &quot;SEO backlinks outreach&quot;,
             &quot;description&quot;: &quot;Three touches for sites that could carry a link back to us.&quot;,
             &quot;active&quot;: true,
-            &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;,
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
             &quot;steps&quot;: [
                 {
                     &quot;id&quot;: 1,
@@ -1302,7 +1309,7 @@ access-control-allow-origin: *
                     &quot;drafting_instructions&quot;: &quot;Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.&quot;,
                     &quot;active&quot;: true,
                     &quot;attachments&quot;: [],
-                    &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+                    &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
                 },
                 {
                     &quot;id&quot;: 2,
@@ -1313,7 +1320,7 @@ access-control-allow-origin: *
                     &quot;drafting_instructions&quot;: &quot;Short nudge referencing the first note. Do not re-introduce yourself.&quot;,
                     &quot;active&quot;: true,
                     &quot;attachments&quot;: [],
-                    &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+                    &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
                 }
             ]
         }
@@ -1431,7 +1438,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Only switched-on or switched-off automations. Example: <code>true</code></p>
+<p>Only switched-on or switched-off automations. e.g. true.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>tag</code></b>&nbsp;&nbsp;
@@ -1440,10 +1447,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="tag"                data-endpoint="GETapi-automations"
-               value="seo-backlinks"
+               value=""
                data-component="query">
     <br>
-<p>Exact tag. Example: <code>seo-backlinks</code></p>
+<p>Exact tag. e.g. seo-backlinks.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
@@ -1452,10 +1459,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="per_page"                data-endpoint="GETapi-automations"
-               value="50"
+               value=""
                data-component="query">
     <br>
-<p>Rows per page. Clamped to 200. Example: <code>50</code></p>
+<p>Rows per page. Clamped to 200. e.g. 50.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
@@ -1464,10 +1471,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="page"                data-endpoint="GETapi-automations"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Which page to return. Example: <code>1</code></p>
+<p>Which page to return. e.g. 1.</p>
             </div>
                 </form>
 
@@ -1532,8 +1539,8 @@ access-control-allow-origin: *
         &quot;name&quot;: &quot;SEO backlinks outreach&quot;,
         &quot;description&quot;: &quot;Three touches for sites that could carry a link back to us.&quot;,
         &quot;active&quot;: true,
-        &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;,
-        &quot;updated_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;,
+        &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+        &quot;updated_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
         &quot;steps&quot;: [
             {
                 &quot;id&quot;: 1,
@@ -1544,7 +1551,7 @@ access-control-allow-origin: *
                 &quot;drafting_instructions&quot;: &quot;Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.&quot;,
                 &quot;active&quot;: true,
                 &quot;attachments&quot;: [],
-                &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
             },
             {
                 &quot;id&quot;: 2,
@@ -1555,7 +1562,7 @@ access-control-allow-origin: *
                 &quot;drafting_instructions&quot;: &quot;Short nudge referencing the first note. Do not re-introduce yourself.&quot;,
                 &quot;active&quot;: true,
                 &quot;attachments&quot;: [],
-                &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
             }
         ]
     }
@@ -1725,7 +1732,7 @@ access-control-allow-origin: *
             &quot;drafting_instructions&quot;: &quot;Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.&quot;,
             &quot;active&quot;: true,
             &quot;attachments&quot;: [],
-            &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
         },
         {
             &quot;id&quot;: 2,
@@ -1736,7 +1743,7 @@ access-control-allow-origin: *
             &quot;drafting_instructions&quot;: &quot;Short nudge referencing the first note. Do not re-introduce yourself.&quot;,
             &quot;active&quot;: true,
             &quot;attachments&quot;: [],
-            &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
         }
     ]
 }</code>
@@ -2991,7 +2998,7 @@ quarantine them, and that cost lands on the whole sending domain.</p>
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "file=@/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/phpi68ufdtp3psv1yeGrIU" </code></pre></div>
+    --form "file=@/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/phppajtuticf0nkcCb54rg" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -3137,7 +3144,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>The file to attach. Choose it in Postman's Body tab. Example: <code>/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/phpi68ufdtp3psv1yeGrIU</code></p>
+<p>The file to attach. Choose it in Postman's Body tab. Example: <code>/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/phppajtuticf0nkcCb54rg</code></p>
         </div>
         </form>
 
@@ -3322,7 +3329,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/enrollments?status=active&amp;contact_id=1&amp;automation_id=1&amp;tag=seo-backlinks&amp;mailbox_id=1&amp;per_page=50&amp;page=1" \
+    --get "https://outreach.seannocode.com/api/enrollments" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3332,18 +3339,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <pre><code class="language-javascript">const url = new URL(
     "https://outreach.seannocode.com/api/enrollments"
 );
-
-const params = {
-    "status": "active",
-    "contact_id": "1",
-    "automation_id": "1",
-    "tag": "seo-backlinks",
-    "mailbox_id": "1",
-    "per_page": "50",
-    "page": "1",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer YOUR_API_KEY",
@@ -3377,6 +3372,32 @@ access-control-allow-origin: *
     &quot;message&quot;: &quot;ok&quot;,
     &quot;data&quot;: [
         {
+            &quot;id&quot;: 2,
+            &quot;contact_id&quot;: 2,
+            &quot;automation_id&quot;: 1,
+            &quot;automation_tag&quot;: &quot;seo-backlinks&quot;,
+            &quot;mailbox_id&quot;: 1,
+            &quot;mailbox_email&quot;: &quot;hello@outreach.example&quot;,
+            &quot;status&quot;: &quot;active&quot;,
+            &quot;current_step&quot;: 0,
+            &quot;stopped_at&quot;: null,
+            &quot;stop_reason&quot;: null,
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+            &quot;contact&quot;: {
+                &quot;id&quot;: 2,
+                &quot;email&quot;: &quot;sam.patel@globex.example&quot;,
+                &quot;name&quot;: &quot;Sam Patel&quot;,
+                &quot;first_name&quot;: &quot;Sam&quot;,
+                &quot;last_name&quot;: &quot;Patel&quot;,
+                &quot;company&quot;: &quot;Globex&quot;,
+                &quot;website&quot;: &quot;https://globex.example&quot;,
+                &quot;source&quot;: &quot;tube-trend-tool&quot;,
+                &quot;custom&quot;: [],
+                &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+                &quot;updated_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
+            }
+        },
+        {
             &quot;id&quot;: 1,
             &quot;contact_id&quot;: 1,
             &quot;automation_id&quot;: 1,
@@ -3387,7 +3408,7 @@ access-control-allow-origin: *
             &quot;current_step&quot;: 1,
             &quot;stopped_at&quot;: null,
             &quot;stop_reason&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;,
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
             &quot;contact&quot;: {
                 &quot;id&quot;: 1,
                 &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
@@ -3401,15 +3422,15 @@ access-control-allow-origin: *
                     &quot;industry&quot;: &quot;SaaS&quot;,
                     &quot;employees&quot;: 40
                 },
-                &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+                &quot;updated_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
             }
         }
     ],
     &quot;meta&quot;: {
         &quot;page&quot;: 1,
         &quot;per_page&quot;: 50,
-        &quot;total&quot;: 1,
+        &quot;total&quot;: 2,
         &quot;last_page&quot;: 1
     }
 }</code>
@@ -3506,10 +3527,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="GETapi-enrollments"
-               value="active"
+               value=""
                data-component="query">
     <br>
-<p>One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. Example: <code>active</code></p>
+<p>One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. e.g. active.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>contact_id</code></b>&nbsp;&nbsp;
@@ -3518,10 +3539,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="contact_id"                data-endpoint="GETapi-enrollments"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Example: <code>1</code></p>
+<p>e.g. 1.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>automation_id</code></b>&nbsp;&nbsp;
@@ -3530,10 +3551,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="automation_id"                data-endpoint="GETapi-enrollments"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Example: <code>1</code></p>
+<p>e.g. 1.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>tag</code></b>&nbsp;&nbsp;
@@ -3542,10 +3563,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="tag"                data-endpoint="GETapi-enrollments"
-               value="seo-backlinks"
+               value=""
                data-component="query">
     <br>
-<p>Automation tag. Example: <code>seo-backlinks</code></p>
+<p>Automation tag. e.g. seo-backlinks.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>mailbox_id</code></b>&nbsp;&nbsp;
@@ -3554,10 +3575,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="mailbox_id"                data-endpoint="GETapi-enrollments"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Example: <code>1</code></p>
+<p>e.g. 1.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
@@ -3566,10 +3587,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="per_page"                data-endpoint="GETapi-enrollments"
-               value="50"
+               value=""
                data-component="query">
     <br>
-<p>Rows per page. Clamped to 200. Example: <code>50</code></p>
+<p>Rows per page. Clamped to 200. e.g. 50.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
@@ -3578,10 +3599,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="page"                data-endpoint="GETapi-enrollments"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Which page to return. Example: <code>1</code></p>
+<p>Which page to return. e.g. 1.</p>
             </div>
                 </form>
 
@@ -3953,7 +3974,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/messages?status=pending_approval&amp;contact_id=1&amp;enrollment_id=1&amp;mailbox_id=1&amp;since=2026-08-01&amp;per_page=50&amp;page=1" \
+    --get "https://outreach.seannocode.com/api/messages" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3963,18 +3984,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <pre><code class="language-javascript">const url = new URL(
     "https://outreach.seannocode.com/api/messages"
 );
-
-const params = {
-    "status": "pending_approval",
-    "contact_id": "1",
-    "enrollment_id": "1",
-    "mailbox_id": "1",
-    "since": "2026-08-01",
-    "per_page": "50",
-    "page": "1",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer YOUR_API_KEY",
@@ -4006,11 +4015,81 @@ access-control-allow-origin: *
 <code class="language-json" style="max-height: 300px;">{
     &quot;success&quot;: true,
     &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: [],
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;enrollment_id&quot;: 1,
+            &quot;contact_id&quot;: 1,
+            &quot;mailbox_id&quot;: 1,
+            &quot;mailbox_email&quot;: &quot;hello@outreach.example&quot;,
+            &quot;sequence_step_id&quot;: 1,
+            &quot;step_position&quot;: 1,
+            &quot;status&quot;: &quot;sent&quot;,
+            &quot;subject&quot;: &quot;Your guide on nursery irrigation&quot;,
+            &quot;body_text&quot;: &quot;Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex&quot;,
+            &quot;edited_by_user&quot;: false,
+            &quot;scheduled_at&quot;: null,
+            &quot;sent_at&quot;: &quot;2026-09-01T09:52:27+00:00&quot;,
+            &quot;approved_at&quot;: null,
+            &quot;rejected_at&quot;: null,
+            &quot;rejection_note&quot;: null,
+            &quot;error&quot;: null,
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+            &quot;contact&quot;: {
+                &quot;id&quot;: 1,
+                &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
+                &quot;name&quot;: &quot;Jane Doe&quot;,
+                &quot;first_name&quot;: &quot;Jane&quot;,
+                &quot;last_name&quot;: &quot;Doe&quot;,
+                &quot;company&quot;: &quot;Acme Ltd&quot;,
+                &quot;website&quot;: &quot;https://acme.example&quot;,
+                &quot;source&quot;: &quot;tube-trend-tool&quot;,
+                &quot;custom&quot;: {
+                    &quot;industry&quot;: &quot;SaaS&quot;,
+                    &quot;employees&quot;: 40
+                },
+                &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+                &quot;updated_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
+            }
+        },
+        {
+            &quot;id&quot;: 2,
+            &quot;enrollment_id&quot;: 2,
+            &quot;contact_id&quot;: 2,
+            &quot;mailbox_id&quot;: 1,
+            &quot;mailbox_email&quot;: &quot;hello@outreach.example&quot;,
+            &quot;sequence_step_id&quot;: 1,
+            &quot;step_position&quot;: 1,
+            &quot;status&quot;: &quot;pending_approval&quot;,
+            &quot;subject&quot;: &quot;Quick thought on your resources page&quot;,
+            &quot;body_text&quot;: &quot;Hi Sam,\n\nYour resources page is missing a section we could help fill.\n\nWorth a quick chat?\n\nAlex&quot;,
+            &quot;edited_by_user&quot;: false,
+            &quot;scheduled_at&quot;: null,
+            &quot;sent_at&quot;: null,
+            &quot;approved_at&quot;: null,
+            &quot;rejected_at&quot;: null,
+            &quot;rejection_note&quot;: null,
+            &quot;error&quot;: null,
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+            &quot;contact&quot;: {
+                &quot;id&quot;: 2,
+                &quot;email&quot;: &quot;sam.patel@globex.example&quot;,
+                &quot;name&quot;: &quot;Sam Patel&quot;,
+                &quot;first_name&quot;: &quot;Sam&quot;,
+                &quot;last_name&quot;: &quot;Patel&quot;,
+                &quot;company&quot;: &quot;Globex&quot;,
+                &quot;website&quot;: &quot;https://globex.example&quot;,
+                &quot;source&quot;: &quot;tube-trend-tool&quot;,
+                &quot;custom&quot;: [],
+                &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+                &quot;updated_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
+            }
+        }
+    ],
     &quot;meta&quot;: {
         &quot;page&quot;: 1,
         &quot;per_page&quot;: 50,
-        &quot;total&quot;: 0,
+        &quot;total&quot;: 2,
         &quot;last_page&quot;: 1
     }
 }</code>
@@ -4107,10 +4186,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="GETapi-messages"
-               value="pending_approval"
+               value=""
                data-component="query">
     <br>
-<p>One of drafting, pending_approval, approved, scheduled, sending, sent, draft_failed, rejected, cancelled, failed. Example: <code>pending_approval</code></p>
+<p>One of drafting, pending_approval, approved, scheduled, sending, sent, draft_failed, rejected, cancelled, failed. e.g. pending_approval.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>contact_id</code></b>&nbsp;&nbsp;
@@ -4119,10 +4198,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="contact_id"                data-endpoint="GETapi-messages"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Example: <code>1</code></p>
+<p>e.g. 1.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>enrollment_id</code></b>&nbsp;&nbsp;
@@ -4131,10 +4210,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="enrollment_id"                data-endpoint="GETapi-messages"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Example: <code>1</code></p>
+<p>e.g. 1.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>mailbox_id</code></b>&nbsp;&nbsp;
@@ -4143,10 +4222,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="mailbox_id"                data-endpoint="GETapi-messages"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Example: <code>1</code></p>
+<p>e.g. 1.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>since</code></b>&nbsp;&nbsp;
@@ -4155,10 +4234,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="since"                data-endpoint="GETapi-messages"
-               value="2026-08-01"
+               value=""
                data-component="query">
     <br>
-<p>ISO date. Only rows created on or after it. Example: <code>2026-08-01</code></p>
+<p>ISO date. Only rows created on or after it. e.g. 2026-08-01.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
@@ -4167,10 +4246,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="per_page"                data-endpoint="GETapi-messages"
-               value="50"
+               value=""
                data-component="query">
     <br>
-<p>Rows per page. Clamped to 200. Example: <code>50</code></p>
+<p>Rows per page. Clamped to 200. e.g. 50.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
@@ -4179,10 +4258,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="page"                data-endpoint="GETapi-messages"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Which page to return. Example: <code>1</code></p>
+<p>Which page to return. e.g. 1.</p>
             </div>
                 </form>
 
@@ -4254,12 +4333,12 @@ access-control-allow-origin: *
         &quot;body_text&quot;: &quot;Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex&quot;,
         &quot;edited_by_user&quot;: false,
         &quot;scheduled_at&quot;: null,
-        &quot;sent_at&quot;: &quot;2026-09-01T08:51:35+00:00&quot;,
+        &quot;sent_at&quot;: &quot;2026-09-01T09:52:27+00:00&quot;,
         &quot;approved_at&quot;: null,
         &quot;rejected_at&quot;: null,
         &quot;rejection_note&quot;: null,
         &quot;error&quot;: null,
-        &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;,
+        &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
         &quot;contact&quot;: {
             &quot;id&quot;: 1,
             &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
@@ -4273,8 +4352,8 @@ access-control-allow-origin: *
                 &quot;industry&quot;: &quot;SaaS&quot;,
                 &quot;employees&quot;: 40
             },
-            &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
         }
     }
 }</code>
@@ -4885,7 +4964,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/replies?classification=reply&amp;mailbox_id=1&amp;contact_id=1&amp;enrollment_id=1&amp;unread=1&amp;since=2026-08-01&amp;per_page=50&amp;page=1" \
+    --get "https://outreach.seannocode.com/api/replies" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -4895,19 +4974,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <pre><code class="language-javascript">const url = new URL(
     "https://outreach.seannocode.com/api/replies"
 );
-
-const params = {
-    "classification": "reply",
-    "mailbox_id": "1",
-    "contact_id": "1",
-    "enrollment_id": "1",
-    "unread": "1",
-    "since": "2026-08-01",
-    "per_page": "50",
-    "page": "1",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer YOUR_API_KEY",
@@ -4951,7 +5017,7 @@ access-control-allow-origin: *
             &quot;snippet&quot;: &quot;Happy to take a look, send it over.&quot;,
             &quot;body_text&quot;: &quot;Happy to take a look, send it over.\n\nJane&quot;,
             &quot;classification&quot;: &quot;reply&quot;,
-            &quot;received_at&quot;: &quot;2026-09-02T02:51:35+00:00&quot;,
+            &quot;received_at&quot;: &quot;2026-09-02T03:52:27+00:00&quot;,
             &quot;read_at&quot;: null,
             &quot;contact&quot;: {
                 &quot;id&quot;: 1,
@@ -4966,8 +5032,8 @@ access-control-allow-origin: *
                     &quot;industry&quot;: &quot;SaaS&quot;,
                     &quot;employees&quot;: 40
                 },
-                &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+                &quot;updated_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
             }
         }
     ],
@@ -5071,10 +5137,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="classification"                data-endpoint="GETapi-replies"
-               value="reply"
+               value=""
                data-component="query">
     <br>
-<p>One of reply, bounce, auto_reply, unsubscribe. Example: <code>reply</code></p>
+<p>One of reply, bounce, auto_reply, unsubscribe. e.g. reply.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>mailbox_id</code></b>&nbsp;&nbsp;
@@ -5083,10 +5149,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="mailbox_id"                data-endpoint="GETapi-replies"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Only replies to this mailbox. Example: <code>1</code></p>
+<p>Only replies to this mailbox. e.g. 1.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>contact_id</code></b>&nbsp;&nbsp;
@@ -5095,10 +5161,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="contact_id"                data-endpoint="GETapi-replies"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Only replies from this contact. Example: <code>1</code></p>
+<p>Only replies from this contact. e.g. 1.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>enrollment_id</code></b>&nbsp;&nbsp;
@@ -5107,10 +5173,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="enrollment_id"                data-endpoint="GETapi-replies"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Only replies on this enrollment. Example: <code>1</code></p>
+<p>Only replies on this enrollment. e.g. 1.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>unread</code></b>&nbsp;&nbsp;
@@ -5132,7 +5198,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Only replies nobody has opened yet. Example: <code>true</code></p>
+<p>Only replies nobody has opened yet. e.g. true.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>since</code></b>&nbsp;&nbsp;
@@ -5141,10 +5207,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="since"                data-endpoint="GETapi-replies"
-               value="2026-08-01"
+               value=""
                data-component="query">
     <br>
-<p>ISO date. Only replies received on or after it. Example: <code>2026-08-01</code></p>
+<p>ISO date. Only replies received on or after it. e.g. 2026-08-01.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
@@ -5153,10 +5219,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="per_page"                data-endpoint="GETapi-replies"
-               value="50"
+               value=""
                data-component="query">
     <br>
-<p>Rows per page. Clamped to 200. Example: <code>50</code></p>
+<p>Rows per page. Clamped to 200. e.g. 50.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
@@ -5165,10 +5231,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="page"                data-endpoint="GETapi-replies"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Which page to return. Example: <code>1</code></p>
+<p>Which page to return. e.g. 1.</p>
             </div>
                 </form>
 
@@ -5238,7 +5304,7 @@ access-control-allow-origin: *
         &quot;snippet&quot;: &quot;Happy to take a look, send it over.&quot;,
         &quot;body_text&quot;: &quot;Happy to take a look, send it over.\n\nJane&quot;,
         &quot;classification&quot;: &quot;reply&quot;,
-        &quot;received_at&quot;: &quot;2026-09-02T02:51:35+00:00&quot;,
+        &quot;received_at&quot;: &quot;2026-09-02T03:52:27+00:00&quot;,
         &quot;read_at&quot;: null,
         &quot;contact&quot;: {
             &quot;id&quot;: 1,
@@ -5253,8 +5319,8 @@ access-control-allow-origin: *
                 &quot;industry&quot;: &quot;SaaS&quot;,
                 &quot;employees&quot;: 40
             },
-            &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
         }
     }
 }</code>
@@ -5379,7 +5445,7 @@ people who already opted out and never learns why nothing happens.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/suppressions?reason=unsubscribed&amp;email=no.thanks%40globex.example&amp;since=2026-08-01&amp;per_page=50&amp;page=1" \
+    --get "https://outreach.seannocode.com/api/suppressions" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5389,16 +5455,6 @@ people who already opted out and never learns why nothing happens.</p>
     <pre><code class="language-javascript">const url = new URL(
     "https://outreach.seannocode.com/api/suppressions"
 );
-
-const params = {
-    "reason": "unsubscribed",
-    "email": "no.thanks@globex.example",
-    "since": "2026-08-01",
-    "per_page": "50",
-    "page": "1",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer YOUR_API_KEY",
@@ -5436,7 +5492,7 @@ access-control-allow-origin: *
             &quot;email&quot;: &quot;no.thanks@globex.example&quot;,
             &quot;reason&quot;: &quot;unsubscribed&quot;,
             &quot;source_reply_id&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
         }
     ],
     &quot;meta&quot;: {
@@ -5539,10 +5595,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="reason"                data-endpoint="GETapi-suppressions"
-               value="unsubscribed"
+               value=""
                data-component="query">
     <br>
-<p>One of unsubscribed, bounced, manual, complaint. Example: <code>unsubscribed</code></p>
+<p>One of unsubscribed, bounced, manual, complaint. e.g. unsubscribed.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
@@ -5551,10 +5607,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="GETapi-suppressions"
-               value="no.thanks@globex.example"
+               value=""
                data-component="query">
     <br>
-<p>Check one exact address. Example: <code>no.thanks@globex.example</code></p>
+<p>Check one exact address. e.g. no.thanks@globex.example.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>since</code></b>&nbsp;&nbsp;
@@ -5563,10 +5619,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="since"                data-endpoint="GETapi-suppressions"
-               value="2026-08-01"
+               value=""
                data-component="query">
     <br>
-<p>ISO date. Only addresses suppressed on or after it. Example: <code>2026-08-01</code></p>
+<p>ISO date. Only addresses suppressed on or after it. e.g. 2026-08-01.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
@@ -5575,10 +5631,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="per_page"                data-endpoint="GETapi-suppressions"
-               value="50"
+               value=""
                data-component="query">
     <br>
-<p>Rows per page. Clamped to 200. Example: <code>50</code></p>
+<p>Rows per page. Clamped to 200. e.g. 50.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
@@ -5587,10 +5643,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="page"                data-endpoint="GETapi-suppressions"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Which page to return. Example: <code>1</code></p>
+<p>Which page to return. e.g. 1.</p>
             </div>
                 </form>
 
@@ -5920,7 +5976,7 @@ Google's own consent screen, in the dashboard.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/mailboxes?status=active&amp;per_page=50&amp;page=1" \
+    --get "https://outreach.seannocode.com/api/mailboxes" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5930,14 +5986,6 @@ Google's own consent screen, in the dashboard.</p>
     <pre><code class="language-javascript">const url = new URL(
     "https://outreach.seannocode.com/api/mailboxes"
 );
-
-const params = {
-    "status": "active",
-    "per_page": "50",
-    "page": "1",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer YOUR_API_KEY",
@@ -5991,7 +6039,7 @@ access-control-allow-origin: *
                 &quot;bounce_rate&quot;: 0.0119,
                 &quot;reply_rate&quot;: 0.0714
             },
-            &quot;last_polled_at&quot;: &quot;2026-09-02T08:49:35+00:00&quot;,
+            &quot;last_polled_at&quot;: &quot;2026-09-02T09:50:27+00:00&quot;,
             &quot;last_send_error&quot;: null
         }
     ],
@@ -6095,10 +6143,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="GETapi-mailboxes"
-               value="active"
+               value=""
                data-component="query">
     <br>
-<p>One of active, paused, disconnected, error. Example: <code>active</code></p>
+<p>One of active, paused, disconnected, error. e.g. active.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
@@ -6107,10 +6155,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="per_page"                data-endpoint="GETapi-mailboxes"
-               value="50"
+               value=""
                data-component="query">
     <br>
-<p>Rows per page. Clamped to 200. Example: <code>50</code></p>
+<p>Rows per page. Clamped to 200. e.g. 50.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
@@ -6119,10 +6167,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="page"                data-endpoint="GETapi-mailboxes"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Which page to return. Example: <code>1</code></p>
+<p>Which page to return. e.g. 1.</p>
             </div>
                 </form>
 
@@ -6202,7 +6250,7 @@ access-control-allow-origin: *
             &quot;bounce_rate&quot;: 0.0119,
             &quot;reply_rate&quot;: 0.0714
         },
-        &quot;last_polled_at&quot;: &quot;2026-09-02T08:49:35+00:00&quot;,
+        &quot;last_polled_at&quot;: &quot;2026-09-02T09:50:27+00:00&quot;,
         &quot;last_send_error&quot;: null
     }
 }</code>
@@ -6633,7 +6681,7 @@ mailbox rather than creating a second one.</p>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"reason\": \"Rotating the sending account\"
+    \"reason\": \"Reason for disconnecting\"
 }"
 </code></pre></div>
 
@@ -6650,7 +6698,7 @@ const headers = {
 };
 
 let body = {
-    "reason": "Rotating the sending account"
+    "reason": "Reason for disconnecting"
 };
 
 fetch(url, {
@@ -6767,10 +6815,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="reason"                data-endpoint="POSTapi-mailboxes--mailbox--disconnect"
-               value="Rotating the sending account"
+               value="Reason for disconnecting"
                data-component="body">
     <br>
-<p>Recorded against the mailbox and in the activity log. Example: <code>Rotating the sending account</code></p>
+<p>Recorded against the mailbox and in the activity log. Example: <code>Reason for disconnecting</code></p>
         </div>
         </form>
 
@@ -6795,7 +6843,7 @@ because 0 would read as "nobody replied" instead of "no data yet".</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/stats?since=2026-08-01" \
+    --get "https://outreach.seannocode.com/api/stats" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6805,12 +6853,6 @@ because 0 would read as "nobody replied" instead of "no data yet".</p>
     <pre><code class="language-javascript">const url = new URL(
     "https://outreach.seannocode.com/api/stats"
 );
-
-const params = {
-    "since": "2026-08-01",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer YOUR_API_KEY",
@@ -6843,7 +6885,7 @@ access-control-allow-origin: *
     &quot;success&quot;: true,
     &quot;message&quot;: &quot;ok&quot;,
     &quot;data&quot;: {
-        &quot;window_since&quot;: &quot;2026-08-01&quot;,
+        &quot;window_since&quot;: null,
         &quot;contacts&quot;: {
             &quot;total&quot;: 2,
             &quot;suppressed&quot;: 1
@@ -6967,10 +7009,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="since"                data-endpoint="GETapi-stats"
-               value="2026-08-01"
+               value=""
                data-component="query">
     <br>
-<p>ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed. Example: <code>2026-08-01</code></p>
+<p>ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed. e.g. 2026-08-01.</p>
             </div>
                 </form>
 
@@ -6993,7 +7035,7 @@ polling errors. This is what to watch for problems.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/activity?level=error&amp;event=send_failed&amp;retryable=1&amp;since=2026-08-01&amp;per_page=50&amp;page=1" \
+    --get "https://outreach.seannocode.com/api/activity" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -7003,17 +7045,6 @@ polling errors. This is what to watch for problems.</p>
     <pre><code class="language-javascript">const url = new URL(
     "https://outreach.seannocode.com/api/activity"
 );
-
-const params = {
-    "level": "error",
-    "event": "send_failed",
-    "retryable": "1",
-    "since": "2026-08-01",
-    "per_page": "50",
-    "page": "1",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer YOUR_API_KEY",
@@ -7056,13 +7087,25 @@ access-control-allow-origin: *
             &quot;subject_id&quot;: null,
             &quot;retryable&quot;: true,
             &quot;retried_at&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-02T08:51:35+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
+        },
+        {
+            &quot;id&quot;: 1,
+            &quot;event&quot;: &quot;email_sent&quot;,
+            &quot;level&quot;: &quot;info&quot;,
+            &quot;message&quot;: &quot;Sent to jane.doe@acme.example&quot;,
+            &quot;context&quot;: [],
+            &quot;subject_type&quot;: &quot;App\\Models\\Message&quot;,
+            &quot;subject_id&quot;: 1,
+            &quot;retryable&quot;: false,
+            &quot;retried_at&quot;: null,
+            &quot;created_at&quot;: &quot;2026-09-02T09:52:27+00:00&quot;
         }
     ],
     &quot;meta&quot;: {
         &quot;page&quot;: 1,
         &quot;per_page&quot;: 50,
-        &quot;total&quot;: 1,
+        &quot;total&quot;: 2,
         &quot;last_page&quot;: 1
     }
 }</code>
@@ -7159,10 +7202,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="level"                data-endpoint="GETapi-activity"
-               value="error"
+               value=""
                data-component="query">
     <br>
-<p>One of info, warning, error. Example: <code>error</code></p>
+<p>One of info, warning, error. e.g. error.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>event</code></b>&nbsp;&nbsp;
@@ -7171,10 +7214,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="event"                data-endpoint="GETapi-activity"
-               value="send_failed"
+               value=""
                data-component="query">
     <br>
-<p>Exact event name. Example: <code>send_failed</code></p>
+<p>Exact event name. e.g. send_failed.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>retryable</code></b>&nbsp;&nbsp;
@@ -7196,7 +7239,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Only entries the system can retry. Example: <code>true</code></p>
+<p>Only entries the system can retry. e.g. true.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>since</code></b>&nbsp;&nbsp;
@@ -7205,10 +7248,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="since"                data-endpoint="GETapi-activity"
-               value="2026-08-01"
+               value=""
                data-component="query">
     <br>
-<p>ISO date. Only entries logged on or after it. Example: <code>2026-08-01</code></p>
+<p>ISO date. Only entries logged on or after it. e.g. 2026-08-01.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
@@ -7217,10 +7260,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="per_page"                data-endpoint="GETapi-activity"
-               value="50"
+               value=""
                data-component="query">
     <br>
-<p>Rows per page. Clamped to 200. Example: <code>50</code></p>
+<p>Rows per page. Clamped to 200. e.g. 50.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
@@ -7229,10 +7272,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="page"                data-endpoint="GETapi-activity"
-               value="1"
+               value=""
                data-component="query">
     <br>
-<p>Which page to return. Example: <code>1</code></p>
+<p>Which page to return. e.g. 1.</p>
             </div>
                 </form>
 

@@ -27,7 +27,7 @@ class StatsController extends ApiController
      * A rate comes back as null rather than 0 when nothing has been sent,
      * because 0 would read as "nobody replied" instead of "no data yet".
      *
-     * @queryParam since string ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed. Example: 2026-08-01
+     * @queryParam since string ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed. e.g. 2026-08-01. No-example
      */
     public function index(Request $request): JsonResponse
     {

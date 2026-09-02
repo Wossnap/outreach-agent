@@ -20,15 +20,15 @@ class ContactController extends ApiController
      *
      * Newest first.
      *
-     * @queryParam email string Exact address. Example: jane.doe@acme.example
-     * @queryParam company string Partial match on company. Example: Acme
-     * @queryParam q string Partial match on email, either name, or company. Example: acme
-     * @queryParam tag string Only contacts enrolled in this automation. Example: seo-backlinks
-     * @queryParam status string Only contacts with an enrollment in this state. Example: active
-     * @queryParam suppressed boolean true for opted-out contacts only, false to exclude them. Example: true
-     * @queryParam since string ISO date. Only rows created on or after it. Example: 2026-08-01
-     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
-     * @queryParam page integer Which page to return. Example: 1
+     * @queryParam email string Exact address. e.g. jane.doe@acme.example. No-example
+     * @queryParam company string Partial match on company. e.g. Acme. No-example
+     * @queryParam q string Partial match on email, either name, or company. e.g. acme. No-example
+     * @queryParam tag string Only contacts enrolled in this automation. e.g. seo-backlinks. No-example
+     * @queryParam status string Only contacts with an enrollment in this state. e.g. active. No-example
+     * @queryParam suppressed boolean true for opted-out contacts only, false to exclude them. e.g. true. No-example
+     * @queryParam since string ISO date. Only rows created on or after it. e.g. 2026-08-01. No-example
+     * @queryParam per_page integer Rows per page. Clamped to 200. e.g. 50. No-example
+     * @queryParam page integer Which page to return. e.g. 1. No-example
      */
     public function index(Request $request): JsonResponse
     {

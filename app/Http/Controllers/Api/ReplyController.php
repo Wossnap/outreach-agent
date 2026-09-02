@@ -19,14 +19,14 @@ class ReplyController extends ApiController
      *
      * Newest first.
      *
-     * @queryParam classification string One of reply, bounce, auto_reply, unsubscribe. Example: reply
-     * @queryParam mailbox_id integer Only replies to this mailbox. Example: 1
-     * @queryParam contact_id integer Only replies from this contact. Example: 1
-     * @queryParam enrollment_id integer Only replies on this enrollment. Example: 1
-     * @queryParam unread boolean Only replies nobody has opened yet. Example: true
-     * @queryParam since string ISO date. Only replies received on or after it. Example: 2026-08-01
-     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
-     * @queryParam page integer Which page to return. Example: 1
+     * @queryParam classification string One of reply, bounce, auto_reply, unsubscribe. e.g. reply. No-example
+     * @queryParam mailbox_id integer Only replies to this mailbox. e.g. 1. No-example
+     * @queryParam contact_id integer Only replies from this contact. e.g. 1. No-example
+     * @queryParam enrollment_id integer Only replies on this enrollment. e.g. 1. No-example
+     * @queryParam unread boolean Only replies nobody has opened yet. e.g. true. No-example
+     * @queryParam since string ISO date. Only replies received on or after it. e.g. 2026-08-01. No-example
+     * @queryParam per_page integer Rows per page. Clamped to 200. e.g. 50. No-example
+     * @queryParam page integer Which page to return. e.g. 1. No-example
      */
     public function index(Request $request): JsonResponse
     {

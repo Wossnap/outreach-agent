@@ -21,13 +21,13 @@ class MessageController extends ApiController
      *
      * Oldest first, the same order the approval queue shows.
      *
-     * @queryParam status string One of drafting, pending_approval, approved, scheduled, sending, sent, draft_failed, rejected, cancelled, failed. Example: pending_approval
-     * @queryParam contact_id integer Example: 1
-     * @queryParam enrollment_id integer Example: 1
-     * @queryParam mailbox_id integer Example: 1
-     * @queryParam since string ISO date. Only rows created on or after it. Example: 2026-08-01
-     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
-     * @queryParam page integer Which page to return. Example: 1
+     * @queryParam status string One of drafting, pending_approval, approved, scheduled, sending, sent, draft_failed, rejected, cancelled, failed. e.g. pending_approval. No-example
+     * @queryParam contact_id integer e.g. 1. No-example
+     * @queryParam enrollment_id integer e.g. 1. No-example
+     * @queryParam mailbox_id integer e.g. 1. No-example
+     * @queryParam since string ISO date. Only rows created on or after it. e.g. 2026-08-01. No-example
+     * @queryParam per_page integer Rows per page. Clamped to 200. e.g. 50. No-example
+     * @queryParam page integer Which page to return. e.g. 1. No-example
      */
     public function index(Request $request): JsonResponse
     {

@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Outreach Agent API",
-        "_postman_id": "d5467564-0f97-4e35-ac3b-6cec80a61166",
+        "_postman_id": "fc3f6fcc-2990-4996-a032-bf28ac02172d",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -69,60 +69,60 @@
                             "query": [
                                 {
                                     "key": "email",
-                                    "value": "jane.doe@acme.example",
-                                    "description": "Exact address.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Exact address. e.g. jane.doe@acme.example.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "company",
-                                    "value": "Acme",
-                                    "description": "Partial match on company.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Partial match on company. e.g. Acme.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "q",
-                                    "value": "acme",
-                                    "description": "Partial match on email, either name, or company.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Partial match on email, either name, or company. e.g. acme.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "tag",
-                                    "value": "seo-backlinks",
-                                    "description": "Only contacts enrolled in this automation.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Only contacts enrolled in this automation. e.g. seo-backlinks.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "status",
-                                    "value": "active",
-                                    "description": "Only contacts with an enrollment in this state.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Only contacts with an enrollment in this state. e.g. active.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "suppressed",
-                                    "value": "1",
-                                    "description": "true for opted-out contacts only, false to exclude them.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "true for opted-out contacts only, false to exclude them. e.g. true.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "since",
-                                    "value": "2026-08-01",
-                                    "description": "ISO date. Only rows created on or after it.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "ISO date. Only rows created on or after it. e.g. 2026-08-01.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "per_page",
-                                    "value": "50",
-                                    "description": "Rows per page. Clamped to 200.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Rows per page. Clamped to 200. e.g. 50.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "page",
-                                    "value": "1",
-                                    "description": "Which page to return.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Which page to return. e.g. 1.",
+                                    "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/contacts?email=jane.doe%40acme.example&company=Acme&q=acme&tag=seo-backlinks&status=active&suppressed=1&since=2026-08-01&per_page=50&page=1"
+                            "raw": "{{baseUrl}}\/api\/contacts?email=&company=&q=&tag=&status=&suppressed=&since=&per_page=&page="
                         },
                         "method": "GET",
                         "header": [
@@ -155,7 +155,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[],\"meta\":{\"page\":1,\"per_page\":50,\"total\":0,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"email\":\"sam.patel@globex.example\",\"name\":\"Sam Patel\",\"first_name\":\"Sam\",\"last_name\":\"Patel\",\"company\":\"Globex\",\"website\":\"https:\\\/\\\/globex.example\",\"source\":\"tube-trend-tool\",\"custom\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"},{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -208,7 +208,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"suppressed\":false,\"created_at\":\"2026-09-02T08:51:35+00:00\",\"updated_at\":\"2026-09-02T08:51:35+00:00\",\"enrollments\":[{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-02T08:51:35+00:00\"}],\"messages\":[{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-01T08:51:35+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T08:51:35+00:00\"}],\"replies\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-02T02:51:35+00:00\",\"read_at\":null}]}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"suppressed\":false,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\",\"enrollments\":[{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\"}],\"messages\":[{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-01T09:52:27+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\"}],\"replies\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-02T03:52:27+00:00\",\"read_at\":null}]}}",
                             "name": ""
                         }
                     ]
@@ -256,30 +256,30 @@
                             "query": [
                                 {
                                     "key": "active",
-                                    "value": "1",
-                                    "description": "Only switched-on or switched-off automations.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Only switched-on or switched-off automations. e.g. true.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "tag",
-                                    "value": "seo-backlinks",
-                                    "description": "Exact tag.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Exact tag. e.g. seo-backlinks.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "per_page",
-                                    "value": "50",
-                                    "description": "Rows per page. Clamped to 200.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Rows per page. Clamped to 200. e.g. 50.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "page",
-                                    "value": "1",
-                                    "description": "Which page to return.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Which page to return. e.g. 1.",
+                                    "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/automations?active=1&tag=seo-backlinks&per_page=50&page=1"
+                            "raw": "{{baseUrl}}\/api\/automations?active=&tag=&per_page=&page="
                         },
                         "method": "GET",
                         "header": [
@@ -312,7 +312,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-02T08:51:35+00:00\",\"updated_at\":\"2026-09-02T08:51:35+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T08:51:35+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T08:51:35+00:00\"}]}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\"}]}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -365,7 +365,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-02T08:51:35+00:00\",\"updated_at\":\"2026-09-02T08:51:35+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T08:51:35+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T08:51:35+00:00\"}]}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\"}]}}",
                             "name": ""
                         }
                     ]
@@ -418,7 +418,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T08:51:35+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T08:51:35+00:00\"}]}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\"}]}",
                             "name": ""
                         }
                     ]
@@ -712,48 +712,48 @@
                             "query": [
                                 {
                                     "key": "status",
-                                    "value": "active",
-                                    "description": "One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. e.g. active.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "contact_id",
-                                    "value": "1",
-                                    "description": "",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "e.g. 1.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "automation_id",
-                                    "value": "1",
-                                    "description": "",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "e.g. 1.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "tag",
-                                    "value": "seo-backlinks",
-                                    "description": "Automation tag.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Automation tag. e.g. seo-backlinks.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "mailbox_id",
-                                    "value": "1",
-                                    "description": "",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "e.g. 1.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "per_page",
-                                    "value": "50",
-                                    "description": "Rows per page. Clamped to 200.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Rows per page. Clamped to 200. e.g. 50.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "page",
-                                    "value": "1",
-                                    "description": "Which page to return.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Which page to return. e.g. 1.",
+                                    "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/enrollments?status=active&contact_id=1&automation_id=1&tag=seo-backlinks&mailbox_id=1&per_page=50&page=1"
+                            "raw": "{{baseUrl}}\/api\/enrollments?status=&contact_id=&automation_id=&tag=&mailbox_id=&per_page=&page="
                         },
                         "method": "GET",
                         "header": [
@@ -786,7 +786,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-02T08:51:35+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T08:51:35+00:00\",\"updated_at\":\"2026-09-02T08:51:35+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"contact_id\":2,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":0,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"contact\":{\"id\":2,\"email\":\"sam.patel@globex.example\",\"name\":\"Sam Patel\",\"first_name\":\"Sam\",\"last_name\":\"Patel\",\"company\":\"Globex\",\"website\":\"https:\\\/\\\/globex.example\",\"source\":\"tube-trend-tool\",\"custom\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}},{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -870,48 +870,48 @@
                             "query": [
                                 {
                                     "key": "status",
-                                    "value": "pending_approval",
-                                    "description": "One of drafting, pending_approval, approved, scheduled, sending, sent, draft_failed, rejected, cancelled, failed.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "One of drafting, pending_approval, approved, scheduled, sending, sent, draft_failed, rejected, cancelled, failed. e.g. pending_approval.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "contact_id",
-                                    "value": "1",
-                                    "description": "",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "e.g. 1.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "enrollment_id",
-                                    "value": "1",
-                                    "description": "",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "e.g. 1.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "mailbox_id",
-                                    "value": "1",
-                                    "description": "",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "e.g. 1.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "since",
-                                    "value": "2026-08-01",
-                                    "description": "ISO date. Only rows created on or after it.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "ISO date. Only rows created on or after it. e.g. 2026-08-01.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "per_page",
-                                    "value": "50",
-                                    "description": "Rows per page. Clamped to 200.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Rows per page. Clamped to 200. e.g. 50.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "page",
-                                    "value": "1",
-                                    "description": "Which page to return.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Which page to return. e.g. 1.",
+                                    "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/messages?status=pending_approval&contact_id=1&enrollment_id=1&mailbox_id=1&since=2026-08-01&per_page=50&page=1"
+                            "raw": "{{baseUrl}}\/api\/messages?status=&contact_id=&enrollment_id=&mailbox_id=&since=&per_page=&page="
                         },
                         "method": "GET",
                         "header": [
@@ -944,7 +944,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[],\"meta\":{\"page\":1,\"per_page\":50,\"total\":0,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-01T09:52:27+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}},{\"id\":2,\"enrollment_id\":2,\"contact_id\":2,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"pending_approval\",\"subject\":\"Quick thought on your resources page\",\"body_text\":\"Hi Sam,\\n\\nYour resources page is missing a section we could help fill.\\n\\nWorth a quick chat?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":null,\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"contact\":{\"id\":2,\"email\":\"sam.patel@globex.example\",\"name\":\"Sam Patel\",\"first_name\":\"Sam\",\"last_name\":\"Patel\",\"company\":\"Globex\",\"website\":\"https:\\\/\\\/globex.example\",\"source\":\"tube-trend-tool\",\"custom\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -997,7 +997,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-01T08:51:35+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T08:51:35+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T08:51:35+00:00\",\"updated_at\":\"2026-09-02T08:51:35+00:00\"}}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-01T09:52:27+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}}}",
                             "name": ""
                         }
                     ]
@@ -1122,54 +1122,54 @@
                             "query": [
                                 {
                                     "key": "classification",
-                                    "value": "reply",
-                                    "description": "One of reply, bounce, auto_reply, unsubscribe.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "One of reply, bounce, auto_reply, unsubscribe. e.g. reply.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "mailbox_id",
-                                    "value": "1",
-                                    "description": "Only replies to this mailbox.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Only replies to this mailbox. e.g. 1.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "contact_id",
-                                    "value": "1",
-                                    "description": "Only replies from this contact.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Only replies from this contact. e.g. 1.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "enrollment_id",
-                                    "value": "1",
-                                    "description": "Only replies on this enrollment.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Only replies on this enrollment. e.g. 1.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "unread",
-                                    "value": "1",
-                                    "description": "Only replies nobody has opened yet.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Only replies nobody has opened yet. e.g. true.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "since",
-                                    "value": "2026-08-01",
-                                    "description": "ISO date. Only replies received on or after it.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "ISO date. Only replies received on or after it. e.g. 2026-08-01.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "per_page",
-                                    "value": "50",
-                                    "description": "Rows per page. Clamped to 200.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Rows per page. Clamped to 200. e.g. 50.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "page",
-                                    "value": "1",
-                                    "description": "Which page to return.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Which page to return. e.g. 1.",
+                                    "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/replies?classification=reply&mailbox_id=1&contact_id=1&enrollment_id=1&unread=1&since=2026-08-01&per_page=50&page=1"
+                            "raw": "{{baseUrl}}\/api\/replies?classification=&mailbox_id=&contact_id=&enrollment_id=&unread=&since=&per_page=&page="
                         },
                         "method": "GET",
                         "header": [
@@ -1202,7 +1202,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-02T02:51:35+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T08:51:35+00:00\",\"updated_at\":\"2026-09-02T08:51:35+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-02T03:52:27+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -1255,7 +1255,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-02T02:51:35+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T08:51:35+00:00\",\"updated_at\":\"2026-09-02T08:51:35+00:00\"}}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-02T03:52:27+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}}}",
                             "name": ""
                         }
                     ]
@@ -1275,36 +1275,36 @@
                             "query": [
                                 {
                                     "key": "reason",
-                                    "value": "unsubscribed",
-                                    "description": "One of unsubscribed, bounced, manual, complaint.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "One of unsubscribed, bounced, manual, complaint. e.g. unsubscribed.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "email",
-                                    "value": "no.thanks@globex.example",
-                                    "description": "Check one exact address.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Check one exact address. e.g. no.thanks@globex.example.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "since",
-                                    "value": "2026-08-01",
-                                    "description": "ISO date. Only addresses suppressed on or after it.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "ISO date. Only addresses suppressed on or after it. e.g. 2026-08-01.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "per_page",
-                                    "value": "50",
-                                    "description": "Rows per page. Clamped to 200.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Rows per page. Clamped to 200. e.g. 50.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "page",
-                                    "value": "1",
-                                    "description": "Which page to return.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Which page to return. e.g. 1.",
+                                    "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/suppressions?reason=unsubscribed&email=no.thanks%40globex.example&since=2026-08-01&per_page=50&page=1"
+                            "raw": "{{baseUrl}}\/api\/suppressions?reason=&email=&since=&per_page=&page="
                         },
                         "method": "GET",
                         "header": [
@@ -1337,7 +1337,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"no.thanks@globex.example\",\"reason\":\"unsubscribed\",\"source_reply_id\":null,\"created_at\":\"2026-09-02T08:51:35+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"no.thanks@globex.example\",\"reason\":\"unsubscribed\",\"source_reply_id\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -1418,24 +1418,24 @@
                             "query": [
                                 {
                                     "key": "status",
-                                    "value": "active",
-                                    "description": "One of active, paused, disconnected, error.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "One of active, paused, disconnected, error. e.g. active.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "per_page",
-                                    "value": "50",
-                                    "description": "Rows per page. Clamped to 200.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Rows per page. Clamped to 200. e.g. 50.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "page",
-                                    "value": "1",
-                                    "description": "Which page to return.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Which page to return. e.g. 1.",
+                                    "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/mailboxes?status=active&per_page=50&page=1"
+                            "raw": "{{baseUrl}}\/api\/mailboxes?status=&per_page=&page="
                         },
                         "method": "GET",
                         "header": [
@@ -1468,7 +1468,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-02T08:49:35+00:00\",\"last_send_error\":null}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-02T09:50:27+00:00\",\"last_send_error\":null}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -1521,7 +1521,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-02T08:49:35+00:00\",\"last_send_error\":null}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-02T09:50:27+00:00\",\"last_send_error\":null}}",
                             "name": ""
                         }
                     ]
@@ -1625,7 +1625,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"reason\":\"Rotating the sending account\"}"
+                            "raw": "{\"reason\":\"Reason for disconnecting\"}"
                         },
                         "description": "Tells Google to forget this application, discards the stored\ncredentials, and stops the mailbox sending. Stronger than pausing: a\npaused mailbox keeps its connection and resumes with one call, whereas a\ndisconnected one needs a person to sign in at Google again.\n\nAnything queued to send through it is released and picked up by another\nmailbox. Emails already handed to Gmail still go out.\n\nThe history is kept, so reconnecting the same address reuses this\nmailbox rather than creating a second one."
                     },
@@ -1646,12 +1646,12 @@
                             "query": [
                                 {
                                     "key": "since",
-                                    "value": "2026-08-01",
-                                    "description": "ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed. e.g. 2026-08-01.",
+                                    "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/stats?since=2026-08-01"
+                            "raw": "{{baseUrl}}\/api\/stats?since="
                         },
                         "method": "GET",
                         "header": [
@@ -1684,7 +1684,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"window_since\":\"2026-08-01\",\"contacts\":{\"total\":2,\"suppressed\":1},\"enrollments\":{\"active\":2,\"total\":2},\"queue\":{\"pending_approval\":1,\"scheduled\":0,\"draft_failed\":0,\"send_failed\":0},\"sending\":{\"sent\":1,\"replies\":1,\"bounces\":0,\"unsubscribes\":0,\"reply_rate\":1,\"bounce_rate\":0},\"mailboxes\":{\"total\":1,\"active\":1,\"paused\":0,\"disconnected\":0}}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"window_since\":null,\"contacts\":{\"total\":2,\"suppressed\":1},\"enrollments\":{\"active\":2,\"total\":2},\"queue\":{\"pending_approval\":1,\"scheduled\":0,\"draft_failed\":0,\"send_failed\":0},\"sending\":{\"sent\":1,\"replies\":1,\"bounces\":0,\"unsubscribes\":0,\"reply_rate\":1,\"bounce_rate\":0},\"mailboxes\":{\"total\":1,\"active\":1,\"paused\":0,\"disconnected\":0}}}",
                             "name": ""
                         }
                     ]
@@ -1704,42 +1704,42 @@
                             "query": [
                                 {
                                     "key": "level",
-                                    "value": "error",
-                                    "description": "One of info, warning, error.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "One of info, warning, error. e.g. error.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "event",
-                                    "value": "send_failed",
-                                    "description": "Exact event name.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Exact event name. e.g. send_failed.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "retryable",
-                                    "value": "1",
-                                    "description": "Only entries the system can retry.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Only entries the system can retry. e.g. true.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "since",
-                                    "value": "2026-08-01",
-                                    "description": "ISO date. Only entries logged on or after it.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "ISO date. Only entries logged on or after it. e.g. 2026-08-01.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "per_page",
-                                    "value": "50",
-                                    "description": "Rows per page. Clamped to 200.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Rows per page. Clamped to 200. e.g. 50.",
+                                    "disabled": true
                                 },
                                 {
                                     "key": "page",
-                                    "value": "1",
-                                    "description": "Which page to return.",
-                                    "disabled": false
+                                    "value": "",
+                                    "description": "Which page to return. e.g. 1.",
+                                    "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/activity?level=error&event=send_failed&retryable=1&since=2026-08-01&per_page=50&page=1"
+                            "raw": "{{baseUrl}}\/api\/activity?level=&event=&retryable=&since=&per_page=&page="
                         },
                         "method": "GET",
                         "header": [
@@ -1772,7 +1772,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"event\":\"send_failed\",\"level\":\"error\",\"message\":\"Gmail returned 429 for hello@outreach.example\",\"context\":[],\"subject_type\":null,\"subject_id\":null,\"retryable\":true,\"retried_at\":null,\"created_at\":\"2026-09-02T08:51:35+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"event\":\"send_failed\",\"level\":\"error\",\"message\":\"Gmail returned 429 for hello@outreach.example\",\"context\":[],\"subject_type\":null,\"subject_id\":null,\"retryable\":true,\"retried_at\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\"},{\"id\":1,\"event\":\"email_sent\",\"level\":\"info\",\"message\":\"Sent to jane.doe@acme.example\",\"context\":[],\"subject_type\":\"App\\\\Models\\\\Message\",\"subject_id\":1,\"retryable\":false,\"retried_at\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
                             "name": ""
                         }
                     ]

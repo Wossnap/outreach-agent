@@ -25,11 +25,11 @@ class SuppressionController extends ApiController
      * suppressed address, so a caller that does not check keeps offering
      * people who already opted out and never learns why nothing happens.
      *
-     * @queryParam reason string One of unsubscribed, bounced, manual, complaint. Example: unsubscribed
-     * @queryParam email string Check one exact address. Example: no.thanks@globex.example
-     * @queryParam since string ISO date. Only addresses suppressed on or after it. Example: 2026-08-01
-     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
-     * @queryParam page integer Which page to return. Example: 1
+     * @queryParam reason string One of unsubscribed, bounced, manual, complaint. e.g. unsubscribed. No-example
+     * @queryParam email string Check one exact address. e.g. no.thanks@globex.example. No-example
+     * @queryParam since string ISO date. Only addresses suppressed on or after it. e.g. 2026-08-01. No-example
+     * @queryParam per_page integer Rows per page. Clamped to 200. e.g. 50. No-example
+     * @queryParam page integer Which page to return. e.g. 1. No-example
      */
     public function index(Request $request): JsonResponse
     {

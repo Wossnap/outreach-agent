@@ -24,9 +24,9 @@ class MailboxController extends ApiController
      * There is no endpoint to add one: connecting a mailbox needs a human at
      * Google's own consent screen, in the dashboard.
      *
-     * @queryParam status string One of active, paused, disconnected, error. Example: active
-     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
-     * @queryParam page integer Which page to return. Example: 1
+     * @queryParam status string One of active, paused, disconnected, error. e.g. active. No-example
+     * @queryParam per_page integer Rows per page. Clamped to 200. e.g. 50. No-example
+     * @queryParam page integer Which page to return. e.g. 1. No-example
      */
     public function index(Request $request): JsonResponse
     {
@@ -122,7 +122,11 @@ class MailboxController extends ApiController
      *
      * @urlParam mailbox integer required Example: 1
      *
-     * @bodyParam reason string Recorded against the mailbox and in the activity log. Example: Rotating the sending account
+     * The example below is deliberately a placeholder rather than a plausible
+     * reason: this request signs a real account out, and a ready-to-send body
+     * makes that one careless click away.
+     *
+     * @bodyParam reason string Recorded against the mailbox and in the activity log. Example: Reason for disconnecting
      */
     public function disconnect(Request $request, int $mailbox, MailboxDisconnector $disconnector): JsonResponse
     {

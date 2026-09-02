@@ -90,93 +90,93 @@ paths:
         -
           in: query
           name: email
-          description: 'Exact address.'
-          example: jane.doe@acme.example
+          description: 'Exact address. e.g. jane.doe@acme.example.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'Exact address.'
-            example: jane.doe@acme.example
+            description: 'Exact address. e.g. jane.doe@acme.example.'
+            example: null
         -
           in: query
           name: company
-          description: 'Partial match on company.'
-          example: Acme
+          description: 'Partial match on company. e.g. Acme.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'Partial match on company.'
-            example: Acme
+            description: 'Partial match on company. e.g. Acme.'
+            example: null
         -
           in: query
           name: q
-          description: 'Partial match on email, either name, or company.'
-          example: acme
+          description: 'Partial match on email, either name, or company. e.g. acme.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'Partial match on email, either name, or company.'
-            example: acme
+            description: 'Partial match on email, either name, or company. e.g. acme.'
+            example: null
         -
           in: query
           name: tag
-          description: 'Only contacts enrolled in this automation.'
-          example: seo-backlinks
+          description: 'Only contacts enrolled in this automation. e.g. seo-backlinks.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'Only contacts enrolled in this automation.'
-            example: seo-backlinks
+            description: 'Only contacts enrolled in this automation. e.g. seo-backlinks.'
+            example: null
         -
           in: query
           name: status
-          description: 'Only contacts with an enrollment in this state.'
-          example: active
+          description: 'Only contacts with an enrollment in this state. e.g. active.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'Only contacts with an enrollment in this state.'
-            example: active
+            description: 'Only contacts with an enrollment in this state. e.g. active.'
+            example: null
         -
           in: query
           name: suppressed
-          description: 'true for opted-out contacts only, false to exclude them.'
-          example: true
+          description: 'true for opted-out contacts only, false to exclude them. e.g. true.'
+          example: null
           required: false
           schema:
             type: boolean
-            description: 'true for opted-out contacts only, false to exclude them.'
-            example: true
+            description: 'true for opted-out contacts only, false to exclude them. e.g. true.'
+            example: null
         -
           in: query
           name: since
-          description: 'ISO date. Only rows created on or after it.'
-          example: '2026-08-01'
+          description: 'ISO date. Only rows created on or after it. e.g. 2026-08-01.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'ISO date. Only rows created on or after it.'
-            example: '2026-08-01'
+            description: 'ISO date. Only rows created on or after it. e.g. 2026-08-01.'
+            example: null
         -
           in: query
           name: per_page
-          description: 'Rows per page. Clamped to 200.'
-          example: 50
+          description: 'Rows per page. Clamped to 200. e.g. 50.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Rows per page. Clamped to 200.'
-            example: 50
+            description: 'Rows per page. Clamped to 200. e.g. 50.'
+            example: null
         -
           in: query
           name: page
-          description: 'Which page to return.'
-          example: 1
+          description: 'Which page to return. e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Which page to return.'
-            example: 1
+            description: 'Which page to return. e.g. 1.'
+            example: null
       responses:
         200:
           description: ''
@@ -187,11 +187,37 @@ paths:
                 example:
                   success: true
                   message: ok
-                  data: []
+                  data:
+                    -
+                      id: 2
+                      email: sam.patel@globex.example
+                      name: 'Sam Patel'
+                      first_name: Sam
+                      last_name: Patel
+                      company: Globex
+                      website: 'https://globex.example'
+                      source: tube-trend-tool
+                      custom: []
+                      created_at: '2026-09-02T09:52:27+00:00'
+                      updated_at: '2026-09-02T09:52:27+00:00'
+                    -
+                      id: 1
+                      email: jane.doe@acme.example
+                      name: 'Jane Doe'
+                      first_name: Jane
+                      last_name: Doe
+                      company: 'Acme Ltd'
+                      website: 'https://acme.example'
+                      source: tube-trend-tool
+                      custom:
+                        industry: SaaS
+                        employees: 40
+                      created_at: '2026-09-02T09:52:27+00:00'
+                      updated_at: '2026-09-02T09:52:27+00:00'
                   meta:
                     page: 1
                     per_page: 50
-                    total: 0
+                    total: 2
                     last_page: 1
                 properties:
                   success:
@@ -202,7 +228,69 @@ paths:
                     example: ok
                   data:
                     type: array
-                    example: []
+                    example:
+                      -
+                        id: 2
+                        email: sam.patel@globex.example
+                        name: 'Sam Patel'
+                        first_name: Sam
+                        last_name: Patel
+                        company: Globex
+                        website: 'https://globex.example'
+                        source: tube-trend-tool
+                        custom: []
+                        created_at: '2026-09-02T09:52:27+00:00'
+                        updated_at: '2026-09-02T09:52:27+00:00'
+                      -
+                        id: 1
+                        email: jane.doe@acme.example
+                        name: 'Jane Doe'
+                        first_name: Jane
+                        last_name: Doe
+                        company: 'Acme Ltd'
+                        website: 'https://acme.example'
+                        source: tube-trend-tool
+                        custom:
+                          industry: SaaS
+                          employees: 40
+                        created_at: '2026-09-02T09:52:27+00:00'
+                        updated_at: '2026-09-02T09:52:27+00:00'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 2
+                        email:
+                          type: string
+                          example: sam.patel@globex.example
+                        name:
+                          type: string
+                          example: 'Sam Patel'
+                        first_name:
+                          type: string
+                          example: Sam
+                        last_name:
+                          type: string
+                          example: Patel
+                        company:
+                          type: string
+                          example: Globex
+                        website:
+                          type: string
+                          example: 'https://globex.example'
+                        source:
+                          type: string
+                          example: tube-trend-tool
+                        custom:
+                          type: array
+                          example: []
+                        created_at:
+                          type: string
+                          example: '2026-09-02T09:52:27+00:00'
+                        updated_at:
+                          type: string
+                          example: '2026-09-02T09:52:27+00:00'
                   meta:
                     type: object
                     properties:
@@ -214,7 +302,7 @@ paths:
                         example: 50
                       total:
                         type: integer
-                        example: 0
+                        example: 2
                       last_page:
                         type: integer
                         example: 1
@@ -315,8 +403,8 @@ paths:
                       industry: SaaS
                       employees: 40
                     suppressed: false
-                    created_at: '2026-09-02T08:51:35+00:00'
-                    updated_at: '2026-09-02T08:51:35+00:00'
+                    created_at: '2026-09-02T09:52:27+00:00'
+                    updated_at: '2026-09-02T09:52:27+00:00'
                     enrollments:
                       -
                         id: 1
@@ -329,7 +417,7 @@ paths:
                         current_step: 1
                         stopped_at: null
                         stop_reason: null
-                        created_at: '2026-09-02T08:51:35+00:00'
+                        created_at: '2026-09-02T09:52:27+00:00'
                     messages:
                       -
                         id: 1
@@ -344,12 +432,12 @@ paths:
                         body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                         edited_by_user: false
                         scheduled_at: null
-                        sent_at: '2026-09-01T08:51:35+00:00'
+                        sent_at: '2026-09-01T09:52:27+00:00'
                         approved_at: null
                         rejected_at: null
                         rejection_note: null
                         error: null
-                        created_at: '2026-09-02T08:51:35+00:00'
+                        created_at: '2026-09-02T09:52:27+00:00'
                     replies:
                       -
                         id: 1
@@ -362,7 +450,7 @@ paths:
                         snippet: 'Happy to take a look, send it over.'
                         body_text: "Happy to take a look, send it over.\n\nJane"
                         classification: reply
-                        received_at: '2026-09-02T02:51:35+00:00'
+                        received_at: '2026-09-02T03:52:27+00:00'
                         read_at: null
                 properties:
                   success:
@@ -412,10 +500,10 @@ paths:
                         example: false
                       created_at:
                         type: string
-                        example: '2026-09-02T08:51:35+00:00'
+                        example: '2026-09-02T09:52:27+00:00'
                       updated_at:
                         type: string
-                        example: '2026-09-02T08:51:35+00:00'
+                        example: '2026-09-02T09:52:27+00:00'
                       enrollments:
                         type: array
                         example:
@@ -430,7 +518,7 @@ paths:
                             current_step: 1
                             stopped_at: null
                             stop_reason: null
-                            created_at: '2026-09-02T08:51:35+00:00'
+                            created_at: '2026-09-02T09:52:27+00:00'
                         items:
                           type: object
                           properties:
@@ -468,7 +556,7 @@ paths:
                               nullable: true
                             created_at:
                               type: string
-                              example: '2026-09-02T08:51:35+00:00'
+                              example: '2026-09-02T09:52:27+00:00'
                       messages:
                         type: array
                         example:
@@ -485,12 +573,12 @@ paths:
                             body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                             edited_by_user: false
                             scheduled_at: null
-                            sent_at: '2026-09-01T08:51:35+00:00'
+                            sent_at: '2026-09-01T09:52:27+00:00'
                             approved_at: null
                             rejected_at: null
                             rejection_note: null
                             error: null
-                            created_at: '2026-09-02T08:51:35+00:00'
+                            created_at: '2026-09-02T09:52:27+00:00'
                         items:
                           type: object
                           properties:
@@ -533,7 +621,7 @@ paths:
                               nullable: true
                             sent_at:
                               type: string
-                              example: '2026-09-01T08:51:35+00:00'
+                              example: '2026-09-01T09:52:27+00:00'
                             approved_at:
                               type: string
                               example: null
@@ -552,7 +640,7 @@ paths:
                               nullable: true
                             created_at:
                               type: string
-                              example: '2026-09-02T08:51:35+00:00'
+                              example: '2026-09-02T09:52:27+00:00'
                       replies:
                         type: array
                         example:
@@ -567,7 +655,7 @@ paths:
                             snippet: 'Happy to take a look, send it over.'
                             body_text: "Happy to take a look, send it over.\n\nJane"
                             classification: reply
-                            received_at: '2026-09-02T02:51:35+00:00'
+                            received_at: '2026-09-02T03:52:27+00:00'
                             read_at: null
                         items:
                           type: object
@@ -604,7 +692,7 @@ paths:
                               example: reply
                             received_at:
                               type: string
-                              example: '2026-09-02T02:51:35+00:00'
+                              example: '2026-09-02T03:52:27+00:00'
                             read_at:
                               type: string
                               example: null
@@ -629,43 +717,43 @@ paths:
         -
           in: query
           name: active
-          description: 'Only switched-on or switched-off automations.'
-          example: true
+          description: 'Only switched-on or switched-off automations. e.g. true.'
+          example: null
           required: false
           schema:
             type: boolean
-            description: 'Only switched-on or switched-off automations.'
-            example: true
+            description: 'Only switched-on or switched-off automations. e.g. true.'
+            example: null
         -
           in: query
           name: tag
-          description: 'Exact tag.'
-          example: seo-backlinks
+          description: 'Exact tag. e.g. seo-backlinks.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'Exact tag.'
-            example: seo-backlinks
+            description: 'Exact tag. e.g. seo-backlinks.'
+            example: null
         -
           in: query
           name: per_page
-          description: 'Rows per page. Clamped to 200.'
-          example: 50
+          description: 'Rows per page. Clamped to 200. e.g. 50.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Rows per page. Clamped to 200.'
-            example: 50
+            description: 'Rows per page. Clamped to 200. e.g. 50.'
+            example: null
         -
           in: query
           name: page
-          description: 'Which page to return.'
-          example: 1
+          description: 'Which page to return. e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Which page to return.'
-            example: 1
+            description: 'Which page to return. e.g. 1.'
+            example: null
       responses:
         200:
           description: ''
@@ -683,8 +771,8 @@ paths:
                       name: 'SEO backlinks outreach'
                       description: 'Three touches for sites that could carry a link back to us.'
                       active: true
-                      created_at: '2026-09-02T08:51:35+00:00'
-                      updated_at: '2026-09-02T08:51:35+00:00'
+                      created_at: '2026-09-02T09:52:27+00:00'
+                      updated_at: '2026-09-02T09:52:27+00:00'
                       steps:
                         -
                           id: 1
@@ -695,7 +783,7 @@ paths:
                           drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                           active: true
                           attachments: []
-                          created_at: '2026-09-02T08:51:35+00:00'
+                          created_at: '2026-09-02T09:52:27+00:00'
                         -
                           id: 2
                           automation_id: 1
@@ -705,7 +793,7 @@ paths:
                           drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                           active: true
                           attachments: []
-                          created_at: '2026-09-02T08:51:35+00:00'
+                          created_at: '2026-09-02T09:52:27+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -727,8 +815,8 @@ paths:
                         name: 'SEO backlinks outreach'
                         description: 'Three touches for sites that could carry a link back to us.'
                         active: true
-                        created_at: '2026-09-02T08:51:35+00:00'
-                        updated_at: '2026-09-02T08:51:35+00:00'
+                        created_at: '2026-09-02T09:52:27+00:00'
+                        updated_at: '2026-09-02T09:52:27+00:00'
                         steps:
                           -
                             id: 1
@@ -739,7 +827,7 @@ paths:
                             drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                             active: true
                             attachments: []
-                            created_at: '2026-09-02T08:51:35+00:00'
+                            created_at: '2026-09-02T09:52:27+00:00'
                           -
                             id: 2
                             automation_id: 1
@@ -749,7 +837,7 @@ paths:
                             drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                             active: true
                             attachments: []
-                            created_at: '2026-09-02T08:51:35+00:00'
+                            created_at: '2026-09-02T09:52:27+00:00'
                     items:
                       type: object
                       properties:
@@ -770,10 +858,10 @@ paths:
                           example: true
                         created_at:
                           type: string
-                          example: '2026-09-02T08:51:35+00:00'
+                          example: '2026-09-02T09:52:27+00:00'
                         updated_at:
                           type: string
-                          example: '2026-09-02T08:51:35+00:00'
+                          example: '2026-09-02T09:52:27+00:00'
                         steps:
                           type: array
                           example:
@@ -786,7 +874,7 @@ paths:
                               drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                               active: true
                               attachments: []
-                              created_at: '2026-09-02T08:51:35+00:00'
+                              created_at: '2026-09-02T09:52:27+00:00'
                             -
                               id: 2
                               automation_id: 1
@@ -796,7 +884,7 @@ paths:
                               drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                               active: true
                               attachments: []
-                              created_at: '2026-09-02T08:51:35+00:00'
+                              created_at: '2026-09-02T09:52:27+00:00'
                           items:
                             type: object
                             properties:
@@ -826,7 +914,7 @@ paths:
                                 example: []
                               created_at:
                                 type: string
-                                example: '2026-09-02T08:51:35+00:00'
+                                example: '2026-09-02T09:52:27+00:00'
                   meta:
                     type: object
                     properties:
@@ -937,8 +1025,8 @@ paths:
                     name: 'SEO backlinks outreach'
                     description: 'Three touches for sites that could carry a link back to us.'
                     active: true
-                    created_at: '2026-09-02T08:51:35+00:00'
-                    updated_at: '2026-09-02T08:51:35+00:00'
+                    created_at: '2026-09-02T09:52:27+00:00'
+                    updated_at: '2026-09-02T09:52:27+00:00'
                     steps:
                       -
                         id: 1
@@ -949,7 +1037,7 @@ paths:
                         drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                         active: true
                         attachments: []
-                        created_at: '2026-09-02T08:51:35+00:00'
+                        created_at: '2026-09-02T09:52:27+00:00'
                       -
                         id: 2
                         automation_id: 1
@@ -959,7 +1047,7 @@ paths:
                         drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                         active: true
                         attachments: []
-                        created_at: '2026-09-02T08:51:35+00:00'
+                        created_at: '2026-09-02T09:52:27+00:00'
                 properties:
                   success:
                     type: boolean
@@ -987,10 +1075,10 @@ paths:
                         example: true
                       created_at:
                         type: string
-                        example: '2026-09-02T08:51:35+00:00'
+                        example: '2026-09-02T09:52:27+00:00'
                       updated_at:
                         type: string
-                        example: '2026-09-02T08:51:35+00:00'
+                        example: '2026-09-02T09:52:27+00:00'
                       steps:
                         type: array
                         example:
@@ -1003,7 +1091,7 @@ paths:
                             drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                             active: true
                             attachments: []
-                            created_at: '2026-09-02T08:51:35+00:00'
+                            created_at: '2026-09-02T09:52:27+00:00'
                           -
                             id: 2
                             automation_id: 1
@@ -1013,7 +1101,7 @@ paths:
                             drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                             active: true
                             attachments: []
-                            created_at: '2026-09-02T08:51:35+00:00'
+                            created_at: '2026-09-02T09:52:27+00:00'
                         items:
                           type: object
                           properties:
@@ -1043,7 +1131,7 @@ paths:
                               example: []
                             created_at:
                               type: string
-                              example: '2026-09-02T08:51:35+00:00'
+                              example: '2026-09-02T09:52:27+00:00'
       tags:
         - Automations
     patch:
@@ -1113,7 +1201,7 @@ paths:
                       drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                       active: true
                       attachments: []
-                      created_at: '2026-09-02T08:51:35+00:00'
+                      created_at: '2026-09-02T09:52:27+00:00'
                     -
                       id: 2
                       automation_id: 1
@@ -1123,7 +1211,7 @@ paths:
                       drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                       active: true
                       attachments: []
-                      created_at: '2026-09-02T08:51:35+00:00'
+                      created_at: '2026-09-02T09:52:27+00:00'
                 properties:
                   success:
                     type: boolean
@@ -1143,7 +1231,7 @@ paths:
                         drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                         active: true
                         attachments: []
-                        created_at: '2026-09-02T08:51:35+00:00'
+                        created_at: '2026-09-02T09:52:27+00:00'
                       -
                         id: 2
                         automation_id: 1
@@ -1153,7 +1241,7 @@ paths:
                         drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                         active: true
                         attachments: []
-                        created_at: '2026-09-02T08:51:35+00:00'
+                        created_at: '2026-09-02T09:52:27+00:00'
                     items:
                       type: object
                       properties:
@@ -1183,7 +1271,7 @@ paths:
                           example: []
                         created_at:
                           type: string
-                          example: '2026-09-02T08:51:35+00:00'
+                          example: '2026-09-02T09:52:27+00:00'
       tags:
         - Automations
     post:
@@ -1379,73 +1467,73 @@ paths:
         -
           in: query
           name: status
-          description: 'One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed.'
-          example: active
+          description: 'One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. e.g. active.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed.'
-            example: active
+            description: 'One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. e.g. active.'
+            example: null
         -
           in: query
           name: contact_id
-          description: ''
-          example: 1
+          description: 'e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: ''
-            example: 1
+            description: 'e.g. 1.'
+            example: null
         -
           in: query
           name: automation_id
-          description: ''
-          example: 1
+          description: 'e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: ''
-            example: 1
+            description: 'e.g. 1.'
+            example: null
         -
           in: query
           name: tag
-          description: 'Automation tag.'
-          example: seo-backlinks
+          description: 'Automation tag. e.g. seo-backlinks.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'Automation tag.'
-            example: seo-backlinks
+            description: 'Automation tag. e.g. seo-backlinks.'
+            example: null
         -
           in: query
           name: mailbox_id
-          description: ''
-          example: 1
+          description: 'e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: ''
-            example: 1
+            description: 'e.g. 1.'
+            example: null
         -
           in: query
           name: per_page
-          description: 'Rows per page. Clamped to 200.'
-          example: 50
+          description: 'Rows per page. Clamped to 200. e.g. 50.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Rows per page. Clamped to 200.'
-            example: 50
+            description: 'Rows per page. Clamped to 200. e.g. 50.'
+            example: null
         -
           in: query
           name: page
-          description: 'Which page to return.'
-          example: 1
+          description: 'Which page to return. e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Which page to return.'
-            example: 1
+            description: 'Which page to return. e.g. 1.'
+            example: null
       responses:
         200:
           description: ''
@@ -1458,6 +1546,30 @@ paths:
                   message: ok
                   data:
                     -
+                      id: 2
+                      contact_id: 2
+                      automation_id: 1
+                      automation_tag: seo-backlinks
+                      mailbox_id: 1
+                      mailbox_email: hello@outreach.example
+                      status: active
+                      current_step: 0
+                      stopped_at: null
+                      stop_reason: null
+                      created_at: '2026-09-02T09:52:27+00:00'
+                      contact:
+                        id: 2
+                        email: sam.patel@globex.example
+                        name: 'Sam Patel'
+                        first_name: Sam
+                        last_name: Patel
+                        company: Globex
+                        website: 'https://globex.example'
+                        source: tube-trend-tool
+                        custom: []
+                        created_at: '2026-09-02T09:52:27+00:00'
+                        updated_at: '2026-09-02T09:52:27+00:00'
+                    -
                       id: 1
                       contact_id: 1
                       automation_id: 1
@@ -1468,7 +1580,7 @@ paths:
                       current_step: 1
                       stopped_at: null
                       stop_reason: null
-                      created_at: '2026-09-02T08:51:35+00:00'
+                      created_at: '2026-09-02T09:52:27+00:00'
                       contact:
                         id: 1
                         email: jane.doe@acme.example
@@ -1481,12 +1593,12 @@ paths:
                         custom:
                           industry: SaaS
                           employees: 40
-                        created_at: '2026-09-02T08:51:35+00:00'
-                        updated_at: '2026-09-02T08:51:35+00:00'
+                        created_at: '2026-09-02T09:52:27+00:00'
+                        updated_at: '2026-09-02T09:52:27+00:00'
                   meta:
                     page: 1
                     per_page: 50
-                    total: 1
+                    total: 2
                     last_page: 1
                 properties:
                   success:
@@ -1499,6 +1611,30 @@ paths:
                     type: array
                     example:
                       -
+                        id: 2
+                        contact_id: 2
+                        automation_id: 1
+                        automation_tag: seo-backlinks
+                        mailbox_id: 1
+                        mailbox_email: hello@outreach.example
+                        status: active
+                        current_step: 0
+                        stopped_at: null
+                        stop_reason: null
+                        created_at: '2026-09-02T09:52:27+00:00'
+                        contact:
+                          id: 2
+                          email: sam.patel@globex.example
+                          name: 'Sam Patel'
+                          first_name: Sam
+                          last_name: Patel
+                          company: Globex
+                          website: 'https://globex.example'
+                          source: tube-trend-tool
+                          custom: []
+                          created_at: '2026-09-02T09:52:27+00:00'
+                          updated_at: '2026-09-02T09:52:27+00:00'
+                      -
                         id: 1
                         contact_id: 1
                         automation_id: 1
@@ -1509,7 +1645,7 @@ paths:
                         current_step: 1
                         stopped_at: null
                         stop_reason: null
-                        created_at: '2026-09-02T08:51:35+00:00'
+                        created_at: '2026-09-02T09:52:27+00:00'
                         contact:
                           id: 1
                           email: jane.doe@acme.example
@@ -1522,17 +1658,17 @@ paths:
                           custom:
                             industry: SaaS
                             employees: 40
-                          created_at: '2026-09-02T08:51:35+00:00'
-                          updated_at: '2026-09-02T08:51:35+00:00'
+                          created_at: '2026-09-02T09:52:27+00:00'
+                          updated_at: '2026-09-02T09:52:27+00:00'
                     items:
                       type: object
                       properties:
                         id:
                           type: integer
-                          example: 1
+                          example: 2
                         contact_id:
                           type: integer
-                          example: 1
+                          example: 2
                         automation_id:
                           type: integer
                           example: 1
@@ -1550,7 +1686,7 @@ paths:
                           example: active
                         current_step:
                           type: integer
-                          example: 1
+                          example: 0
                         stopped_at:
                           type: string
                           example: null
@@ -1561,49 +1697,43 @@ paths:
                           nullable: true
                         created_at:
                           type: string
-                          example: '2026-09-02T08:51:35+00:00'
+                          example: '2026-09-02T09:52:27+00:00'
                         contact:
                           type: object
                           properties:
                             id:
                               type: integer
-                              example: 1
+                              example: 2
                             email:
                               type: string
-                              example: jane.doe@acme.example
+                              example: sam.patel@globex.example
                             name:
                               type: string
-                              example: 'Jane Doe'
+                              example: 'Sam Patel'
                             first_name:
                               type: string
-                              example: Jane
+                              example: Sam
                             last_name:
                               type: string
-                              example: Doe
+                              example: Patel
                             company:
                               type: string
-                              example: 'Acme Ltd'
+                              example: Globex
                             website:
                               type: string
-                              example: 'https://acme.example'
+                              example: 'https://globex.example'
                             source:
                               type: string
                               example: tube-trend-tool
                             custom:
-                              type: object
-                              properties:
-                                industry:
-                                  type: string
-                                  example: SaaS
-                                employees:
-                                  type: integer
-                                  example: 40
+                              type: array
+                              example: []
                             created_at:
                               type: string
-                              example: '2026-09-02T08:51:35+00:00'
+                              example: '2026-09-02T09:52:27+00:00'
                             updated_at:
                               type: string
-                              example: '2026-09-02T08:51:35+00:00'
+                              example: '2026-09-02T09:52:27+00:00'
                   meta:
                     type: object
                     properties:
@@ -1615,7 +1745,7 @@ paths:
                         example: 50
                       total:
                         type: integer
-                        example: 1
+                        example: 2
                       last_page:
                         type: integer
                         example: 1
@@ -1691,73 +1821,73 @@ paths:
         -
           in: query
           name: status
-          description: 'One of drafting, pending_approval, approved, scheduled, sending, sent, draft_failed, rejected, cancelled, failed.'
-          example: pending_approval
+          description: 'One of drafting, pending_approval, approved, scheduled, sending, sent, draft_failed, rejected, cancelled, failed. e.g. pending_approval.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'One of drafting, pending_approval, approved, scheduled, sending, sent, draft_failed, rejected, cancelled, failed.'
-            example: pending_approval
+            description: 'One of drafting, pending_approval, approved, scheduled, sending, sent, draft_failed, rejected, cancelled, failed. e.g. pending_approval.'
+            example: null
         -
           in: query
           name: contact_id
-          description: ''
-          example: 1
+          description: 'e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: ''
-            example: 1
+            description: 'e.g. 1.'
+            example: null
         -
           in: query
           name: enrollment_id
-          description: ''
-          example: 1
+          description: 'e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: ''
-            example: 1
+            description: 'e.g. 1.'
+            example: null
         -
           in: query
           name: mailbox_id
-          description: ''
-          example: 1
+          description: 'e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: ''
-            example: 1
+            description: 'e.g. 1.'
+            example: null
         -
           in: query
           name: since
-          description: 'ISO date. Only rows created on or after it.'
-          example: '2026-08-01'
+          description: 'ISO date. Only rows created on or after it. e.g. 2026-08-01.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'ISO date. Only rows created on or after it.'
-            example: '2026-08-01'
+            description: 'ISO date. Only rows created on or after it. e.g. 2026-08-01.'
+            example: null
         -
           in: query
           name: per_page
-          description: 'Rows per page. Clamped to 200.'
-          example: 50
+          description: 'Rows per page. Clamped to 200. e.g. 50.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Rows per page. Clamped to 200.'
-            example: 50
+            description: 'Rows per page. Clamped to 200. e.g. 50.'
+            example: null
         -
           in: query
           name: page
-          description: 'Which page to return.'
-          example: 1
+          description: 'Which page to return. e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Which page to return.'
-            example: 1
+            description: 'Which page to return. e.g. 1.'
+            example: null
       responses:
         200:
           description: ''
@@ -1768,11 +1898,75 @@ paths:
                 example:
                   success: true
                   message: ok
-                  data: []
+                  data:
+                    -
+                      id: 1
+                      enrollment_id: 1
+                      contact_id: 1
+                      mailbox_id: 1
+                      mailbox_email: hello@outreach.example
+                      sequence_step_id: 1
+                      step_position: 1
+                      status: sent
+                      subject: 'Your guide on nursery irrigation'
+                      body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
+                      edited_by_user: false
+                      scheduled_at: null
+                      sent_at: '2026-09-01T09:52:27+00:00'
+                      approved_at: null
+                      rejected_at: null
+                      rejection_note: null
+                      error: null
+                      created_at: '2026-09-02T09:52:27+00:00'
+                      contact:
+                        id: 1
+                        email: jane.doe@acme.example
+                        name: 'Jane Doe'
+                        first_name: Jane
+                        last_name: Doe
+                        company: 'Acme Ltd'
+                        website: 'https://acme.example'
+                        source: tube-trend-tool
+                        custom:
+                          industry: SaaS
+                          employees: 40
+                        created_at: '2026-09-02T09:52:27+00:00'
+                        updated_at: '2026-09-02T09:52:27+00:00'
+                    -
+                      id: 2
+                      enrollment_id: 2
+                      contact_id: 2
+                      mailbox_id: 1
+                      mailbox_email: hello@outreach.example
+                      sequence_step_id: 1
+                      step_position: 1
+                      status: pending_approval
+                      subject: 'Quick thought on your resources page'
+                      body_text: "Hi Sam,\n\nYour resources page is missing a section we could help fill.\n\nWorth a quick chat?\n\nAlex"
+                      edited_by_user: false
+                      scheduled_at: null
+                      sent_at: null
+                      approved_at: null
+                      rejected_at: null
+                      rejection_note: null
+                      error: null
+                      created_at: '2026-09-02T09:52:27+00:00'
+                      contact:
+                        id: 2
+                        email: sam.patel@globex.example
+                        name: 'Sam Patel'
+                        first_name: Sam
+                        last_name: Patel
+                        company: Globex
+                        website: 'https://globex.example'
+                        source: tube-trend-tool
+                        custom: []
+                        created_at: '2026-09-02T09:52:27+00:00'
+                        updated_at: '2026-09-02T09:52:27+00:00'
                   meta:
                     page: 1
                     per_page: 50
-                    total: 0
+                    total: 2
                     last_page: 1
                 properties:
                   success:
@@ -1783,7 +1977,175 @@ paths:
                     example: ok
                   data:
                     type: array
-                    example: []
+                    example:
+                      -
+                        id: 1
+                        enrollment_id: 1
+                        contact_id: 1
+                        mailbox_id: 1
+                        mailbox_email: hello@outreach.example
+                        sequence_step_id: 1
+                        step_position: 1
+                        status: sent
+                        subject: 'Your guide on nursery irrigation'
+                        body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
+                        edited_by_user: false
+                        scheduled_at: null
+                        sent_at: '2026-09-01T09:52:27+00:00'
+                        approved_at: null
+                        rejected_at: null
+                        rejection_note: null
+                        error: null
+                        created_at: '2026-09-02T09:52:27+00:00'
+                        contact:
+                          id: 1
+                          email: jane.doe@acme.example
+                          name: 'Jane Doe'
+                          first_name: Jane
+                          last_name: Doe
+                          company: 'Acme Ltd'
+                          website: 'https://acme.example'
+                          source: tube-trend-tool
+                          custom:
+                            industry: SaaS
+                            employees: 40
+                          created_at: '2026-09-02T09:52:27+00:00'
+                          updated_at: '2026-09-02T09:52:27+00:00'
+                      -
+                        id: 2
+                        enrollment_id: 2
+                        contact_id: 2
+                        mailbox_id: 1
+                        mailbox_email: hello@outreach.example
+                        sequence_step_id: 1
+                        step_position: 1
+                        status: pending_approval
+                        subject: 'Quick thought on your resources page'
+                        body_text: "Hi Sam,\n\nYour resources page is missing a section we could help fill.\n\nWorth a quick chat?\n\nAlex"
+                        edited_by_user: false
+                        scheduled_at: null
+                        sent_at: null
+                        approved_at: null
+                        rejected_at: null
+                        rejection_note: null
+                        error: null
+                        created_at: '2026-09-02T09:52:27+00:00'
+                        contact:
+                          id: 2
+                          email: sam.patel@globex.example
+                          name: 'Sam Patel'
+                          first_name: Sam
+                          last_name: Patel
+                          company: Globex
+                          website: 'https://globex.example'
+                          source: tube-trend-tool
+                          custom: []
+                          created_at: '2026-09-02T09:52:27+00:00'
+                          updated_at: '2026-09-02T09:52:27+00:00'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        enrollment_id:
+                          type: integer
+                          example: 1
+                        contact_id:
+                          type: integer
+                          example: 1
+                        mailbox_id:
+                          type: integer
+                          example: 1
+                        mailbox_email:
+                          type: string
+                          example: hello@outreach.example
+                        sequence_step_id:
+                          type: integer
+                          example: 1
+                        step_position:
+                          type: integer
+                          example: 1
+                        status:
+                          type: string
+                          example: sent
+                        subject:
+                          type: string
+                          example: 'Your guide on nursery irrigation'
+                        body_text:
+                          type: string
+                          example: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
+                        edited_by_user:
+                          type: boolean
+                          example: false
+                        scheduled_at:
+                          type: string
+                          example: null
+                          nullable: true
+                        sent_at:
+                          type: string
+                          example: '2026-09-01T09:52:27+00:00'
+                        approved_at:
+                          type: string
+                          example: null
+                          nullable: true
+                        rejected_at:
+                          type: string
+                          example: null
+                          nullable: true
+                        rejection_note:
+                          type: string
+                          example: null
+                          nullable: true
+                        error:
+                          type: string
+                          example: null
+                          nullable: true
+                        created_at:
+                          type: string
+                          example: '2026-09-02T09:52:27+00:00'
+                        contact:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            email:
+                              type: string
+                              example: jane.doe@acme.example
+                            name:
+                              type: string
+                              example: 'Jane Doe'
+                            first_name:
+                              type: string
+                              example: Jane
+                            last_name:
+                              type: string
+                              example: Doe
+                            company:
+                              type: string
+                              example: 'Acme Ltd'
+                            website:
+                              type: string
+                              example: 'https://acme.example'
+                            source:
+                              type: string
+                              example: tube-trend-tool
+                            custom:
+                              type: object
+                              properties:
+                                industry:
+                                  type: string
+                                  example: SaaS
+                                employees:
+                                  type: integer
+                                  example: 40
+                            created_at:
+                              type: string
+                              example: '2026-09-02T09:52:27+00:00'
+                            updated_at:
+                              type: string
+                              example: '2026-09-02T09:52:27+00:00'
                   meta:
                     type: object
                     properties:
@@ -1795,7 +2157,7 @@ paths:
                         example: 50
                       total:
                         type: integer
-                        example: 0
+                        example: 2
                       last_page:
                         type: integer
                         example: 1
@@ -1830,12 +2192,12 @@ paths:
                     body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                     edited_by_user: false
                     scheduled_at: null
-                    sent_at: '2026-09-01T08:51:35+00:00'
+                    sent_at: '2026-09-01T09:52:27+00:00'
                     approved_at: null
                     rejected_at: null
                     rejection_note: null
                     error: null
-                    created_at: '2026-09-02T08:51:35+00:00'
+                    created_at: '2026-09-02T09:52:27+00:00'
                     contact:
                       id: 1
                       email: jane.doe@acme.example
@@ -1848,8 +2210,8 @@ paths:
                       custom:
                         industry: SaaS
                         employees: 40
-                      created_at: '2026-09-02T08:51:35+00:00'
-                      updated_at: '2026-09-02T08:51:35+00:00'
+                      created_at: '2026-09-02T09:52:27+00:00'
+                      updated_at: '2026-09-02T09:52:27+00:00'
                 properties:
                   success:
                     type: boolean
@@ -1899,7 +2261,7 @@ paths:
                         nullable: true
                       sent_at:
                         type: string
-                        example: '2026-09-01T08:51:35+00:00'
+                        example: '2026-09-01T09:52:27+00:00'
                       approved_at:
                         type: string
                         example: null
@@ -1918,7 +2280,7 @@ paths:
                         nullable: true
                       created_at:
                         type: string
-                        example: '2026-09-02T08:51:35+00:00'
+                        example: '2026-09-02T09:52:27+00:00'
                       contact:
                         type: object
                         properties:
@@ -1957,10 +2319,10 @@ paths:
                                 example: 40
                           created_at:
                             type: string
-                            example: '2026-09-02T08:51:35+00:00'
+                            example: '2026-09-02T09:52:27+00:00'
                           updated_at:
                             type: string
-                            example: '2026-09-02T08:51:35+00:00'
+                            example: '2026-09-02T09:52:27+00:00'
       tags:
         - Messages
     patch:
@@ -2052,83 +2414,83 @@ paths:
         -
           in: query
           name: classification
-          description: 'One of reply, bounce, auto_reply, unsubscribe.'
-          example: reply
+          description: 'One of reply, bounce, auto_reply, unsubscribe. e.g. reply.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'One of reply, bounce, auto_reply, unsubscribe.'
-            example: reply
+            description: 'One of reply, bounce, auto_reply, unsubscribe. e.g. reply.'
+            example: null
         -
           in: query
           name: mailbox_id
-          description: 'Only replies to this mailbox.'
-          example: 1
+          description: 'Only replies to this mailbox. e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Only replies to this mailbox.'
-            example: 1
+            description: 'Only replies to this mailbox. e.g. 1.'
+            example: null
         -
           in: query
           name: contact_id
-          description: 'Only replies from this contact.'
-          example: 1
+          description: 'Only replies from this contact. e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Only replies from this contact.'
-            example: 1
+            description: 'Only replies from this contact. e.g. 1.'
+            example: null
         -
           in: query
           name: enrollment_id
-          description: 'Only replies on this enrollment.'
-          example: 1
+          description: 'Only replies on this enrollment. e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Only replies on this enrollment.'
-            example: 1
+            description: 'Only replies on this enrollment. e.g. 1.'
+            example: null
         -
           in: query
           name: unread
-          description: 'Only replies nobody has opened yet.'
-          example: true
+          description: 'Only replies nobody has opened yet. e.g. true.'
+          example: null
           required: false
           schema:
             type: boolean
-            description: 'Only replies nobody has opened yet.'
-            example: true
+            description: 'Only replies nobody has opened yet. e.g. true.'
+            example: null
         -
           in: query
           name: since
-          description: 'ISO date. Only replies received on or after it.'
-          example: '2026-08-01'
+          description: 'ISO date. Only replies received on or after it. e.g. 2026-08-01.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'ISO date. Only replies received on or after it.'
-            example: '2026-08-01'
+            description: 'ISO date. Only replies received on or after it. e.g. 2026-08-01.'
+            example: null
         -
           in: query
           name: per_page
-          description: 'Rows per page. Clamped to 200.'
-          example: 50
+          description: 'Rows per page. Clamped to 200. e.g. 50.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Rows per page. Clamped to 200.'
-            example: 50
+            description: 'Rows per page. Clamped to 200. e.g. 50.'
+            example: null
         -
           in: query
           name: page
-          description: 'Which page to return.'
-          example: 1
+          description: 'Which page to return. e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Which page to return.'
-            example: 1
+            description: 'Which page to return. e.g. 1.'
+            example: null
       responses:
         200:
           description: ''
@@ -2151,7 +2513,7 @@ paths:
                       snippet: 'Happy to take a look, send it over.'
                       body_text: "Happy to take a look, send it over.\n\nJane"
                       classification: reply
-                      received_at: '2026-09-02T02:51:35+00:00'
+                      received_at: '2026-09-02T03:52:27+00:00'
                       read_at: null
                       contact:
                         id: 1
@@ -2165,8 +2527,8 @@ paths:
                         custom:
                           industry: SaaS
                           employees: 40
-                        created_at: '2026-09-02T08:51:35+00:00'
-                        updated_at: '2026-09-02T08:51:35+00:00'
+                        created_at: '2026-09-02T09:52:27+00:00'
+                        updated_at: '2026-09-02T09:52:27+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -2193,7 +2555,7 @@ paths:
                         snippet: 'Happy to take a look, send it over.'
                         body_text: "Happy to take a look, send it over.\n\nJane"
                         classification: reply
-                        received_at: '2026-09-02T02:51:35+00:00'
+                        received_at: '2026-09-02T03:52:27+00:00'
                         read_at: null
                         contact:
                           id: 1
@@ -2207,8 +2569,8 @@ paths:
                           custom:
                             industry: SaaS
                             employees: 40
-                          created_at: '2026-09-02T08:51:35+00:00'
-                          updated_at: '2026-09-02T08:51:35+00:00'
+                          created_at: '2026-09-02T09:52:27+00:00'
+                          updated_at: '2026-09-02T09:52:27+00:00'
                     items:
                       type: object
                       properties:
@@ -2244,7 +2606,7 @@ paths:
                           example: reply
                         received_at:
                           type: string
-                          example: '2026-09-02T02:51:35+00:00'
+                          example: '2026-09-02T03:52:27+00:00'
                         read_at:
                           type: string
                           example: null
@@ -2287,10 +2649,10 @@ paths:
                                   example: 40
                             created_at:
                               type: string
-                              example: '2026-09-02T08:51:35+00:00'
+                              example: '2026-09-02T09:52:27+00:00'
                             updated_at:
                               type: string
-                              example: '2026-09-02T08:51:35+00:00'
+                              example: '2026-09-02T09:52:27+00:00'
                   meta:
                     type: object
                     properties:
@@ -2335,7 +2697,7 @@ paths:
                     snippet: 'Happy to take a look, send it over.'
                     body_text: "Happy to take a look, send it over.\n\nJane"
                     classification: reply
-                    received_at: '2026-09-02T02:51:35+00:00'
+                    received_at: '2026-09-02T03:52:27+00:00'
                     read_at: null
                     contact:
                       id: 1
@@ -2349,8 +2711,8 @@ paths:
                       custom:
                         industry: SaaS
                         employees: 40
-                      created_at: '2026-09-02T08:51:35+00:00'
-                      updated_at: '2026-09-02T08:51:35+00:00'
+                      created_at: '2026-09-02T09:52:27+00:00'
+                      updated_at: '2026-09-02T09:52:27+00:00'
                 properties:
                   success:
                     type: boolean
@@ -2393,7 +2755,7 @@ paths:
                         example: reply
                       received_at:
                         type: string
-                        example: '2026-09-02T02:51:35+00:00'
+                        example: '2026-09-02T03:52:27+00:00'
                       read_at:
                         type: string
                         example: null
@@ -2436,10 +2798,10 @@ paths:
                                 example: 40
                           created_at:
                             type: string
-                            example: '2026-09-02T08:51:35+00:00'
+                            example: '2026-09-02T09:52:27+00:00'
                           updated_at:
                             type: string
-                            example: '2026-09-02T08:51:35+00:00'
+                            example: '2026-09-02T09:52:27+00:00'
       tags:
         - Replies
     parameters:
@@ -2460,53 +2822,53 @@ paths:
         -
           in: query
           name: reason
-          description: 'One of unsubscribed, bounced, manual, complaint.'
-          example: unsubscribed
+          description: 'One of unsubscribed, bounced, manual, complaint. e.g. unsubscribed.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'One of unsubscribed, bounced, manual, complaint.'
-            example: unsubscribed
+            description: 'One of unsubscribed, bounced, manual, complaint. e.g. unsubscribed.'
+            example: null
         -
           in: query
           name: email
-          description: 'Check one exact address.'
-          example: no.thanks@globex.example
+          description: 'Check one exact address. e.g. no.thanks@globex.example.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'Check one exact address.'
-            example: no.thanks@globex.example
+            description: 'Check one exact address. e.g. no.thanks@globex.example.'
+            example: null
         -
           in: query
           name: since
-          description: 'ISO date. Only addresses suppressed on or after it.'
-          example: '2026-08-01'
+          description: 'ISO date. Only addresses suppressed on or after it. e.g. 2026-08-01.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'ISO date. Only addresses suppressed on or after it.'
-            example: '2026-08-01'
+            description: 'ISO date. Only addresses suppressed on or after it. e.g. 2026-08-01.'
+            example: null
         -
           in: query
           name: per_page
-          description: 'Rows per page. Clamped to 200.'
-          example: 50
+          description: 'Rows per page. Clamped to 200. e.g. 50.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Rows per page. Clamped to 200.'
-            example: 50
+            description: 'Rows per page. Clamped to 200. e.g. 50.'
+            example: null
         -
           in: query
           name: page
-          description: 'Which page to return.'
-          example: 1
+          description: 'Which page to return. e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Which page to return.'
-            example: 1
+            description: 'Which page to return. e.g. 1.'
+            example: null
       responses:
         200:
           description: ''
@@ -2523,7 +2885,7 @@ paths:
                       email: no.thanks@globex.example
                       reason: unsubscribed
                       source_reply_id: null
-                      created_at: '2026-09-02T08:51:35+00:00'
+                      created_at: '2026-09-02T09:52:27+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -2544,7 +2906,7 @@ paths:
                         email: no.thanks@globex.example
                         reason: unsubscribed
                         source_reply_id: null
-                        created_at: '2026-09-02T08:51:35+00:00'
+                        created_at: '2026-09-02T09:52:27+00:00'
                     items:
                       type: object
                       properties:
@@ -2563,7 +2925,7 @@ paths:
                           nullable: true
                         created_at:
                           type: string
-                          example: '2026-09-02T08:51:35+00:00'
+                          example: '2026-09-02T09:52:27+00:00'
                   meta:
                     type: object
                     properties:
@@ -2634,33 +2996,33 @@ paths:
         -
           in: query
           name: status
-          description: 'One of active, paused, disconnected, error.'
-          example: active
+          description: 'One of active, paused, disconnected, error. e.g. active.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'One of active, paused, disconnected, error.'
-            example: active
+            description: 'One of active, paused, disconnected, error. e.g. active.'
+            example: null
         -
           in: query
           name: per_page
-          description: 'Rows per page. Clamped to 200.'
-          example: 50
+          description: 'Rows per page. Clamped to 200. e.g. 50.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Rows per page. Clamped to 200.'
-            example: 50
+            description: 'Rows per page. Clamped to 200. e.g. 50.'
+            example: null
         -
           in: query
           name: page
-          description: 'Which page to return.'
-          example: 1
+          description: 'Which page to return. e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Which page to return.'
-            example: 1
+            description: 'Which page to return. e.g. 1.'
+            example: null
       responses:
         200:
           description: ''
@@ -2691,7 +3053,7 @@ paths:
                         sent: 84
                         bounce_rate: 0.0119
                         reply_rate: 0.0714
-                      last_polled_at: '2026-09-02T08:49:35+00:00'
+                      last_polled_at: '2026-09-02T09:50:27+00:00'
                       last_send_error: null
                   meta:
                     page: 1
@@ -2727,7 +3089,7 @@ paths:
                           sent: 84
                           bounce_rate: 0.0119
                           reply_rate: 0.0714
-                        last_polled_at: '2026-09-02T08:49:35+00:00'
+                        last_polled_at: '2026-09-02T09:50:27+00:00'
                         last_send_error: null
                     items:
                       type: object
@@ -2789,7 +3151,7 @@ paths:
                               example: 0.0714
                         last_polled_at:
                           type: string
-                          example: '2026-09-02T08:49:35+00:00'
+                          example: '2026-09-02T09:50:27+00:00'
                         last_send_error:
                           type: string
                           example: null
@@ -2846,7 +3208,7 @@ paths:
                       sent: 84
                       bounce_rate: 0.0119
                       reply_rate: 0.0714
-                    last_polled_at: '2026-09-02T08:49:35+00:00'
+                    last_polled_at: '2026-09-02T09:50:27+00:00'
                     last_send_error: null
                 properties:
                   success:
@@ -2915,7 +3277,7 @@ paths:
                             example: 0.0714
                       last_polled_at:
                         type: string
-                        example: '2026-09-02T08:49:35+00:00'
+                        example: '2026-09-02T09:50:27+00:00'
                       last_send_error:
                         type: string
                         example: null
@@ -2998,7 +3360,7 @@ paths:
                 reason:
                   type: string
                   description: 'Recorded against the mailbox and in the activity log.'
-                  example: 'Rotating the sending account'
+                  example: 'Reason for disconnecting'
                   nullable: true
     parameters:
       -
@@ -3018,13 +3380,13 @@ paths:
         -
           in: query
           name: since
-          description: 'ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed.'
-          example: '2026-08-01'
+          description: 'ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed. e.g. 2026-08-01.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed.'
-            example: '2026-08-01'
+            description: 'ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed. e.g. 2026-08-01.'
+            example: null
       responses:
         200:
           description: ''
@@ -3036,7 +3398,7 @@ paths:
                   success: true
                   message: ok
                   data:
-                    window_since: '2026-08-01'
+                    window_since: null
                     contacts:
                       total: 2
                       suppressed: 1
@@ -3072,7 +3434,8 @@ paths:
                     properties:
                       window_since:
                         type: string
-                        example: '2026-08-01'
+                        example: null
+                        nullable: true
                       contacts:
                         type: object
                         properties:
@@ -3153,63 +3516,63 @@ paths:
         -
           in: query
           name: level
-          description: 'One of info, warning, error.'
-          example: error
+          description: 'One of info, warning, error. e.g. error.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'One of info, warning, error.'
-            example: error
+            description: 'One of info, warning, error. e.g. error.'
+            example: null
         -
           in: query
           name: event
-          description: 'Exact event name.'
-          example: send_failed
+          description: 'Exact event name. e.g. send_failed.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'Exact event name.'
-            example: send_failed
+            description: 'Exact event name. e.g. send_failed.'
+            example: null
         -
           in: query
           name: retryable
-          description: 'Only entries the system can retry.'
-          example: true
+          description: 'Only entries the system can retry. e.g. true.'
+          example: null
           required: false
           schema:
             type: boolean
-            description: 'Only entries the system can retry.'
-            example: true
+            description: 'Only entries the system can retry. e.g. true.'
+            example: null
         -
           in: query
           name: since
-          description: 'ISO date. Only entries logged on or after it.'
-          example: '2026-08-01'
+          description: 'ISO date. Only entries logged on or after it. e.g. 2026-08-01.'
+          example: null
           required: false
           schema:
             type: string
-            description: 'ISO date. Only entries logged on or after it.'
-            example: '2026-08-01'
+            description: 'ISO date. Only entries logged on or after it. e.g. 2026-08-01.'
+            example: null
         -
           in: query
           name: per_page
-          description: 'Rows per page. Clamped to 200.'
-          example: 50
+          description: 'Rows per page. Clamped to 200. e.g. 50.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Rows per page. Clamped to 200.'
-            example: 50
+            description: 'Rows per page. Clamped to 200. e.g. 50.'
+            example: null
         -
           in: query
           name: page
-          description: 'Which page to return.'
-          example: 1
+          description: 'Which page to return. e.g. 1.'
+          example: null
           required: false
           schema:
             type: integer
-            description: 'Which page to return.'
-            example: 1
+            description: 'Which page to return. e.g. 1.'
+            example: null
       responses:
         200:
           description: ''
@@ -3231,11 +3594,22 @@ paths:
                       subject_id: null
                       retryable: true
                       retried_at: null
-                      created_at: '2026-09-02T08:51:35+00:00'
+                      created_at: '2026-09-02T09:52:27+00:00'
+                    -
+                      id: 1
+                      event: email_sent
+                      level: info
+                      message: 'Sent to jane.doe@acme.example'
+                      context: []
+                      subject_type: App\Models\Message
+                      subject_id: 1
+                      retryable: false
+                      retried_at: null
+                      created_at: '2026-09-02T09:52:27+00:00'
                   meta:
                     page: 1
                     per_page: 50
-                    total: 1
+                    total: 2
                     last_page: 1
                 properties:
                   success:
@@ -3257,7 +3631,18 @@ paths:
                         subject_id: null
                         retryable: true
                         retried_at: null
-                        created_at: '2026-09-02T08:51:35+00:00'
+                        created_at: '2026-09-02T09:52:27+00:00'
+                      -
+                        id: 1
+                        event: email_sent
+                        level: info
+                        message: 'Sent to jane.doe@acme.example'
+                        context: []
+                        subject_type: App\Models\Message
+                        subject_id: 1
+                        retryable: false
+                        retried_at: null
+                        created_at: '2026-09-02T09:52:27+00:00'
                     items:
                       type: object
                       properties:
@@ -3293,7 +3678,7 @@ paths:
                           nullable: true
                         created_at:
                           type: string
-                          example: '2026-09-02T08:51:35+00:00'
+                          example: '2026-09-02T09:52:27+00:00'
                   meta:
                     type: object
                     properties:
@@ -3305,7 +3690,7 @@ paths:
                         example: 50
                       total:
                         type: integer
-                        example: 1
+                        example: 2
                       last_page:
                         type: integer
                         example: 1

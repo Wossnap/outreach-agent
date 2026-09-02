@@ -25,13 +25,13 @@ class EnrollmentController extends ApiController
      *
      * Newest first.
      *
-     * @queryParam status string One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. Example: active
-     * @queryParam contact_id integer Example: 1
-     * @queryParam automation_id integer Example: 1
-     * @queryParam tag string Automation tag. Example: seo-backlinks
-     * @queryParam mailbox_id integer Example: 1
-     * @queryParam per_page integer Rows per page. Clamped to 200. Example: 50
-     * @queryParam page integer Which page to return. Example: 1
+     * @queryParam status string One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. e.g. active. No-example
+     * @queryParam contact_id integer e.g. 1. No-example
+     * @queryParam automation_id integer e.g. 1. No-example
+     * @queryParam tag string Automation tag. e.g. seo-backlinks. No-example
+     * @queryParam mailbox_id integer e.g. 1. No-example
+     * @queryParam per_page integer Rows per page. Clamped to 200. e.g. 50. No-example
+     * @queryParam page integer Which page to return. e.g. 1. No-example
      */
     public function index(Request $request): JsonResponse
     {
