@@ -26,9 +26,23 @@ use Illuminate\Support\Facades\Route;
 | issued before abilities existed keep working.
 */
 
+/*
+| Route parameters that are database ids are constrained to digits.
+|
+| A controller taking an int and a URL supplying "abc" is a TypeError, which
+| answers a mistyped URL with a 500 as though the server were broken. With the
+| constraint the route simply does not match and the caller gets a 404.
+|
+| Deliberately not constrained: `contact` and `automation` accept an id or an
+| email/tag, `email` is an address, and `attachment` is a generated id.
+*/
+// A variable, not a constant: this file is included more than once in the
+// test suite, and redefining a constant is a fatal error.
+$numericIds = ['mailbox', 'message', 'reply', 'enrollment', 'step'];
+
 Route::get('/health', HealthController::class);
 
-Route::middleware('api.auth:read')->group(function () {
+Route::middleware('api.auth:read')->whereNumber($numericIds)->group(function () {
     Route::get('/contacts', [ContactController::class, 'index']);
     Route::get('/contacts/{contact}', [ContactController::class, 'show']);
 
@@ -53,12 +67,12 @@ Route::middleware('api.auth:read')->group(function () {
     Route::get('/stats', [StatsController::class, 'index']);
 });
 
-Route::middleware('api.auth:write,ingest')->group(function () {
+Route::middleware('api.auth:write,ingest')->whereNumber($numericIds)->group(function () {
     // The lead-magnet route: upsert a contact and enroll them by tag.
     Route::post('/contacts', [ContactIngestController::class, 'store']);
 });
 
-Route::middleware('api.auth:write')->group(function () {
+Route::middleware('api.auth:write')->whereNumber($numericIds)->group(function () {
     Route::patch('/messages/{message}', [MessageController::class, 'update']);
     Route::post('/messages/{message}/reject', [MessageController::class, 'reject']);
 
@@ -89,12 +103,12 @@ Route::middleware('api.auth:write')->group(function () {
 | both need a config switch on top of the key's abilities. Off by default.
 */
 
-Route::middleware(['api.auth:approve', 'api.enabled:allow_approval'])->group(function () {
+Route::middleware(['api.auth:approve', 'api.enabled:allow_approval'])->whereNumber($numericIds)->group(function () {
     // Sends a real email with no human having read it.
     Route::post('/messages/{message}/approve', [MessageController::class, 'approve']);
 });
 
-Route::middleware(['api.auth:write', 'api.enabled:allow_suppression_removal'])->group(function () {
+Route::middleware(['api.auth:write', 'api.enabled:allow_suppression_removal'])->whereNumber($numericIds)->group(function () {
     // Resumes emailing someone who asked us to stop.
     Route::delete('/suppressions/{email}', [SuppressionController::class, 'destroy']);
 });

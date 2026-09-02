@@ -203,7 +203,7 @@ parts: mononyms and role addresses ("Support Team") would be mangled by it.
 
 ## Tests
 
-`php artisan test` — 226 tests over the API (read, write, abilities and the two
+`php artisan test` — 231 tests over the API (read, write, abilities and the two
 guarded actions), the ingest endpoint, drafting, approval, scheduling math
 (frozen-time jitter/window/cap/warmup), Gmail MIME/threading including
 multipart attachments, atomic dispatch, inbound classification (bounce DSNs,
