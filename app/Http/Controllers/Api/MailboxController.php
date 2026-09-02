@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\MailboxResource;
 use App\Models\Mailbox;
+use App\Services\Gmail\MailboxDisconnector;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -103,5 +104,47 @@ class MailboxController extends ApiController
         $model->update(['status' => Mailbox::STATUS_ACTIVE, 'paused_reason' => null]);
 
         return $this->ok(new MailboxResource($model->fresh()->load('domain')), 'Mailbox resumed.');
+    }
+
+    /**
+     * Disconnect a mailbox
+     *
+     * Tells Google to forget this application, discards the stored
+     * credentials, and stops the mailbox sending. Stronger than pausing: a
+     * paused mailbox keeps its connection and resumes with one call, whereas a
+     * disconnected one needs a person to sign in at Google again.
+     *
+     * Anything queued to send through it is released and picked up by another
+     * mailbox. Emails already handed to Gmail still go out.
+     *
+     * The history is kept, so reconnecting the same address reuses this
+     * mailbox rather than creating a second one.
+     *
+     * @urlParam mailbox integer required Example: 1
+     *
+     * @bodyParam reason string Recorded against the mailbox and in the activity log. Example: Rotating the sending account
+     */
+    public function disconnect(Request $request, int $mailbox, MailboxDisconnector $disconnector): JsonResponse
+    {
+        $model = Mailbox::query()->find($mailbox);
+
+        if (! $model) {
+            return $this->fail('Mailbox not found.', 404);
+        }
+
+        if ($model->status === Mailbox::STATUS_DISCONNECTED) {
+            return $this->fail('That mailbox is already disconnected.', 409);
+        }
+
+        $payload = $request->validate(['reason' => ['nullable', 'string', 'max:255']]);
+
+        $result = $disconnector->disconnect($model, $payload['reason'] ?? 'Disconnected via API');
+
+        return $this->ok(
+            new MailboxResource($model->fresh()->load('domain')),
+            $result['released'] > 0
+                ? "Mailbox disconnected. {$result['released']} queued email(s) released for another mailbox."
+                : 'Mailbox disconnected.',
+        );
     }
 }

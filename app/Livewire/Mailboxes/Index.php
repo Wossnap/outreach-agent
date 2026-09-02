@@ -4,6 +4,7 @@ namespace App\Livewire\Mailboxes;
 
 use App\Models\Mailbox;
 use App\Models\Message;
+use App\Services\Gmail\MailboxDisconnector;
 use App\Services\Sending\ApprovedMessageRecovery;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -76,6 +77,30 @@ class Index extends Component
         if ($recovered > 0) {
             session()->flash('status', $recovered.' email(s) that were waiting for a mailbox have been scheduled.');
         }
+    }
+
+    /**
+     * Disconnect a mailbox: Google forgets us, the stored credentials go, and
+     * anything queued on it is freed for another mailbox.
+     *
+     * Stronger than pausing, which keeps the connection. Getting this one back
+     * needs a person to sign in at Google again.
+     */
+    public function disconnect(int $id, MailboxDisconnector $disconnector): void
+    {
+        $mailbox = Mailbox::query()->findOrFail($id);
+
+        if ($mailbox->status === Mailbox::STATUS_DISCONNECTED) {
+            return;
+        }
+
+        $result = $disconnector->disconnect($mailbox, 'Disconnected manually');
+
+        $released = $result['released'] > 0
+            ? " {$result['released']} queued email(s) were released for another mailbox."
+            : '';
+
+        session()->flash('status', "{$mailbox->email} disconnected.{$released} Use \"Connect Google mailbox\" to reconnect it.");
     }
 
     public function render()

@@ -58,6 +58,13 @@
                             @elseif ($mailbox->status === 'disconnected')
                                 <a href="{{ route('mailboxes.connect') }}" class="text-xs text-indigo-600 hover:underline">Reconnect</a>
                             @endif
+
+                            @if ($mailbox->status !== 'disconnected')
+                                <button wire:click="disconnect({{ $mailbox->id }})"
+                                    wire:confirm="Disconnect {{ $mailbox->email }}?&#10;&#10;This signs the account out and deletes the stored credentials, so it stops sending and receiving. Anything queued on it moves to another mailbox.&#10;&#10;Its history is kept, but getting it back means signing in at Google again."
+                                    class="text-xs text-red-600 hover:underline">Disconnect</button>
+                            @endif
+
                             <button wire:click="edit({{ $mailbox->id }})" class="text-xs text-indigo-600 hover:underline">Settings</button>
                         </div>
                     </div>

@@ -79,6 +79,9 @@ Route::middleware('api.auth:write')->group(function () {
 
     Route::post('/mailboxes/{mailbox}/pause', [MailboxController::class, 'pause']);
     Route::post('/mailboxes/{mailbox}/resume', [MailboxController::class, 'resume']);
+    // Not guarded by a config switch: it only ever stops sending, and blocking
+    // a way to stop is worse than allowing it. Reversible by reconnecting.
+    Route::post('/mailboxes/{mailbox}/disconnect', [MailboxController::class, 'disconnect']);
 });
 
 /*
