@@ -198,8 +198,8 @@ paths:
                       website: 'https://globex.example'
                       source: tube-trend-tool
                       custom: []
-                      created_at: '2026-09-02T09:52:27+00:00'
-                      updated_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
+                      updated_at: '2026-09-02T10:01:23+00:00'
                     -
                       id: 1
                       email: jane.doe@acme.example
@@ -212,8 +212,8 @@ paths:
                       custom:
                         industry: SaaS
                         employees: 40
-                      created_at: '2026-09-02T09:52:27+00:00'
-                      updated_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
+                      updated_at: '2026-09-02T10:01:23+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -239,8 +239,8 @@ paths:
                         website: 'https://globex.example'
                         source: tube-trend-tool
                         custom: []
-                        created_at: '2026-09-02T09:52:27+00:00'
-                        updated_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
+                        updated_at: '2026-09-02T10:01:23+00:00'
                       -
                         id: 1
                         email: jane.doe@acme.example
@@ -253,8 +253,8 @@ paths:
                         custom:
                           industry: SaaS
                           employees: 40
-                        created_at: '2026-09-02T09:52:27+00:00'
-                        updated_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
+                        updated_at: '2026-09-02T10:01:23+00:00'
                     items:
                       type: object
                       properties:
@@ -287,10 +287,10 @@ paths:
                           example: []
                         created_at:
                           type: string
-                          example: '2026-09-02T09:52:27+00:00'
+                          example: '2026-09-02T10:01:23+00:00'
                         updated_at:
                           type: string
-                          example: '2026-09-02T09:52:27+00:00'
+                          example: '2026-09-02T10:01:23+00:00'
                   meta:
                     type: object
                     properties:
@@ -403,8 +403,8 @@ paths:
                       industry: SaaS
                       employees: 40
                     suppressed: false
-                    created_at: '2026-09-02T09:52:27+00:00'
-                    updated_at: '2026-09-02T09:52:27+00:00'
+                    created_at: '2026-09-02T10:01:23+00:00'
+                    updated_at: '2026-09-02T10:01:23+00:00'
                     enrollments:
                       -
                         id: 1
@@ -417,7 +417,7 @@ paths:
                         current_step: 1
                         stopped_at: null
                         stop_reason: null
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                     messages:
                       -
                         id: 1
@@ -432,12 +432,12 @@ paths:
                         body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                         edited_by_user: false
                         scheduled_at: null
-                        sent_at: '2026-09-01T09:52:27+00:00'
+                        sent_at: '2026-09-01T10:01:23+00:00'
                         approved_at: null
                         rejected_at: null
                         rejection_note: null
                         error: null
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                     replies:
                       -
                         id: 1
@@ -450,7 +450,7 @@ paths:
                         snippet: 'Happy to take a look, send it over.'
                         body_text: "Happy to take a look, send it over.\n\nJane"
                         classification: reply
-                        received_at: '2026-09-02T03:52:27+00:00'
+                        received_at: '2026-09-02T04:01:23+00:00'
                         read_at: null
                 properties:
                   success:
@@ -500,10 +500,10 @@ paths:
                         example: false
                       created_at:
                         type: string
-                        example: '2026-09-02T09:52:27+00:00'
+                        example: '2026-09-02T10:01:23+00:00'
                       updated_at:
                         type: string
-                        example: '2026-09-02T09:52:27+00:00'
+                        example: '2026-09-02T10:01:23+00:00'
                       enrollments:
                         type: array
                         example:
@@ -518,7 +518,7 @@ paths:
                             current_step: 1
                             stopped_at: null
                             stop_reason: null
-                            created_at: '2026-09-02T09:52:27+00:00'
+                            created_at: '2026-09-02T10:01:23+00:00'
                         items:
                           type: object
                           properties:
@@ -556,7 +556,7 @@ paths:
                               nullable: true
                             created_at:
                               type: string
-                              example: '2026-09-02T09:52:27+00:00'
+                              example: '2026-09-02T10:01:23+00:00'
                       messages:
                         type: array
                         example:
@@ -573,12 +573,12 @@ paths:
                             body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                             edited_by_user: false
                             scheduled_at: null
-                            sent_at: '2026-09-01T09:52:27+00:00'
+                            sent_at: '2026-09-01T10:01:23+00:00'
                             approved_at: null
                             rejected_at: null
                             rejection_note: null
                             error: null
-                            created_at: '2026-09-02T09:52:27+00:00'
+                            created_at: '2026-09-02T10:01:23+00:00'
                         items:
                           type: object
                           properties:
@@ -621,7 +621,7 @@ paths:
                               nullable: true
                             sent_at:
                               type: string
-                              example: '2026-09-01T09:52:27+00:00'
+                              example: '2026-09-01T10:01:23+00:00'
                             approved_at:
                               type: string
                               example: null
@@ -640,7 +640,7 @@ paths:
                               nullable: true
                             created_at:
                               type: string
-                              example: '2026-09-02T09:52:27+00:00'
+                              example: '2026-09-02T10:01:23+00:00'
                       replies:
                         type: array
                         example:
@@ -655,7 +655,7 @@ paths:
                             snippet: 'Happy to take a look, send it over.'
                             body_text: "Happy to take a look, send it over.\n\nJane"
                             classification: reply
-                            received_at: '2026-09-02T03:52:27+00:00'
+                            received_at: '2026-09-02T04:01:23+00:00'
                             read_at: null
                         items:
                           type: object
@@ -692,7 +692,7 @@ paths:
                               example: reply
                             received_at:
                               type: string
-                              example: '2026-09-02T03:52:27+00:00'
+                              example: '2026-09-02T04:01:23+00:00'
                             read_at:
                               type: string
                               example: null
@@ -771,8 +771,8 @@ paths:
                       name: 'SEO backlinks outreach'
                       description: 'Three touches for sites that could carry a link back to us.'
                       active: true
-                      created_at: '2026-09-02T09:52:27+00:00'
-                      updated_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
+                      updated_at: '2026-09-02T10:01:23+00:00'
                       steps:
                         -
                           id: 1
@@ -783,7 +783,7 @@ paths:
                           drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                           active: true
                           attachments: []
-                          created_at: '2026-09-02T09:52:27+00:00'
+                          created_at: '2026-09-02T10:01:23+00:00'
                         -
                           id: 2
                           automation_id: 1
@@ -793,7 +793,7 @@ paths:
                           drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                           active: true
                           attachments: []
-                          created_at: '2026-09-02T09:52:27+00:00'
+                          created_at: '2026-09-02T10:01:23+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -815,8 +815,8 @@ paths:
                         name: 'SEO backlinks outreach'
                         description: 'Three touches for sites that could carry a link back to us.'
                         active: true
-                        created_at: '2026-09-02T09:52:27+00:00'
-                        updated_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
+                        updated_at: '2026-09-02T10:01:23+00:00'
                         steps:
                           -
                             id: 1
@@ -827,7 +827,7 @@ paths:
                             drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                             active: true
                             attachments: []
-                            created_at: '2026-09-02T09:52:27+00:00'
+                            created_at: '2026-09-02T10:01:23+00:00'
                           -
                             id: 2
                             automation_id: 1
@@ -837,7 +837,7 @@ paths:
                             drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                             active: true
                             attachments: []
-                            created_at: '2026-09-02T09:52:27+00:00'
+                            created_at: '2026-09-02T10:01:23+00:00'
                     items:
                       type: object
                       properties:
@@ -858,10 +858,10 @@ paths:
                           example: true
                         created_at:
                           type: string
-                          example: '2026-09-02T09:52:27+00:00'
+                          example: '2026-09-02T10:01:23+00:00'
                         updated_at:
                           type: string
-                          example: '2026-09-02T09:52:27+00:00'
+                          example: '2026-09-02T10:01:23+00:00'
                         steps:
                           type: array
                           example:
@@ -874,7 +874,7 @@ paths:
                               drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                               active: true
                               attachments: []
-                              created_at: '2026-09-02T09:52:27+00:00'
+                              created_at: '2026-09-02T10:01:23+00:00'
                             -
                               id: 2
                               automation_id: 1
@@ -884,7 +884,7 @@ paths:
                               drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                               active: true
                               attachments: []
-                              created_at: '2026-09-02T09:52:27+00:00'
+                              created_at: '2026-09-02T10:01:23+00:00'
                           items:
                             type: object
                             properties:
@@ -914,7 +914,7 @@ paths:
                                 example: []
                               created_at:
                                 type: string
-                                example: '2026-09-02T09:52:27+00:00'
+                                example: '2026-09-02T10:01:23+00:00'
                   meta:
                     type: object
                     properties:
@@ -1025,8 +1025,8 @@ paths:
                     name: 'SEO backlinks outreach'
                     description: 'Three touches for sites that could carry a link back to us.'
                     active: true
-                    created_at: '2026-09-02T09:52:27+00:00'
-                    updated_at: '2026-09-02T09:52:27+00:00'
+                    created_at: '2026-09-02T10:01:23+00:00'
+                    updated_at: '2026-09-02T10:01:23+00:00'
                     steps:
                       -
                         id: 1
@@ -1037,7 +1037,7 @@ paths:
                         drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                         active: true
                         attachments: []
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                       -
                         id: 2
                         automation_id: 1
@@ -1047,7 +1047,7 @@ paths:
                         drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                         active: true
                         attachments: []
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                 properties:
                   success:
                     type: boolean
@@ -1075,10 +1075,10 @@ paths:
                         example: true
                       created_at:
                         type: string
-                        example: '2026-09-02T09:52:27+00:00'
+                        example: '2026-09-02T10:01:23+00:00'
                       updated_at:
                         type: string
-                        example: '2026-09-02T09:52:27+00:00'
+                        example: '2026-09-02T10:01:23+00:00'
                       steps:
                         type: array
                         example:
@@ -1091,7 +1091,7 @@ paths:
                             drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                             active: true
                             attachments: []
-                            created_at: '2026-09-02T09:52:27+00:00'
+                            created_at: '2026-09-02T10:01:23+00:00'
                           -
                             id: 2
                             automation_id: 1
@@ -1101,7 +1101,7 @@ paths:
                             drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                             active: true
                             attachments: []
-                            created_at: '2026-09-02T09:52:27+00:00'
+                            created_at: '2026-09-02T10:01:23+00:00'
                         items:
                           type: object
                           properties:
@@ -1131,7 +1131,7 @@ paths:
                               example: []
                             created_at:
                               type: string
-                              example: '2026-09-02T09:52:27+00:00'
+                              example: '2026-09-02T10:01:23+00:00'
       tags:
         - Automations
     patch:
@@ -1201,7 +1201,7 @@ paths:
                       drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                       active: true
                       attachments: []
-                      created_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
                     -
                       id: 2
                       automation_id: 1
@@ -1211,7 +1211,7 @@ paths:
                       drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                       active: true
                       attachments: []
-                      created_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
                 properties:
                   success:
                     type: boolean
@@ -1231,7 +1231,7 @@ paths:
                         drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                         active: true
                         attachments: []
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                       -
                         id: 2
                         automation_id: 1
@@ -1241,7 +1241,7 @@ paths:
                         drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                         active: true
                         attachments: []
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                     items:
                       type: object
                       properties:
@@ -1271,7 +1271,7 @@ paths:
                           example: []
                         created_at:
                           type: string
-                          example: '2026-09-02T09:52:27+00:00'
+                          example: '2026-09-02T10:01:23+00:00'
       tags:
         - Automations
     post:
@@ -1556,7 +1556,7 @@ paths:
                       current_step: 0
                       stopped_at: null
                       stop_reason: null
-                      created_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
                       contact:
                         id: 2
                         email: sam.patel@globex.example
@@ -1567,8 +1567,8 @@ paths:
                         website: 'https://globex.example'
                         source: tube-trend-tool
                         custom: []
-                        created_at: '2026-09-02T09:52:27+00:00'
-                        updated_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
+                        updated_at: '2026-09-02T10:01:23+00:00'
                     -
                       id: 1
                       contact_id: 1
@@ -1580,7 +1580,7 @@ paths:
                       current_step: 1
                       stopped_at: null
                       stop_reason: null
-                      created_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
                       contact:
                         id: 1
                         email: jane.doe@acme.example
@@ -1593,8 +1593,8 @@ paths:
                         custom:
                           industry: SaaS
                           employees: 40
-                        created_at: '2026-09-02T09:52:27+00:00'
-                        updated_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
+                        updated_at: '2026-09-02T10:01:23+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -1621,7 +1621,7 @@ paths:
                         current_step: 0
                         stopped_at: null
                         stop_reason: null
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                         contact:
                           id: 2
                           email: sam.patel@globex.example
@@ -1632,8 +1632,8 @@ paths:
                           website: 'https://globex.example'
                           source: tube-trend-tool
                           custom: []
-                          created_at: '2026-09-02T09:52:27+00:00'
-                          updated_at: '2026-09-02T09:52:27+00:00'
+                          created_at: '2026-09-02T10:01:23+00:00'
+                          updated_at: '2026-09-02T10:01:23+00:00'
                       -
                         id: 1
                         contact_id: 1
@@ -1645,7 +1645,7 @@ paths:
                         current_step: 1
                         stopped_at: null
                         stop_reason: null
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                         contact:
                           id: 1
                           email: jane.doe@acme.example
@@ -1658,8 +1658,8 @@ paths:
                           custom:
                             industry: SaaS
                             employees: 40
-                          created_at: '2026-09-02T09:52:27+00:00'
-                          updated_at: '2026-09-02T09:52:27+00:00'
+                          created_at: '2026-09-02T10:01:23+00:00'
+                          updated_at: '2026-09-02T10:01:23+00:00'
                     items:
                       type: object
                       properties:
@@ -1697,7 +1697,7 @@ paths:
                           nullable: true
                         created_at:
                           type: string
-                          example: '2026-09-02T09:52:27+00:00'
+                          example: '2026-09-02T10:01:23+00:00'
                         contact:
                           type: object
                           properties:
@@ -1730,10 +1730,10 @@ paths:
                               example: []
                             created_at:
                               type: string
-                              example: '2026-09-02T09:52:27+00:00'
+                              example: '2026-09-02T10:01:23+00:00'
                             updated_at:
                               type: string
-                              example: '2026-09-02T09:52:27+00:00'
+                              example: '2026-09-02T10:01:23+00:00'
                   meta:
                     type: object
                     properties:
@@ -1912,12 +1912,12 @@ paths:
                       body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                       edited_by_user: false
                       scheduled_at: null
-                      sent_at: '2026-09-01T09:52:27+00:00'
+                      sent_at: '2026-09-01T10:01:23+00:00'
                       approved_at: null
                       rejected_at: null
                       rejection_note: null
                       error: null
-                      created_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
                       contact:
                         id: 1
                         email: jane.doe@acme.example
@@ -1930,8 +1930,8 @@ paths:
                         custom:
                           industry: SaaS
                           employees: 40
-                        created_at: '2026-09-02T09:52:27+00:00'
-                        updated_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
+                        updated_at: '2026-09-02T10:01:23+00:00'
                     -
                       id: 2
                       enrollment_id: 2
@@ -1950,7 +1950,7 @@ paths:
                       rejected_at: null
                       rejection_note: null
                       error: null
-                      created_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
                       contact:
                         id: 2
                         email: sam.patel@globex.example
@@ -1961,8 +1961,8 @@ paths:
                         website: 'https://globex.example'
                         source: tube-trend-tool
                         custom: []
-                        created_at: '2026-09-02T09:52:27+00:00'
-                        updated_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
+                        updated_at: '2026-09-02T10:01:23+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -1991,12 +1991,12 @@ paths:
                         body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                         edited_by_user: false
                         scheduled_at: null
-                        sent_at: '2026-09-01T09:52:27+00:00'
+                        sent_at: '2026-09-01T10:01:23+00:00'
                         approved_at: null
                         rejected_at: null
                         rejection_note: null
                         error: null
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                         contact:
                           id: 1
                           email: jane.doe@acme.example
@@ -2009,8 +2009,8 @@ paths:
                           custom:
                             industry: SaaS
                             employees: 40
-                          created_at: '2026-09-02T09:52:27+00:00'
-                          updated_at: '2026-09-02T09:52:27+00:00'
+                          created_at: '2026-09-02T10:01:23+00:00'
+                          updated_at: '2026-09-02T10:01:23+00:00'
                       -
                         id: 2
                         enrollment_id: 2
@@ -2029,7 +2029,7 @@ paths:
                         rejected_at: null
                         rejection_note: null
                         error: null
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                         contact:
                           id: 2
                           email: sam.patel@globex.example
@@ -2040,8 +2040,8 @@ paths:
                           website: 'https://globex.example'
                           source: tube-trend-tool
                           custom: []
-                          created_at: '2026-09-02T09:52:27+00:00'
-                          updated_at: '2026-09-02T09:52:27+00:00'
+                          created_at: '2026-09-02T10:01:23+00:00'
+                          updated_at: '2026-09-02T10:01:23+00:00'
                     items:
                       type: object
                       properties:
@@ -2084,7 +2084,7 @@ paths:
                           nullable: true
                         sent_at:
                           type: string
-                          example: '2026-09-01T09:52:27+00:00'
+                          example: '2026-09-01T10:01:23+00:00'
                         approved_at:
                           type: string
                           example: null
@@ -2103,7 +2103,7 @@ paths:
                           nullable: true
                         created_at:
                           type: string
-                          example: '2026-09-02T09:52:27+00:00'
+                          example: '2026-09-02T10:01:23+00:00'
                         contact:
                           type: object
                           properties:
@@ -2142,10 +2142,10 @@ paths:
                                   example: 40
                             created_at:
                               type: string
-                              example: '2026-09-02T09:52:27+00:00'
+                              example: '2026-09-02T10:01:23+00:00'
                             updated_at:
                               type: string
-                              example: '2026-09-02T09:52:27+00:00'
+                              example: '2026-09-02T10:01:23+00:00'
                   meta:
                     type: object
                     properties:
@@ -2192,12 +2192,12 @@ paths:
                     body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                     edited_by_user: false
                     scheduled_at: null
-                    sent_at: '2026-09-01T09:52:27+00:00'
+                    sent_at: '2026-09-01T10:01:23+00:00'
                     approved_at: null
                     rejected_at: null
                     rejection_note: null
                     error: null
-                    created_at: '2026-09-02T09:52:27+00:00'
+                    created_at: '2026-09-02T10:01:23+00:00'
                     contact:
                       id: 1
                       email: jane.doe@acme.example
@@ -2210,8 +2210,8 @@ paths:
                       custom:
                         industry: SaaS
                         employees: 40
-                      created_at: '2026-09-02T09:52:27+00:00'
-                      updated_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
+                      updated_at: '2026-09-02T10:01:23+00:00'
                 properties:
                   success:
                     type: boolean
@@ -2261,7 +2261,7 @@ paths:
                         nullable: true
                       sent_at:
                         type: string
-                        example: '2026-09-01T09:52:27+00:00'
+                        example: '2026-09-01T10:01:23+00:00'
                       approved_at:
                         type: string
                         example: null
@@ -2280,7 +2280,7 @@ paths:
                         nullable: true
                       created_at:
                         type: string
-                        example: '2026-09-02T09:52:27+00:00'
+                        example: '2026-09-02T10:01:23+00:00'
                       contact:
                         type: object
                         properties:
@@ -2319,10 +2319,10 @@ paths:
                                 example: 40
                           created_at:
                             type: string
-                            example: '2026-09-02T09:52:27+00:00'
+                            example: '2026-09-02T10:01:23+00:00'
                           updated_at:
                             type: string
-                            example: '2026-09-02T09:52:27+00:00'
+                            example: '2026-09-02T10:01:23+00:00'
       tags:
         - Messages
     patch:
@@ -2513,7 +2513,7 @@ paths:
                       snippet: 'Happy to take a look, send it over.'
                       body_text: "Happy to take a look, send it over.\n\nJane"
                       classification: reply
-                      received_at: '2026-09-02T03:52:27+00:00'
+                      received_at: '2026-09-02T04:01:23+00:00'
                       read_at: null
                       contact:
                         id: 1
@@ -2527,8 +2527,8 @@ paths:
                         custom:
                           industry: SaaS
                           employees: 40
-                        created_at: '2026-09-02T09:52:27+00:00'
-                        updated_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
+                        updated_at: '2026-09-02T10:01:23+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -2555,7 +2555,7 @@ paths:
                         snippet: 'Happy to take a look, send it over.'
                         body_text: "Happy to take a look, send it over.\n\nJane"
                         classification: reply
-                        received_at: '2026-09-02T03:52:27+00:00'
+                        received_at: '2026-09-02T04:01:23+00:00'
                         read_at: null
                         contact:
                           id: 1
@@ -2569,8 +2569,8 @@ paths:
                           custom:
                             industry: SaaS
                             employees: 40
-                          created_at: '2026-09-02T09:52:27+00:00'
-                          updated_at: '2026-09-02T09:52:27+00:00'
+                          created_at: '2026-09-02T10:01:23+00:00'
+                          updated_at: '2026-09-02T10:01:23+00:00'
                     items:
                       type: object
                       properties:
@@ -2606,7 +2606,7 @@ paths:
                           example: reply
                         received_at:
                           type: string
-                          example: '2026-09-02T03:52:27+00:00'
+                          example: '2026-09-02T04:01:23+00:00'
                         read_at:
                           type: string
                           example: null
@@ -2649,10 +2649,10 @@ paths:
                                   example: 40
                             created_at:
                               type: string
-                              example: '2026-09-02T09:52:27+00:00'
+                              example: '2026-09-02T10:01:23+00:00'
                             updated_at:
                               type: string
-                              example: '2026-09-02T09:52:27+00:00'
+                              example: '2026-09-02T10:01:23+00:00'
                   meta:
                     type: object
                     properties:
@@ -2697,7 +2697,7 @@ paths:
                     snippet: 'Happy to take a look, send it over.'
                     body_text: "Happy to take a look, send it over.\n\nJane"
                     classification: reply
-                    received_at: '2026-09-02T03:52:27+00:00'
+                    received_at: '2026-09-02T04:01:23+00:00'
                     read_at: null
                     contact:
                       id: 1
@@ -2711,8 +2711,8 @@ paths:
                       custom:
                         industry: SaaS
                         employees: 40
-                      created_at: '2026-09-02T09:52:27+00:00'
-                      updated_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
+                      updated_at: '2026-09-02T10:01:23+00:00'
                 properties:
                   success:
                     type: boolean
@@ -2755,7 +2755,7 @@ paths:
                         example: reply
                       received_at:
                         type: string
-                        example: '2026-09-02T03:52:27+00:00'
+                        example: '2026-09-02T04:01:23+00:00'
                       read_at:
                         type: string
                         example: null
@@ -2798,10 +2798,10 @@ paths:
                                 example: 40
                           created_at:
                             type: string
-                            example: '2026-09-02T09:52:27+00:00'
+                            example: '2026-09-02T10:01:23+00:00'
                           updated_at:
                             type: string
-                            example: '2026-09-02T09:52:27+00:00'
+                            example: '2026-09-02T10:01:23+00:00'
       tags:
         - Replies
     parameters:
@@ -2885,7 +2885,7 @@ paths:
                       email: no.thanks@globex.example
                       reason: unsubscribed
                       source_reply_id: null
-                      created_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -2906,7 +2906,7 @@ paths:
                         email: no.thanks@globex.example
                         reason: unsubscribed
                         source_reply_id: null
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                     items:
                       type: object
                       properties:
@@ -2925,7 +2925,7 @@ paths:
                           nullable: true
                         created_at:
                           type: string
-                          example: '2026-09-02T09:52:27+00:00'
+                          example: '2026-09-02T10:01:23+00:00'
                   meta:
                     type: object
                     properties:
@@ -3053,7 +3053,7 @@ paths:
                         sent: 84
                         bounce_rate: 0.0119
                         reply_rate: 0.0714
-                      last_polled_at: '2026-09-02T09:50:27+00:00'
+                      last_polled_at: '2026-09-02T09:59:23+00:00'
                       last_send_error: null
                   meta:
                     page: 1
@@ -3089,7 +3089,7 @@ paths:
                           sent: 84
                           bounce_rate: 0.0119
                           reply_rate: 0.0714
-                        last_polled_at: '2026-09-02T09:50:27+00:00'
+                        last_polled_at: '2026-09-02T09:59:23+00:00'
                         last_send_error: null
                     items:
                       type: object
@@ -3151,7 +3151,7 @@ paths:
                               example: 0.0714
                         last_polled_at:
                           type: string
-                          example: '2026-09-02T09:50:27+00:00'
+                          example: '2026-09-02T09:59:23+00:00'
                         last_send_error:
                           type: string
                           example: null
@@ -3208,7 +3208,7 @@ paths:
                       sent: 84
                       bounce_rate: 0.0119
                       reply_rate: 0.0714
-                    last_polled_at: '2026-09-02T09:50:27+00:00'
+                    last_polled_at: '2026-09-02T09:59:23+00:00'
                     last_send_error: null
                 properties:
                   success:
@@ -3277,7 +3277,7 @@ paths:
                             example: 0.0714
                       last_polled_at:
                         type: string
-                        example: '2026-09-02T09:50:27+00:00'
+                        example: '2026-09-02T09:59:23+00:00'
                       last_send_error:
                         type: string
                         example: null
@@ -3594,7 +3594,7 @@ paths:
                       subject_id: null
                       retryable: true
                       retried_at: null
-                      created_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
                     -
                       id: 1
                       event: email_sent
@@ -3605,7 +3605,7 @@ paths:
                       subject_id: 1
                       retryable: false
                       retried_at: null
-                      created_at: '2026-09-02T09:52:27+00:00'
+                      created_at: '2026-09-02T10:01:23+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -3631,7 +3631,7 @@ paths:
                         subject_id: null
                         retryable: true
                         retried_at: null
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                       -
                         id: 1
                         event: email_sent
@@ -3642,7 +3642,7 @@ paths:
                         subject_id: 1
                         retryable: false
                         retried_at: null
-                        created_at: '2026-09-02T09:52:27+00:00'
+                        created_at: '2026-09-02T10:01:23+00:00'
                     items:
                       type: object
                       properties:
@@ -3678,7 +3678,7 @@ paths:
                           nullable: true
                         created_at:
                           type: string
-                          example: '2026-09-02T09:52:27+00:00'
+                          example: '2026-09-02T10:01:23+00:00'
                   meta:
                     type: object
                     properties:

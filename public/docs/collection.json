@@ -5,14 +5,14 @@
             "key": "baseUrl",
             "type": "string",
             "name": "string",
-            "value": "https:\/\/outreach.seannocode.com"
+            "value": "https://outreach.seannocode.com"
         }
     ],
     "info": {
         "name": "Outreach Agent API",
-        "_postman_id": "fc3f6fcc-2990-4996-a032-bf28ac02172d",
+        "_postman_id": "69f96fdf-8efd-42ad-a26a-55ba59e5e6cb",
         "description": "",
-        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
         {
@@ -24,19 +24,19 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/health",
+                            "path": "api/health",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/health"
+                            "raw": "{{baseUrl}}/api/health"
                         },
                         "method": "GET",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -65,7 +65,7 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/contacts",
+                            "path": "api/contacts",
                             "query": [
                                 {
                                     "key": "email",
@@ -122,17 +122,17 @@
                                     "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/contacts?email=&company=&q=&tag=&status=&suppressed=&since=&per_page=&page="
+                            "raw": "{{baseUrl}}/api/contacts"
                         },
                         "method": "GET",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -147,7 +147,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -155,7 +155,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"email\":\"sam.patel@globex.example\",\"name\":\"Sam Patel\",\"first_name\":\"Sam\",\"last_name\":\"Patel\",\"company\":\"Globex\",\"website\":\"https:\\\/\\\/globex.example\",\"source\":\"tube-trend-tool\",\"custom\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"},{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"email\":\"sam.patel@globex.example\",\"name\":\"Sam Patel\",\"first_name\":\"Sam\",\"last_name\":\"Patel\",\"company\":\"Globex\",\"website\":\"https:\\/\\/globex.example\",\"source\":\"tube-trend-tool\",\"custom\":[],\"created_at\":\"2026-09-02T10:01:23+00:00\",\"updated_at\":\"2026-09-02T10:01:23+00:00\"},{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\/\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T10:01:23+00:00\",\"updated_at\":\"2026-09-02T10:01:23+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -165,9 +165,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/contacts\/:contact",
+                            "path": "api/contacts/:contact",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/contacts\/:contact",
+                            "raw": "{{baseUrl}}/api/contacts/:contact",
                             "variable": [
                                 {
                                     "id": "contact",
@@ -181,11 +181,11 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -200,7 +200,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -208,7 +208,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"suppressed\":false,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\",\"enrollments\":[{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\"}],\"messages\":[{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-01T09:52:27+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\"}],\"replies\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-02T03:52:27+00:00\",\"read_at\":null}]}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\/\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"suppressed\":false,\"created_at\":\"2026-09-02T10:01:23+00:00\",\"updated_at\":\"2026-09-02T10:01:23+00:00\",\"enrollments\":[{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-02T10:01:23+00:00\"}],\"messages\":[{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-01T10:01:23+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T10:01:23+00:00\"}],\"replies\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-02T04:01:23+00:00\",\"read_at\":null}]}}",
                             "name": ""
                         }
                     ]
@@ -218,26 +218,26 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/contacts",
+                            "path": "api/contacts",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/contacts"
+                            "raw": "{{baseUrl}}/api/contacts"
                         },
                         "method": "POST",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"custom\":{\"industry\":\"SaaS\"},\"source\":\"tube-trend-tool\",\"tags\":[\"seo-backlinks\"]}"
+                            "raw": "{\n    \"email\": \"jane.doe@acme.example\",\n    \"name\": \"Jane Doe\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Doe\",\n    \"company\": \"Acme Ltd\",\n    \"website\": \"https://acme.example\",\n    \"custom\": {\n        \"industry\": \"SaaS\"\n    },\n    \"source\": \"tube-trend-tool\",\n    \"tags\": [\n        \"seo-backlinks\"\n    ]\n}"
                         },
-                        "description": "Upserts the contact and enrolls them in the automation matching each\ntag. A suppressed address is accepted and nothing is enrolled, so read\nGET \/api\/suppressions first if you need to know that happened."
+                        "description": "Upserts the contact and enrolls them in the automation matching each\ntag. A suppressed address is accepted and nothing is enrolled, so read\nGET /api/suppressions first if you need to know that happened."
                     },
                     "response": []
                 }
@@ -252,7 +252,7 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/automations",
+                            "path": "api/automations",
                             "query": [
                                 {
                                     "key": "active",
@@ -279,17 +279,17 @@
                                     "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/automations?active=&tag=&per_page=&page="
+                            "raw": "{{baseUrl}}/api/automations"
                         },
                         "method": "GET",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -304,7 +304,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -312,7 +312,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\"}]}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-02T10:01:23+00:00\",\"updated_at\":\"2026-09-02T10:01:23+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T10:01:23+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T10:01:23+00:00\"}]}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -322,9 +322,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/automations\/:automation",
+                            "path": "api/automations/:automation",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/automations\/:automation",
+                            "raw": "{{baseUrl}}/api/automations/:automation",
                             "variable": [
                                 {
                                     "id": "automation",
@@ -338,11 +338,11 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -357,7 +357,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -365,7 +365,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\"}]}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-02T10:01:23+00:00\",\"updated_at\":\"2026-09-02T10:01:23+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T10:01:23+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T10:01:23+00:00\"}]}}",
                             "name": ""
                         }
                     ]
@@ -375,9 +375,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/automations\/:automation\/steps",
+                            "path": "api/automations/:automation/steps",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/automations\/:automation\/steps",
+                            "raw": "{{baseUrl}}/api/automations/:automation/steps",
                             "variable": [
                                 {
                                     "id": "automation",
@@ -391,11 +391,11 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -410,7 +410,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -418,7 +418,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\"}]}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T10:01:23+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-02T10:01:23+00:00\"}]}",
                             "name": ""
                         }
                     ]
@@ -428,26 +428,26 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/automations",
+                            "path": "api/automations",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/automations"
+                            "raw": "{{baseUrl}}/api/automations"
                         },
                         "method": "POST",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Two touches for sites that could carry a link back to us.\",\"active\":true,\"steps\":[{\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Short, friendly cold email asking if they would consider a guest post. Two sentences, no pitch.\",\"active\":true}]}"
+                            "raw": "{\n    \"tag\": \"seo-backlinks\",\n    \"name\": \"SEO backlinks outreach\",\n    \"description\": \"Two touches for sites that could carry a link back to us.\",\n    \"active\": true,\n    \"steps\": [\n        {\n            \"position\": 1,\n            \"delay_days\": 0,\n            \"delay_hours\": 0,\n            \"drafting_instructions\": \"Short, friendly cold email asking if they would consider a guest post. Two sentences, no pitch.\",\n            \"active\": true\n        }\n    ]\n}"
                         },
-                        "description": "Optionally with its steps in the same call.\n\nThe tag is how contacts get enrolled: pushing a contact with that tag to\nPOST \/api\/contacts starts them on this sequence."
+                        "description": "Optionally with its steps in the same call.\n\nThe tag is how contacts get enrolled: pushing a contact with that tag to\nPOST /api/contacts starts them on this sequence."
                     },
                     "response": []
                 },
@@ -456,9 +456,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/automations\/:automation",
+                            "path": "api/automations/:automation",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/automations\/:automation",
+                            "raw": "{{baseUrl}}/api/automations/:automation",
                             "variable": [
                                 {
                                     "id": "automation",
@@ -472,16 +472,16 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Two touches for sites that could carry a link back to us.\",\"active\":false}"
+                            "raw": "{\n    \"tag\": \"seo-backlinks\",\n    \"name\": \"SEO backlinks outreach\",\n    \"description\": \"Two touches for sites that could carry a link back to us.\",\n    \"active\": false\n}"
                         },
                         "description": ""
                     },
@@ -492,9 +492,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/automations\/:automation\/steps",
+                            "path": "api/automations/:automation/steps",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/automations\/:automation\/steps",
+                            "raw": "{{baseUrl}}/api/automations/:automation/steps",
                             "variable": [
                                 {
                                     "id": "automation",
@@ -508,16 +508,16 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Brief follow-up. Reference the first email, ask if they saw it.\",\"active\":true}"
+                            "raw": "{\n    \"position\": 2,\n    \"delay_days\": 3,\n    \"delay_hours\": 0,\n    \"drafting_instructions\": \"Brief follow-up. Reference the first email, ask if they saw it.\",\n    \"active\": true\n}"
                         },
                         "description": "Position 1 is the first email; later positions are the follow-ups, sent\ndelay_days and delay_hours after the previous one."
                     },
@@ -528,9 +528,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/automations\/:automation\/steps\/:step",
+                            "path": "api/automations/:automation/steps/:step",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/automations\/:automation\/steps\/:step",
+                            "raw": "{{baseUrl}}/api/automations/:automation/steps/:step",
                             "variable": [
                                 {
                                     "id": "automation",
@@ -550,16 +550,16 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Brief follow-up. Reference the first email, ask if they saw it.\",\"active\":false}"
+                            "raw": "{\n    \"position\": 2,\n    \"delay_days\": 3,\n    \"delay_hours\": 0,\n    \"drafting_instructions\": \"Brief follow-up. Reference the first email, ask if they saw it.\",\n    \"active\": false\n}"
                         },
                         "description": ""
                     },
@@ -570,9 +570,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/automations\/:automation\/steps\/:step",
+                            "path": "api/automations/:automation/steps/:step",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/automations\/:automation\/steps\/:step",
+                            "raw": "{{baseUrl}}/api/automations/:automation/steps/:step",
                             "variable": [
                                 {
                                     "id": "automation",
@@ -592,11 +592,11 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -609,9 +609,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/automations\/:automation\/steps\/:step\/attachments",
+                            "path": "api/automations/:automation/steps/:step/attachments",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/automations\/:automation\/steps\/:step\/attachments",
+                            "raw": "{{baseUrl}}/api/automations/:automation/steps/:step/attachments",
                             "variable": [
                                 {
                                     "id": "automation",
@@ -631,11 +631,11 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "multipart\/form-data"
+                                "value": "multipart/form-data"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
@@ -648,7 +648,7 @@
                                 }
                             ]
                         },
-                        "description": "Send it as multipart\/form-data under `file`.\n\nThe file goes out with this step's email only. To attach the same file\nto every email in the sequence, upload it to each step.\n\nExecutables and archives are refused: recipients' gateways strip or\nquarantine them, and that cost lands on the whole sending domain."
+                        "description": "Send it as multipart/form-data under `file`.\n\nThe file goes out with this step's email only. To attach the same file\nto every email in the sequence, upload it to each step.\n\nExecutables and archives are refused: recipients' gateways strip or\nquarantine them, and that cost lands on the whole sending domain."
                     },
                     "response": []
                 },
@@ -657,9 +657,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/automations\/:automation\/steps\/:step\/attachments\/:attachment",
+                            "path": "api/automations/:automation/steps/:step/attachments/:attachment",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/automations\/:automation\/steps\/:step\/attachments\/:attachment",
+                            "raw": "{{baseUrl}}/api/automations/:automation/steps/:step/attachments/:attachment",
                             "variable": [
                                 {
                                     "id": "automation",
@@ -685,11 +685,11 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -708,7 +708,7 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/enrollments",
+                            "path": "api/enrollments",
                             "query": [
                                 {
                                     "key": "status",
@@ -753,17 +753,17 @@
                                     "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/enrollments?status=&contact_id=&automation_id=&tag=&mailbox_id=&per_page=&page="
+                            "raw": "{{baseUrl}}/api/enrollments"
                         },
                         "method": "GET",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -778,7 +778,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -786,7 +786,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"contact_id\":2,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":0,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"contact\":{\"id\":2,\"email\":\"sam.patel@globex.example\",\"name\":\"Sam Patel\",\"first_name\":\"Sam\",\"last_name\":\"Patel\",\"company\":\"Globex\",\"website\":\"https:\\\/\\\/globex.example\",\"source\":\"tube-trend-tool\",\"custom\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}},{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"contact_id\":2,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":0,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-02T10:01:23+00:00\",\"contact\":{\"id\":2,\"email\":\"sam.patel@globex.example\",\"name\":\"Sam Patel\",\"first_name\":\"Sam\",\"last_name\":\"Patel\",\"company\":\"Globex\",\"website\":\"https:\\/\\/globex.example\",\"source\":\"tube-trend-tool\",\"custom\":[],\"created_at\":\"2026-09-02T10:01:23+00:00\",\"updated_at\":\"2026-09-02T10:01:23+00:00\"}},{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-02T10:01:23+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\/\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T10:01:23+00:00\",\"updated_at\":\"2026-09-02T10:01:23+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -796,26 +796,26 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/enrollments",
+                            "path": "api/enrollments",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/enrollments"
+                            "raw": "{{baseUrl}}/api/enrollments"
                         },
                         "method": "POST",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"jane.doe@acme.example\",\"tag\":\"seo-backlinks\"}"
+                            "raw": "{\n    \"email\": \"jane.doe@acme.example\",\n    \"tag\": \"seo-backlinks\"\n}"
                         },
-                        "description": "Puts a contact already on file into an automation and starts drafting\nstep 1. POST \/api\/contacts is the route for new leads; this one is for\nsomeone who should also go through another sequence.\n\nIdentify the contact by contact_id or email, and the automation by\nautomation_id or tag."
+                        "description": "Puts a contact already on file into an automation and starts drafting\nstep 1. POST /api/contacts is the route for new leads; this one is for\nsomeone who should also go through another sequence.\n\nIdentify the contact by contact_id or email, and the automation by\nautomation_id or tag."
                     },
                     "response": []
                 },
@@ -824,9 +824,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/enrollments\/:enrollment",
+                            "path": "api/enrollments/:enrollment",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/enrollments\/:enrollment",
+                            "raw": "{{baseUrl}}/api/enrollments/:enrollment",
                             "variable": [
                                 {
                                     "id": "enrollment",
@@ -840,16 +840,16 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"reason\":\"Replied on another channel\"}"
+                            "raw": "{\n    \"reason\": \"Replied on another channel\"\n}"
                         },
                         "description": "Anything already drafted or scheduled for it is cancelled, so nothing\nfurther is sent."
                     },
@@ -866,7 +866,7 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/messages",
+                            "path": "api/messages",
                             "query": [
                                 {
                                     "key": "status",
@@ -911,17 +911,17 @@
                                     "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/messages?status=&contact_id=&enrollment_id=&mailbox_id=&since=&per_page=&page="
+                            "raw": "{{baseUrl}}/api/messages"
                         },
                         "method": "GET",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -936,7 +936,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -944,7 +944,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-01T09:52:27+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}},{\"id\":2,\"enrollment_id\":2,\"contact_id\":2,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"pending_approval\",\"subject\":\"Quick thought on your resources page\",\"body_text\":\"Hi Sam,\\n\\nYour resources page is missing a section we could help fill.\\n\\nWorth a quick chat?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":null,\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"contact\":{\"id\":2,\"email\":\"sam.patel@globex.example\",\"name\":\"Sam Patel\",\"first_name\":\"Sam\",\"last_name\":\"Patel\",\"company\":\"Globex\",\"website\":\"https:\\\/\\\/globex.example\",\"source\":\"tube-trend-tool\",\"custom\":[],\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-01T10:01:23+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T10:01:23+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\/\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T10:01:23+00:00\",\"updated_at\":\"2026-09-02T10:01:23+00:00\"}},{\"id\":2,\"enrollment_id\":2,\"contact_id\":2,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"pending_approval\",\"subject\":\"Quick thought on your resources page\",\"body_text\":\"Hi Sam,\\n\\nYour resources page is missing a section we could help fill.\\n\\nWorth a quick chat?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":null,\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T10:01:23+00:00\",\"contact\":{\"id\":2,\"email\":\"sam.patel@globex.example\",\"name\":\"Sam Patel\",\"first_name\":\"Sam\",\"last_name\":\"Patel\",\"company\":\"Globex\",\"website\":\"https:\\/\\/globex.example\",\"source\":\"tube-trend-tool\",\"custom\":[],\"created_at\":\"2026-09-02T10:01:23+00:00\",\"updated_at\":\"2026-09-02T10:01:23+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -954,9 +954,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/messages\/:message",
+                            "path": "api/messages/:message",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/messages\/:message",
+                            "raw": "{{baseUrl}}/api/messages/:message",
                             "variable": [
                                 {
                                     "id": "message",
@@ -970,11 +970,11 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -989,7 +989,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -997,7 +997,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-01T09:52:27+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-01T10:01:23+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-02T10:01:23+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\/\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T10:01:23+00:00\",\"updated_at\":\"2026-09-02T10:01:23+00:00\"}}}",
                             "name": ""
                         }
                     ]
@@ -1007,9 +1007,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/messages\/:message",
+                            "path": "api/messages/:message",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/messages\/:message",
+                            "raw": "{{baseUrl}}/api/messages/:message",
                             "variable": [
                                 {
                                     "id": "message",
@@ -1023,16 +1023,16 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"subject\":\"Quick thought on your resources page\",\"body_text\":\"Hi Jane,\\n\\nRewriting this before it goes out.\\n\\nAlex\"}"
+                            "raw": "{\n    \"subject\": \"Quick thought on your resources page\",\n    \"body_text\": \"Hi Jane,\\n\\nRewriting this before it goes out.\\n\\nAlex\"\n}"
                         },
                         "description": "Changes the subject or body before the draft is approved.\n\nOnly while it is awaiting approval: once approved it has a send slot,\nand a later edit would change an email that is already on its way out."
                     },
@@ -1043,9 +1043,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/messages\/:message\/reject",
+                            "path": "api/messages/:message/reject",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/messages\/:message\/reject",
+                            "raw": "{{baseUrl}}/api/messages/:message/reject",
                             "variable": [
                                 {
                                     "id": "message",
@@ -1059,16 +1059,16 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"note\":\"Wrong angle for this one\"}"
+                            "raw": "{\n    \"note\": \"Wrong angle for this one\"\n}"
                         },
                         "description": "Also stops the contact's sequence, the same as rejecting in the\ndashboard does. Without that the enrollment would sit active with\nnothing left to advance it."
                     },
@@ -1079,9 +1079,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/messages\/:message\/approve",
+                            "path": "api/messages/:message/approve",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/messages\/:message\/approve",
+                            "raw": "{{baseUrl}}/api/messages/:message/approve",
                             "variable": [
                                 {
                                     "id": "message",
@@ -1095,11 +1095,11 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -1118,7 +1118,7 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/replies",
+                            "path": "api/replies",
                             "query": [
                                 {
                                     "key": "classification",
@@ -1169,17 +1169,17 @@
                                     "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/replies?classification=&mailbox_id=&contact_id=&enrollment_id=&unread=&since=&per_page=&page="
+                            "raw": "{{baseUrl}}/api/replies"
                         },
                         "method": "GET",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -1194,7 +1194,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1202,7 +1202,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-02T03:52:27+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-02T04:01:23+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\/\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T10:01:23+00:00\",\"updated_at\":\"2026-09-02T10:01:23+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -1212,9 +1212,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/replies\/:reply",
+                            "path": "api/replies/:reply",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/replies\/:reply",
+                            "raw": "{{baseUrl}}/api/replies/:reply",
                             "variable": [
                                 {
                                     "id": "reply",
@@ -1228,11 +1228,11 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -1247,7 +1247,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1255,7 +1255,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-02T03:52:27+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\\/\\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T09:52:27+00:00\",\"updated_at\":\"2026-09-02T09:52:27+00:00\"}}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-02T04:01:23+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"company\":\"Acme Ltd\",\"website\":\"https:\\/\\/acme.example\",\"source\":\"tube-trend-tool\",\"custom\":{\"industry\":\"SaaS\",\"employees\":40},\"created_at\":\"2026-09-02T10:01:23+00:00\",\"updated_at\":\"2026-09-02T10:01:23+00:00\"}}}",
                             "name": ""
                         }
                     ]
@@ -1271,7 +1271,7 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/suppressions",
+                            "path": "api/suppressions",
                             "query": [
                                 {
                                     "key": "reason",
@@ -1304,17 +1304,17 @@
                                     "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/suppressions?reason=&email=&since=&per_page=&page="
+                            "raw": "{{baseUrl}}/api/suppressions"
                         },
                         "method": "GET",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -1329,7 +1329,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1337,7 +1337,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"no.thanks@globex.example\",\"reason\":\"unsubscribed\",\"source_reply_id\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"no.thanks@globex.example\",\"reason\":\"unsubscribed\",\"source_reply_id\":null,\"created_at\":\"2026-09-02T10:01:23+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -1347,24 +1347,24 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/suppressions",
+                            "path": "api/suppressions",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/suppressions"
+                            "raw": "{{baseUrl}}/api/suppressions"
                         },
                         "method": "POST",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"no.thanks@globex.example\",\"reason\":\"unsubscribed\"}"
+                            "raw": "{\n    \"email\": \"no.thanks@globex.example\",\n    \"reason\": \"unsubscribed\"\n}"
                         },
                         "description": "Adds the address to the do-not-email list and stops any sequence it is\ncurrently in. Suppressing without stopping would leave already-drafted\nemails queued behind it, so the address would still be written to."
                     },
@@ -1375,9 +1375,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/suppressions\/:email",
+                            "path": "api/suppressions/:email",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/suppressions\/:email",
+                            "raw": "{{baseUrl}}/api/suppressions/:email",
                             "variable": [
                                 {
                                     "id": "email",
@@ -1391,11 +1391,11 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -1414,7 +1414,7 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/mailboxes",
+                            "path": "api/mailboxes",
                             "query": [
                                 {
                                     "key": "status",
@@ -1435,17 +1435,17 @@
                                     "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/mailboxes?status=&per_page=&page="
+                            "raw": "{{baseUrl}}/api/mailboxes"
                         },
                         "method": "GET",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -1460,7 +1460,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1468,7 +1468,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-02T09:50:27+00:00\",\"last_send_error\":null}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-02T09:59:23+00:00\",\"last_send_error\":null}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
@@ -1478,9 +1478,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/mailboxes\/:mailbox",
+                            "path": "api/mailboxes/:mailbox",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/mailboxes\/:mailbox",
+                            "raw": "{{baseUrl}}/api/mailboxes/:mailbox",
                             "variable": [
                                 {
                                     "id": "mailbox",
@@ -1494,11 +1494,11 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -1513,7 +1513,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1521,7 +1521,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-02T09:50:27+00:00\",\"last_send_error\":null}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-02T09:59:23+00:00\",\"last_send_error\":null}}",
                             "name": ""
                         }
                     ]
@@ -1531,9 +1531,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/mailboxes\/:mailbox\/pause",
+                            "path": "api/mailboxes/:mailbox/pause",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/mailboxes\/:mailbox\/pause",
+                            "raw": "{{baseUrl}}/api/mailboxes/:mailbox/pause",
                             "variable": [
                                 {
                                     "id": "mailbox",
@@ -1547,16 +1547,16 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"reason\":\"Paused while we check deliverability\"}"
+                            "raw": "{\n    \"reason\": \"Paused while we check deliverability\"\n}"
                         },
                         "description": "Stops it sending. Anything already scheduled on it stays queued."
                     },
@@ -1567,9 +1567,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/mailboxes\/:mailbox\/resume",
+                            "path": "api/mailboxes/:mailbox/resume",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/mailboxes\/:mailbox\/resume",
+                            "raw": "{{baseUrl}}/api/mailboxes/:mailbox/resume",
                             "variable": [
                                 {
                                     "id": "mailbox",
@@ -1583,11 +1583,11 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -1600,9 +1600,9 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/mailboxes\/:mailbox\/disconnect",
+                            "path": "api/mailboxes/:mailbox/disconnect",
                             "query": [],
-                            "raw": "{{baseUrl}}\/api\/mailboxes\/:mailbox\/disconnect",
+                            "raw": "{{baseUrl}}/api/mailboxes/:mailbox/disconnect",
                             "variable": [
                                 {
                                     "id": "mailbox",
@@ -1616,16 +1616,16 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"reason\":\"Reason for disconnecting\"}"
+                            "raw": "{\n    \"reason\": \"Reason for disconnecting\"\n}"
                         },
                         "description": "Tells Google to forget this application, discards the stored\ncredentials, and stops the mailbox sending. Stronger than pausing: a\npaused mailbox keeps its connection and resumes with one call, whereas a\ndisconnected one needs a person to sign in at Google again.\n\nAnything queued to send through it is released and picked up by another\nmailbox. Emails already handed to Gmail still go out.\n\nThe history is kept, so reconnecting the same address reuses this\nmailbox rather than creating a second one."
                     },
@@ -1642,7 +1642,7 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/stats",
+                            "path": "api/stats",
                             "query": [
                                 {
                                     "key": "since",
@@ -1651,17 +1651,17 @@
                                     "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/stats?since="
+                            "raw": "{{baseUrl}}/api/stats"
                         },
                         "method": "GET",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -1676,7 +1676,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1700,7 +1700,7 @@
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
-                            "path": "api\/activity",
+                            "path": "api/activity",
                             "query": [
                                 {
                                     "key": "level",
@@ -1739,17 +1739,17 @@
                                     "disabled": true
                                 }
                             ],
-                            "raw": "{{baseUrl}}\/api\/activity?level=&event=&retryable=&since=&per_page=&page="
+                            "raw": "{{baseUrl}}/api/activity"
                         },
                         "method": "GET",
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "application/json"
                             },
                             {
                                 "key": "Accept",
-                                "value": "application\/json"
+                                "value": "application/json"
                             }
                         ],
                         "body": null,
@@ -1764,7 +1764,7 @@
                                 },
                                 {
                                     "key": "content-type",
-                                    "value": "application\/json"
+                                    "value": "application/json"
                                 },
                                 {
                                     "key": "access-control-allow-origin",
@@ -1772,7 +1772,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"event\":\"send_failed\",\"level\":\"error\",\"message\":\"Gmail returned 429 for hello@outreach.example\",\"context\":[],\"subject_type\":null,\"subject_id\":null,\"retryable\":true,\"retried_at\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\"},{\"id\":1,\"event\":\"email_sent\",\"level\":\"info\",\"message\":\"Sent to jane.doe@acme.example\",\"context\":[],\"subject_type\":\"App\\\\Models\\\\Message\",\"subject_id\":1,\"retryable\":false,\"retried_at\":null,\"created_at\":\"2026-09-02T09:52:27+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
+                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"event\":\"send_failed\",\"level\":\"error\",\"message\":\"Gmail returned 429 for hello@outreach.example\",\"context\":[],\"subject_type\":null,\"subject_id\":null,\"retryable\":true,\"retried_at\":null,\"created_at\":\"2026-09-02T10:01:23+00:00\"},{\"id\":1,\"event\":\"email_sent\",\"level\":\"info\",\"message\":\"Sent to jane.doe@acme.example\",\"context\":[],\"subject_type\":\"App\\\\Models\\\\Message\",\"subject_id\":1,\"retryable\":false,\"retried_at\":null,\"created_at\":\"2026-09-02T10:01:23+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
                             "name": ""
                         }
                     ]
