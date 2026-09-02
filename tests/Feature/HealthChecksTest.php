@@ -56,8 +56,10 @@ class HealthChecksTest extends TestCase
 
         $fresh = $domain->fresh();
         $this->assertSame('ok', $fresh->spf_status);
+        // p=quarantine reports as enforcing rather than a bare "ok", so the
+        // page can distinguish it from a domain that is only monitoring.
         $this->assertSame('ok', $fresh->dkim_status);
-        $this->assertSame('ok', $fresh->dmarc_status);
+        $this->assertSame('enforcing', $fresh->dmarc_status);
         $this->assertSame(Domain::HEALTH_HEALTHY, $fresh->health_status);
     }
 
@@ -73,8 +75,12 @@ class HealthChecksTest extends TestCase
         $this->assertSame(Domain::HEALTH_CRITICAL, $fresh->health_status);
     }
 
-    public function test_dmarc_p_none_warns(): void
+    public function test_dmarc_p_none_is_healthy_not_a_warning(): void
     {
+        // p=none is the setting both the standard and Google tell you to start
+        // with, and it does not affect delivery. Flagging it would be flagging
+        // correct work, and it could not be cleared without making the setup
+        // worse.
         $domain = Domain::factory()->create(['name' => 'soft.test']);
         $this->bindDns(txt: [
             'soft.test' => ['v=spf1 include:_spf.google.com ~all'],
@@ -85,8 +91,8 @@ class HealthChecksTest extends TestCase
         app(DnsHealthChecker::class)->check($domain);
 
         $fresh = $domain->fresh();
-        $this->assertSame('warn', $fresh->dmarc_status);
-        $this->assertSame(Domain::HEALTH_WARNING, $fresh->health_status);
+        $this->assertSame('monitoring', $fresh->dmarc_status);
+        $this->assertSame(Domain::HEALTH_HEALTHY, $fresh->health_status);
     }
 
     public function test_dnsbl_listing_flags_domain(): void

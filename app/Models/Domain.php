@@ -47,4 +47,56 @@ class Domain extends Model
     {
         return $this->dkim_selector ?: config('outreach.dkim_default_selector');
     }
+
+    /**
+     * Mailboxes on this domain that could actually send.
+     *
+     * A domain whose only mailbox is disconnected sends nothing, so its DNS
+     * cannot affect anything and it should not be scored as though it could.
+     */
+    public function sendingMailboxCount(): int
+    {
+        return $this->mailboxes
+            ->reject(fn (Mailbox $m) => $m->status === Mailbox::STATUS_DISCONNECTED)
+            ->count();
+    }
+
+    /** DMARC states that are fine. Neither of them affects delivery. */
+    public const DMARC_OK_STATUSES = ['monitoring', 'enforcing', 'ok'];
+
+    /**
+     * Human label for a stored check result.
+     *
+     * DMARC gets a fuller label because "ok" alone hides the difference
+     * between monitoring and enforcing, which is the one thing worth knowing,
+     * and because "absent" needs to read as a note rather than a fault.
+     */
+    public function statusLabel(string $field): string
+    {
+        $value = (string) $this->{$field};
+
+        if ($field !== 'dmarc_status') {
+            return $value;
+        }
+
+        return match ($value) {
+            'absent' => 'none set',
+            'monitoring' => 'ok (monitoring)',
+            'enforcing' => 'ok (enforcing)',
+            default => $value,
+        };
+    }
+
+    /** True when this field should read as a problem rather than a note. */
+    public function statusIsFault(string $field): bool
+    {
+        $value = (string) $this->{$field};
+
+        if ($field === 'dmarc_status') {
+            // Nothing about DMARC blocks sending, so nothing here is a fault.
+            return false;
+        }
+
+        return in_array($value, ['missing', 'warn'], true);
+    }
 }

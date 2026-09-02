@@ -5,6 +5,7 @@ namespace App\Livewire\Mailboxes;
 use App\Models\Mailbox;
 use App\Models\Message;
 use App\Services\Gmail\MailboxDisconnector;
+use App\Services\Health\AutoPauseRules;
 use App\Services\Sending\ApprovedMessageRecovery;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -107,6 +108,20 @@ class Index extends Component
     {
         $mailboxes = Mailbox::query()->with('domain')->orderBy('email')->get();
 
+        // The stored pause reason is a record of why it stopped, written once
+        // and never revisited. It kept saying "missing SPF or DKIM" for days
+        // after the records were added. These re-run the same rules now, so
+        // the page can say whether the cause still stands.
+        $rules = app(AutoPauseRules::class);
+
+        $blockers = $mailboxes
+            ->filter(fn (Mailbox $m) => $m->status === Mailbox::STATUS_PAUSED)
+            ->mapWithKeys(fn (Mailbox $m) => [$m->id => [
+                'reason' => $rules->currentReason($m),
+                'summary' => $rules->domainSummary($m),
+            ]])
+            ->all();
+
         $sentToday = Message::query()
             ->whereIn('mailbox_id', $mailboxes->pluck('id'))
             ->where('status', Message::STATUS_SENT)
@@ -118,6 +133,7 @@ class Index extends Component
         return view('livewire.mailboxes.index', [
             'mailboxes' => $mailboxes,
             'sentToday' => $sentToday,
+            'blockers' => $blockers,
         ]);
     }
 }

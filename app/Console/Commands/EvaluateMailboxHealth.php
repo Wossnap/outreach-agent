@@ -8,6 +8,7 @@ use App\Models\HealthCheck;
 use App\Models\Mailbox;
 use App\Models\Message;
 use App\Models\Reply;
+use App\Services\Health\AutoPauseRules;
 use Illuminate\Console\Command;
 
 /**
@@ -65,7 +66,7 @@ class EvaluateMailboxHealth extends Command
                 'checked_at' => now(),
             ]);
 
-            $this->maybeAutoPause($mailbox, $sent, $bounceRate);
+            $this->maybeAutoPause($mailbox);
         }
 
         $this->info('Evaluated '.Mailbox::query()->count().' mailboxes.');
@@ -92,25 +93,21 @@ class EvaluateMailboxHealth extends Command
         return Domain::HEALTH_HEALTHY;
     }
 
-    protected function maybeAutoPause(Mailbox $mailbox, int $sent, float $bounceRate): void
+    protected function maybeAutoPause(Mailbox $mailbox): void
     {
         if ($mailbox->status !== Mailbox::STATUS_ACTIVE) {
             return;
         }
 
-        $reason = null;
+        // Same rules the Mailboxes page uses to ask whether a pause still
+        // applies, so the two can never give different answers.
+        $cause = app(AutoPauseRules::class)->currentReason($mailbox);
 
-        if ($sent >= (int) config('outreach.bounce_rate_min_sends') && $bounceRate > (float) config('outreach.bounce_rate_pause_threshold')) {
-            $reason = 'Auto-paused: bounce rate '.number_format($bounceRate * 100, 1)."% over the last 7 days ({$sent} sends).";
-        } elseif ($mailbox->domain->dnsbl_listed) {
-            $reason = 'Auto-paused: domain '.$mailbox->domain->name.' is listed on '.implode(', ', $mailbox->domain->dnsbl_zones ?? []).'.';
-        } elseif (in_array('missing', [$mailbox->domain->spf_status, $mailbox->domain->dkim_status], true)) {
-            $reason = 'Auto-paused: domain '.$mailbox->domain->name.' is missing SPF or DKIM.';
-        }
-
-        if ($reason === null) {
+        if ($cause === null) {
             return;
         }
+
+        $reason = 'Auto-paused: '.lcfirst($cause);
 
         $mailbox->pause($reason);
 

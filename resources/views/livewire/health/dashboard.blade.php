@@ -10,12 +10,29 @@
                 </button>
             </div>
 
+            @if (session('health-results'))
+                {{-- Per domain, including the ones that are fine. A bare
+                     "completed" gave no way to tell a clean result from a
+                     check that never really ran. --}}
+                <div class="rounded-md bg-gray-50 dark:bg-gray-900 p-4 text-sm space-y-1">
+                    <p class="font-medium text-gray-900 dark:text-gray-100">Check finished</p>
+                    @foreach (session('health-results') as $result)
+                        <p @class([
+                            'text-green-700 dark:text-green-400' => $result['ok'],
+                            'text-red-600 dark:text-red-400' => ! $result['ok'],
+                        ])>
+                            <span class="font-medium">{{ $result['domain'] }}:</span> {{ $result['text'] }}
+                        </p>
+                    @endforeach
+                </div>
+            @endif
+
             @if (session('health-status'))
                 <div class="rounded-md bg-green-50 dark:bg-green-900/30 p-3 text-sm text-green-800 dark:text-green-200">{{ session('health-status') }}</div>
             @endif
 
             <div class="bg-blue-50 dark:bg-blue-900/20 rounded-md p-4 text-sm text-blue-900 dark:text-blue-200">
-                Mail is sent through the Gmail API, so it leaves <strong>Google's IPs</strong> — sending-IP reputation and proxies are not a factor here.
+                Mail is sent through the Gmail API, so it leaves <strong>Google's IPs</strong>, so sending-IP reputation and proxies are not a factor here.
                 What this system owns and monitors: <strong>domain authentication</strong> (SPF/DKIM/DMARC), <strong>domain blocklists</strong>, and
                 <strong>engagement</strong> (bounce and reply rates, volume discipline via caps, warmup and randomized pacing).
                 Mailboxes auto-pause when thresholds breach; resuming is manual once the cause is fixed.
@@ -36,31 +53,43 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700 text-gray-900 dark:text-gray-100">
                         @forelse ($domains as $domain)
-                            <tr>
-                                <td class="px-6 py-3 font-medium">{{ $domain->name }}</td>
+                            {{-- A domain nothing sends from is not scored, so its records are
+                                 shown in grey whatever they say. Colouring them would
+                                 contradict the "not in use" label sitting next to them and
+                                 put a red badge on something that cannot affect anything. --}}
+                            @php($scored = $domain->sendingMailboxCount() > 0)
+                            <tr @class(['opacity-60' => ! $scored])>
+                                <td class="px-6 py-3 font-medium">
+                                    {{ $domain->name }}
+                                    @unless ($scored)
+                                        <span class="ml-2 px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-600">not in use</span>
+                                    @endunless
+                                </td>
                                 @foreach (['spf_status', 'dkim_status', 'dmarc_status'] as $field)
                                     <td class="px-6 py-3">
                                         <span @class([
                                             'px-2 py-1 rounded text-xs font-semibold',
-                                            'bg-green-100 text-green-800' => $domain->{$field} === 'ok',
-                                            'bg-yellow-100 text-yellow-800' => $domain->{$field} === 'warn',
-                                            'bg-red-100 text-red-800' => $domain->{$field} === 'missing',
-                                            'bg-gray-100 text-gray-600' => $domain->{$field} === 'unknown',
-                                        ])>{{ $domain->{$field} }}</span>
+                                            'bg-gray-100 text-gray-600' => ! $scored
+                                                || in_array($domain->{$field}, ['unknown', 'absent'], true),
+                                            'bg-green-100 text-green-800' => $scored
+                                                && in_array($domain->{$field}, ['ok', 'monitoring', 'enforcing'], true),
+                                            'bg-yellow-100 text-yellow-800' => $scored && $domain->{$field} === 'warn',
+                                            'bg-red-100 text-red-800' => $scored && $domain->{$field} === 'missing',
+                                        ])>{{ $domain->statusLabel($field) }}</span>
                                     </td>
                                 @endforeach
                                 <td class="px-6 py-3">
                                     @if ($domain->dnsbl_listed)
-                                        <span class="px-2 py-1 rounded text-xs font-semibold bg-red-100 text-red-800">{{ implode(', ', $domain->dnsbl_zones ?? []) }}</span>
+                                        <span @class(['px-2 py-1 rounded text-xs font-semibold', 'bg-red-100 text-red-800' => $scored, 'bg-gray-100 text-gray-600' => ! $scored])>{{ implode(', ', $domain->dnsbl_zones ?? []) }}</span>
                                     @else
-                                        <span class="px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-800">clear</span>
+                                        <span @class(['px-2 py-1 rounded text-xs font-semibold', 'bg-green-100 text-green-800' => $scored, 'bg-gray-100 text-gray-600' => ! $scored])>clear</span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-3">{{ $domain->mailboxes_count }}</td>
                                 <td class="px-6 py-3 text-gray-500 text-xs">{{ $domain->last_dns_checked_at?->diffForHumans() ?? 'never' }}</td>
                             </tr>
                         @empty
-                            <tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No domains yet — they appear automatically when you connect a mailbox.</td></tr>
+                            <tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No domains yet. They appear automatically when you connect a mailbox.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -110,7 +139,7 @@
                         @foreach ($pauseEvents as $event)
                             <li class="text-gray-700 dark:text-gray-300">
                                 <span class="text-xs text-gray-400">{{ $event->created_at->timezone(config('outreach.timezone'))->format('j M H:i') }}</span>
-                                — {{ $event->message }}
+                                {{ $event->message }}
                             </li>
                         @endforeach
                     </ul>

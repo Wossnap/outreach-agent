@@ -28,7 +28,13 @@ class DnsHealthChecker
                 'checkable_type' => $domain->getMorphClass(),
                 'checkable_id' => $domain->id,
                 'check_type' => $type,
-                'status' => $result['status'] === 'ok' ? HealthCheck::STATUS_OK : ($result['status'] === 'warn' ? HealthCheck::STATUS_WARN : HealthCheck::STATUS_FAIL),
+                // monitoring and enforcing are both healthy DMARC states, and
+                // absent is informational rather than a failure.
+                'status' => match ($result['status']) {
+                    'ok', 'monitoring', 'enforcing' => HealthCheck::STATUS_OK,
+                    'warn', 'absent' => HealthCheck::STATUS_WARN,
+                    default => HealthCheck::STATUS_FAIL,
+                },
                 'detail' => $result,
                 'checked_at' => now(),
             ]);
@@ -88,28 +94,51 @@ class DnsHealthChecker
         $dmarc = collect($this->resolver->txtRecords("_dmarc.{$domain}"))
             ->first(fn (string $txt) => Str::startsWith(mb_strtolower(trim($txt)), 'v=dmarc1'));
 
+        // DMARC does not gate delivery, so none of these outcomes is a fault.
+        //
+        // A missing record is worth knowing about but is not a problem to fix
+        // before sending: Gmail asks for DMARC only above 5,000 messages a day,
+        // and even then p=none satisfies it.
+        //
+        // p=none is the configuration both the standard and Google tell you to
+        // start with, so flagging it would be flagging correct work. Tightening
+        // it early is what breaks legitimate mail, and the reports that justify
+        // tightening take a week or more to gather.
         if (! $dmarc) {
-            return ['status' => 'missing', 'record' => null, 'note' => 'No DMARC record found.'];
+            return ['status' => 'absent', 'record' => null, 'note' => 'No DMARC record. Not required to send; worth adding to receive reports on who sends as this domain.'];
         }
 
+        // The policy is carried in the status rather than derived later from
+        // the stored record, so reading it costs no extra query and the label
+        // cannot disagree with the verdict.
         if (preg_match('/p\s*=\s*none/i', $dmarc)) {
-            return ['status' => 'warn', 'record' => $dmarc, 'note' => 'DMARC policy is p=none — fine while warming, move to quarantine once stable.'];
+            return ['status' => 'monitoring', 'record' => $dmarc, 'note' => 'DMARC present, policy p=none. The correct setting until a week of reports confirms every legitimate sender passes.'];
         }
 
-        return ['status' => 'ok', 'record' => $dmarc, 'note' => 'DMARC enforcing.'];
+        return ['status' => 'enforcing', 'record' => $dmarc, 'note' => 'DMARC present and enforcing.'];
     }
 
+    /**
+     * The domain's overall verdict.
+     *
+     * Only things that actually stop mail authenticating count against it.
+     * A page that goes amber for a correctly configured domain teaches people
+     * to ignore amber, which costs more than it saves on the day it matters.
+     */
     protected function overallStatus(Domain $domain, array $spf, array $dkim, array $dmarc): string
     {
         if ($domain->dnsbl_listed) {
             return Domain::HEALTH_CRITICAL;
         }
 
+        // Without either of these, mail from the domain is unauthenticated.
         if ($spf['status'] === 'missing' || $dkim['status'] === 'missing') {
             return Domain::HEALTH_CRITICAL;
         }
 
-        if ($spf['status'] === 'warn' || $dmarc['status'] !== 'ok') {
+        // An SPF record that omits Google means Gmail-sent mail fails the
+        // check, which is a real fault rather than a preference.
+        if ($spf['status'] === 'warn') {
             return Domain::HEALTH_WARNING;
         }
 

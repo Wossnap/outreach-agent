@@ -40,7 +40,27 @@
                                 · window {{ $mailbox->send_window_start }}–{{ $mailbox->send_window_end }} {{ $mailbox->send_timezone }}
                             </p>
                             @if ($mailbox->paused_reason)
-                                <p class="text-xs text-red-500 mt-1">{{ $mailbox->paused_reason }}</p>
+                                {{-- Why it stopped. A record of the past, written once. --}}
+                                <p class="text-xs text-gray-500 mt-1">{{ $mailbox->paused_reason }}</p>
+                            @endif
+
+                            @php($blocker = $blockers[$mailbox->id] ?? null)
+
+                            @if ($blocker)
+                                {{-- Whether that reason still holds, re-checked on every page
+                                     load. Without this the row kept reporting a problem that
+                                     had already been fixed, and there was no way to tell. --}}
+                                @if ($blocker['reason'])
+                                    <p class="text-xs text-red-600 mt-1 font-medium">Still blocked: {{ $blocker['reason'] }}</p>
+                                @else
+                                    <p class="text-xs text-green-700 dark:text-green-400 mt-1 font-medium">
+                                        Nothing is blocking this mailbox any more. Safe to resume.
+                                    </p>
+                                @endif
+
+                                @if ($blocker['summary'])
+                                    <p class="text-xs text-gray-500">{{ $mailbox->domain?->name }}: {{ $blocker['summary'] }}</p>
+                                @endif
                             @endif
                         </div>
                         <div class="flex items-center gap-2">
