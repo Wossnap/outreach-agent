@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 servers:
   -
-    url: 'https://outreach.seannocode.com'
+    url: 'http://localhost:8010'
 tags:
   -
     name: Health
@@ -130,12 +130,22 @@ paths:
         -
           in: query
           name: status
-          description: 'Only contacts with an enrollment in this state. e.g. active.'
+          description: 'Only contacts with an enrollment in this state. `waiting_email` means enrolled with no confirmed address yet. e.g. active.'
           example: null
           required: false
           schema:
             type: string
-            description: 'Only contacts with an enrollment in this state. e.g. active.'
+            description: 'Only contacts with an enrollment in this state. `waiting_email` means enrolled with no confirmed address yet. e.g. active.'
+            example: null
+        -
+          in: query
+          name: email_status
+          description: 'How far the waterfall has got: pending, finding, verifying, valid, risky, invalid, not_found. Only `valid` is sendable on its own. e.g. valid.'
+          example: null
+          required: false
+          schema:
+            type: string
+            description: 'How far the waterfall has got: pending, finding, verifying, valid, risky, invalid, not_found. Only `valid` is sendable on its own. e.g. valid.'
             example: null
         -
           in: query
@@ -191,29 +201,40 @@ paths:
                     -
                       id: 2
                       email: sam.patel@globex.example
+                      email_status: pending
+                      email_checked_at: null
+                      email_provider: null
+                      profile_url: null
                       name: 'Sam Patel'
                       first_name: Sam
                       last_name: Patel
+                      job_title: null
                       company: Globex
-                      website: 'https://globex.example'
+                      domain: globex.example
                       source: tube-trend-tool
-                      custom: []
-                      created_at: '2026-09-02T10:01:23+00:00'
-                      updated_at: '2026-09-02T10:01:23+00:00'
+                      extra: []
+                      created_at: '2026-09-09T07:01:40+00:00'
+                      updated_at: '2026-09-09T07:01:40+00:00'
                     -
                       id: 1
                       email: jane.doe@acme.example
+                      email_status: pending
+                      email_checked_at: null
+                      email_provider: null
+                      profile_url: null
                       name: 'Jane Doe'
                       first_name: Jane
                       last_name: Doe
+                      job_title: null
                       company: 'Acme Ltd'
-                      website: 'https://acme.example'
+                      domain: acme.example
                       source: tube-trend-tool
-                      custom:
-                        industry: SaaS
-                        employees: 40
-                      created_at: '2026-09-02T10:01:23+00:00'
-                      updated_at: '2026-09-02T10:01:23+00:00'
+                      extra:
+                        tube-trend-tool:
+                          industry: SaaS
+                          employees: 40
+                      created_at: '2026-09-09T07:01:40+00:00'
+                      updated_at: '2026-09-09T07:01:40+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -232,29 +253,40 @@ paths:
                       -
                         id: 2
                         email: sam.patel@globex.example
+                        email_status: pending
+                        email_checked_at: null
+                        email_provider: null
+                        profile_url: null
                         name: 'Sam Patel'
                         first_name: Sam
                         last_name: Patel
+                        job_title: null
                         company: Globex
-                        website: 'https://globex.example'
+                        domain: globex.example
                         source: tube-trend-tool
-                        custom: []
-                        created_at: '2026-09-02T10:01:23+00:00'
-                        updated_at: '2026-09-02T10:01:23+00:00'
+                        extra: []
+                        created_at: '2026-09-09T07:01:40+00:00'
+                        updated_at: '2026-09-09T07:01:40+00:00'
                       -
                         id: 1
                         email: jane.doe@acme.example
+                        email_status: pending
+                        email_checked_at: null
+                        email_provider: null
+                        profile_url: null
                         name: 'Jane Doe'
                         first_name: Jane
                         last_name: Doe
+                        job_title: null
                         company: 'Acme Ltd'
-                        website: 'https://acme.example'
+                        domain: acme.example
                         source: tube-trend-tool
-                        custom:
-                          industry: SaaS
-                          employees: 40
-                        created_at: '2026-09-02T10:01:23+00:00'
-                        updated_at: '2026-09-02T10:01:23+00:00'
+                        extra:
+                          tube-trend-tool:
+                            industry: SaaS
+                            employees: 40
+                        created_at: '2026-09-09T07:01:40+00:00'
+                        updated_at: '2026-09-09T07:01:40+00:00'
                     items:
                       type: object
                       properties:
@@ -264,6 +296,21 @@ paths:
                         email:
                           type: string
                           example: sam.patel@globex.example
+                        email_status:
+                          type: string
+                          example: pending
+                        email_checked_at:
+                          type: string
+                          example: null
+                          nullable: true
+                        email_provider:
+                          type: string
+                          example: null
+                          nullable: true
+                        profile_url:
+                          type: string
+                          example: null
+                          nullable: true
                         name:
                           type: string
                           example: 'Sam Patel'
@@ -273,24 +320,28 @@ paths:
                         last_name:
                           type: string
                           example: Patel
+                        job_title:
+                          type: string
+                          example: null
+                          nullable: true
                         company:
                           type: string
                           example: Globex
-                        website:
+                        domain:
                           type: string
-                          example: 'https://globex.example'
+                          example: globex.example
                         source:
                           type: string
                           example: tube-trend-tool
-                        custom:
+                        extra:
                           type: array
                           example: []
                         created_at:
                           type: string
-                          example: '2026-09-02T10:01:23+00:00'
+                          example: '2026-09-09T07:01:40+00:00'
                         updated_at:
                           type: string
-                          example: '2026-09-02T10:01:23+00:00'
+                          example: '2026-09-09T07:01:40+00:00'
                   meta:
                     type: object
                     properties:
@@ -311,22 +362,93 @@ paths:
     post:
       summary: 'Push a contact'
       operationId: pushAContact
-      description: "Upserts the contact and enrolls them in the automation matching each\ntag. A suppressed address is accepted and nothing is enrolled, so read\nGET /api/suppressions first if you need to know that happened."
+      description: "Upserts the contact and enrolls them in the automation matching each tag.\n\nA contact does not have to arrive with an email address. Send whichever\nyou have: an email, a LinkedIn profile_url, or a name together with a\ndomain, and the address is found and checked for you. Until something has\nconfirmed an address, enrollments are created but held at\n`waiting_email`, and they start on their own the moment it is confirmed.\n\nSubmitting the same person again updates them rather than creating a\nsecond record, so a caller that has lost track of what it already sent\ncan safely send it again. A suppressed address is stored and nothing is\nenrolled."
       parameters: []
       responses: {}
       tags:
         - Contacts
       requestBody:
-        required: true
+        required: false
         content:
           application/json:
             schema:
               type: object
               properties:
+                contacts:
+                  type: array
+                  description: 'Send this INSTEAD of every field above to push up to 500 people at once. Each entry takes exactly the same fields as a single push. A batch is all or nothing, so a caller never has to work out which half of it landed. Left out of the example below so the request is sendable as it stands.'
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        description: 'Must be a valid email address. Must not be greater than 255 characters.'
+                        example: marquardt.noah@example.com
+                        nullable: true
+                      profile_url:
+                        type: string
+                        description: 'Must be a valid URL. Must not be greater than 255 characters.'
+                        example: 'http://hauck.com/'
+                        nullable: true
+                      name:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: w
+                        nullable: true
+                      first_name:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: r
+                        nullable: true
+                      last_name:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: s
+                        nullable: true
+                      company:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: i
+                        nullable: true
+                      domain:
+                        type: string
+                        description: 'Must not be greater than 2048 characters.'
+                        example: t
+                        nullable: true
+                      job_title:
+                        type: string
+                        description: 'Must not be greater than 1000 characters.'
+                        example: c
+                        nullable: true
+                      source:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: p
+                        nullable: true
+                      extra:
+                        type: object
+                        description: ''
+                        example: null
+                        properties: {}
+                        nullable: true
+                      tags:
+                        type: array
+                        description: 'Must not be greater than 255 characters.'
+                        example:
+                          - s
+                        items:
+                          type: string
                 email:
                   type: string
                   description: "The contact's address."
                   example: jane.doe@acme.example
+                  nullable: true
+                profile_url:
+                  type: string
+                  description: 'A LinkedIn profile.'
+                  example: 'https://linkedin.com/in/jane-doe'
+                  nullable: true
                 name:
                   type: string
                   description: 'The full name. Send this or the two parts; whichever you send wins, and the rest is filled in.'
@@ -347,33 +469,35 @@ paths:
                   description: ''
                   example: 'Acme Ltd'
                   nullable: true
-                website:
+                domain:
+                  type: string
+                  description: "The company's domain, which is what an address is searched by. A full URL is fine; it is reduced to the host."
+                  example: acme.example
+                  nullable: true
+                job_title:
                   type: string
                   description: ''
-                  example: 'https://acme.example'
-                  nullable: true
-                custom:
-                  type: object
-                  description: 'Anything else worth passing to the drafter.'
-                  example:
-                    industry: SaaS
-                  properties: {}
+                  example: 'Head of Operations'
                   nullable: true
                 source:
                   type: string
                   description: 'Where the lead came from.'
                   example: tube-trend-tool
                   nullable: true
+                extra:
+                  type: object
+                  description: 'Anything else worth passing to the drafter. Filed under your source, so two callers can both send a "score" and mean different things.'
+                  example:
+                    industry: SaaS
+                  properties: {}
+                  nullable: true
                 tags:
                   type: array
-                  description: 'One or more automation tags to enroll into.'
+                  description: 'Automation tags to enroll into.'
                   example:
                     - seo-backlinks
                   items:
                     type: string
-              required:
-                - email
-                - tags
   '/api/contacts/{contact}':
     get:
       summary: 'Get one contact'
@@ -393,18 +517,24 @@ paths:
                   data:
                     id: 1
                     email: jane.doe@acme.example
+                    email_status: pending
+                    email_checked_at: null
+                    email_provider: null
+                    profile_url: null
                     name: 'Jane Doe'
                     first_name: Jane
                     last_name: Doe
+                    job_title: null
                     company: 'Acme Ltd'
-                    website: 'https://acme.example'
+                    domain: acme.example
                     source: tube-trend-tool
-                    custom:
-                      industry: SaaS
-                      employees: 40
+                    extra:
+                      tube-trend-tool:
+                        industry: SaaS
+                        employees: 40
                     suppressed: false
-                    created_at: '2026-09-02T10:01:23+00:00'
-                    updated_at: '2026-09-02T10:01:23+00:00'
+                    created_at: '2026-09-09T07:01:40+00:00'
+                    updated_at: '2026-09-09T07:01:40+00:00'
                     enrollments:
                       -
                         id: 1
@@ -417,7 +547,7 @@ paths:
                         current_step: 1
                         stopped_at: null
                         stop_reason: null
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                     messages:
                       -
                         id: 1
@@ -432,12 +562,12 @@ paths:
                         body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                         edited_by_user: false
                         scheduled_at: null
-                        sent_at: '2026-09-01T10:01:23+00:00'
+                        sent_at: '2026-09-08T07:01:40+00:00'
                         approved_at: null
                         rejected_at: null
                         rejection_note: null
                         error: null
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                     replies:
                       -
                         id: 1
@@ -450,7 +580,7 @@ paths:
                         snippet: 'Happy to take a look, send it over.'
                         body_text: "Happy to take a look, send it over.\n\nJane"
                         classification: reply
-                        received_at: '2026-09-02T04:01:23+00:00'
+                        received_at: '2026-09-09T01:01:40+00:00'
                         read_at: null
                 properties:
                   success:
@@ -468,6 +598,21 @@ paths:
                       email:
                         type: string
                         example: jane.doe@acme.example
+                      email_status:
+                        type: string
+                        example: pending
+                      email_checked_at:
+                        type: string
+                        example: null
+                        nullable: true
+                      email_provider:
+                        type: string
+                        example: null
+                        nullable: true
+                      profile_url:
+                        type: string
+                        example: null
+                        nullable: true
                       name:
                         type: string
                         example: 'Jane Doe'
@@ -477,33 +622,40 @@ paths:
                       last_name:
                         type: string
                         example: Doe
+                      job_title:
+                        type: string
+                        example: null
+                        nullable: true
                       company:
                         type: string
                         example: 'Acme Ltd'
-                      website:
+                      domain:
                         type: string
-                        example: 'https://acme.example'
+                        example: acme.example
                       source:
                         type: string
                         example: tube-trend-tool
-                      custom:
+                      extra:
                         type: object
                         properties:
-                          industry:
-                            type: string
-                            example: SaaS
-                          employees:
-                            type: integer
-                            example: 40
+                          tube-trend-tool:
+                            type: object
+                            properties:
+                              industry:
+                                type: string
+                                example: SaaS
+                              employees:
+                                type: integer
+                                example: 40
                       suppressed:
                         type: boolean
                         example: false
                       created_at:
                         type: string
-                        example: '2026-09-02T10:01:23+00:00'
+                        example: '2026-09-09T07:01:40+00:00'
                       updated_at:
                         type: string
-                        example: '2026-09-02T10:01:23+00:00'
+                        example: '2026-09-09T07:01:40+00:00'
                       enrollments:
                         type: array
                         example:
@@ -518,7 +670,7 @@ paths:
                             current_step: 1
                             stopped_at: null
                             stop_reason: null
-                            created_at: '2026-09-02T10:01:23+00:00'
+                            created_at: '2026-09-09T07:01:40+00:00'
                         items:
                           type: object
                           properties:
@@ -556,7 +708,7 @@ paths:
                               nullable: true
                             created_at:
                               type: string
-                              example: '2026-09-02T10:01:23+00:00'
+                              example: '2026-09-09T07:01:40+00:00'
                       messages:
                         type: array
                         example:
@@ -573,12 +725,12 @@ paths:
                             body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                             edited_by_user: false
                             scheduled_at: null
-                            sent_at: '2026-09-01T10:01:23+00:00'
+                            sent_at: '2026-09-08T07:01:40+00:00'
                             approved_at: null
                             rejected_at: null
                             rejection_note: null
                             error: null
-                            created_at: '2026-09-02T10:01:23+00:00'
+                            created_at: '2026-09-09T07:01:40+00:00'
                         items:
                           type: object
                           properties:
@@ -621,7 +773,7 @@ paths:
                               nullable: true
                             sent_at:
                               type: string
-                              example: '2026-09-01T10:01:23+00:00'
+                              example: '2026-09-08T07:01:40+00:00'
                             approved_at:
                               type: string
                               example: null
@@ -640,7 +792,7 @@ paths:
                               nullable: true
                             created_at:
                               type: string
-                              example: '2026-09-02T10:01:23+00:00'
+                              example: '2026-09-09T07:01:40+00:00'
                       replies:
                         type: array
                         example:
@@ -655,7 +807,7 @@ paths:
                             snippet: 'Happy to take a look, send it over.'
                             body_text: "Happy to take a look, send it over.\n\nJane"
                             classification: reply
-                            received_at: '2026-09-02T04:01:23+00:00'
+                            received_at: '2026-09-09T01:01:40+00:00'
                             read_at: null
                         items:
                           type: object
@@ -692,7 +844,7 @@ paths:
                               example: reply
                             received_at:
                               type: string
-                              example: '2026-09-02T04:01:23+00:00'
+                              example: '2026-09-09T01:01:40+00:00'
                             read_at:
                               type: string
                               example: null
@@ -771,8 +923,8 @@ paths:
                       name: 'SEO backlinks outreach'
                       description: 'Three touches for sites that could carry a link back to us.'
                       active: true
-                      created_at: '2026-09-02T10:01:23+00:00'
-                      updated_at: '2026-09-02T10:01:23+00:00'
+                      created_at: '2026-09-09T07:01:40+00:00'
+                      updated_at: '2026-09-09T07:01:40+00:00'
                       steps:
                         -
                           id: 1
@@ -783,7 +935,7 @@ paths:
                           drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                           active: true
                           attachments: []
-                          created_at: '2026-09-02T10:01:23+00:00'
+                          created_at: '2026-09-09T07:01:40+00:00'
                         -
                           id: 2
                           automation_id: 1
@@ -793,7 +945,7 @@ paths:
                           drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                           active: true
                           attachments: []
-                          created_at: '2026-09-02T10:01:23+00:00'
+                          created_at: '2026-09-09T07:01:40+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -815,8 +967,8 @@ paths:
                         name: 'SEO backlinks outreach'
                         description: 'Three touches for sites that could carry a link back to us.'
                         active: true
-                        created_at: '2026-09-02T10:01:23+00:00'
-                        updated_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
+                        updated_at: '2026-09-09T07:01:40+00:00'
                         steps:
                           -
                             id: 1
@@ -827,7 +979,7 @@ paths:
                             drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                             active: true
                             attachments: []
-                            created_at: '2026-09-02T10:01:23+00:00'
+                            created_at: '2026-09-09T07:01:40+00:00'
                           -
                             id: 2
                             automation_id: 1
@@ -837,7 +989,7 @@ paths:
                             drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                             active: true
                             attachments: []
-                            created_at: '2026-09-02T10:01:23+00:00'
+                            created_at: '2026-09-09T07:01:40+00:00'
                     items:
                       type: object
                       properties:
@@ -858,10 +1010,10 @@ paths:
                           example: true
                         created_at:
                           type: string
-                          example: '2026-09-02T10:01:23+00:00'
+                          example: '2026-09-09T07:01:40+00:00'
                         updated_at:
                           type: string
-                          example: '2026-09-02T10:01:23+00:00'
+                          example: '2026-09-09T07:01:40+00:00'
                         steps:
                           type: array
                           example:
@@ -874,7 +1026,7 @@ paths:
                               drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                               active: true
                               attachments: []
-                              created_at: '2026-09-02T10:01:23+00:00'
+                              created_at: '2026-09-09T07:01:40+00:00'
                             -
                               id: 2
                               automation_id: 1
@@ -884,7 +1036,7 @@ paths:
                               drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                               active: true
                               attachments: []
-                              created_at: '2026-09-02T10:01:23+00:00'
+                              created_at: '2026-09-09T07:01:40+00:00'
                           items:
                             type: object
                             properties:
@@ -914,7 +1066,7 @@ paths:
                                 example: []
                               created_at:
                                 type: string
-                                example: '2026-09-02T10:01:23+00:00'
+                                example: '2026-09-09T07:01:40+00:00'
                   meta:
                     type: object
                     properties:
@@ -1025,8 +1177,8 @@ paths:
                     name: 'SEO backlinks outreach'
                     description: 'Three touches for sites that could carry a link back to us.'
                     active: true
-                    created_at: '2026-09-02T10:01:23+00:00'
-                    updated_at: '2026-09-02T10:01:23+00:00'
+                    created_at: '2026-09-09T07:01:40+00:00'
+                    updated_at: '2026-09-09T07:01:40+00:00'
                     steps:
                       -
                         id: 1
@@ -1037,7 +1189,7 @@ paths:
                         drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                         active: true
                         attachments: []
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                       -
                         id: 2
                         automation_id: 1
@@ -1047,7 +1199,7 @@ paths:
                         drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                         active: true
                         attachments: []
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                 properties:
                   success:
                     type: boolean
@@ -1075,10 +1227,10 @@ paths:
                         example: true
                       created_at:
                         type: string
-                        example: '2026-09-02T10:01:23+00:00'
+                        example: '2026-09-09T07:01:40+00:00'
                       updated_at:
                         type: string
-                        example: '2026-09-02T10:01:23+00:00'
+                        example: '2026-09-09T07:01:40+00:00'
                       steps:
                         type: array
                         example:
@@ -1091,7 +1243,7 @@ paths:
                             drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                             active: true
                             attachments: []
-                            created_at: '2026-09-02T10:01:23+00:00'
+                            created_at: '2026-09-09T07:01:40+00:00'
                           -
                             id: 2
                             automation_id: 1
@@ -1101,7 +1253,7 @@ paths:
                             drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                             active: true
                             attachments: []
-                            created_at: '2026-09-02T10:01:23+00:00'
+                            created_at: '2026-09-09T07:01:40+00:00'
                         items:
                           type: object
                           properties:
@@ -1131,7 +1283,7 @@ paths:
                               example: []
                             created_at:
                               type: string
-                              example: '2026-09-02T10:01:23+00:00'
+                              example: '2026-09-09T07:01:40+00:00'
       tags:
         - Automations
     patch:
@@ -1201,7 +1353,7 @@ paths:
                       drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                       active: true
                       attachments: []
-                      created_at: '2026-09-02T10:01:23+00:00'
+                      created_at: '2026-09-09T07:01:40+00:00'
                     -
                       id: 2
                       automation_id: 1
@@ -1211,7 +1363,7 @@ paths:
                       drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                       active: true
                       attachments: []
-                      created_at: '2026-09-02T10:01:23+00:00'
+                      created_at: '2026-09-09T07:01:40+00:00'
                 properties:
                   success:
                     type: boolean
@@ -1231,7 +1383,7 @@ paths:
                         drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
                         active: true
                         attachments: []
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                       -
                         id: 2
                         automation_id: 1
@@ -1241,7 +1393,7 @@ paths:
                         drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
                         active: true
                         attachments: []
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                     items:
                       type: object
                       properties:
@@ -1271,7 +1423,7 @@ paths:
                           example: []
                         created_at:
                           type: string
-                          example: '2026-09-02T10:01:23+00:00'
+                          example: '2026-09-09T07:01:40+00:00'
       tags:
         - Automations
     post:
@@ -1467,12 +1619,12 @@ paths:
         -
           in: query
           name: status
-          description: 'One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. e.g. active.'
+          description: 'One of active, waiting_email, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. `waiting_email` means enrolled, with no confirmed address to send to yet. e.g. active.'
           example: null
           required: false
           schema:
             type: string
-            description: 'One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. e.g. active.'
+            description: 'One of active, waiting_email, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. `waiting_email` means enrolled, with no confirmed address to send to yet. e.g. active.'
             example: null
         -
           in: query
@@ -1556,19 +1708,24 @@ paths:
                       current_step: 0
                       stopped_at: null
                       stop_reason: null
-                      created_at: '2026-09-02T10:01:23+00:00'
+                      created_at: '2026-09-09T07:01:40+00:00'
                       contact:
                         id: 2
                         email: sam.patel@globex.example
+                        email_status: pending
+                        email_checked_at: null
+                        email_provider: null
+                        profile_url: null
                         name: 'Sam Patel'
                         first_name: Sam
                         last_name: Patel
+                        job_title: null
                         company: Globex
-                        website: 'https://globex.example'
+                        domain: globex.example
                         source: tube-trend-tool
-                        custom: []
-                        created_at: '2026-09-02T10:01:23+00:00'
-                        updated_at: '2026-09-02T10:01:23+00:00'
+                        extra: []
+                        created_at: '2026-09-09T07:01:40+00:00'
+                        updated_at: '2026-09-09T07:01:40+00:00'
                     -
                       id: 1
                       contact_id: 1
@@ -1580,21 +1737,27 @@ paths:
                       current_step: 1
                       stopped_at: null
                       stop_reason: null
-                      created_at: '2026-09-02T10:01:23+00:00'
+                      created_at: '2026-09-09T07:01:40+00:00'
                       contact:
                         id: 1
                         email: jane.doe@acme.example
+                        email_status: pending
+                        email_checked_at: null
+                        email_provider: null
+                        profile_url: null
                         name: 'Jane Doe'
                         first_name: Jane
                         last_name: Doe
+                        job_title: null
                         company: 'Acme Ltd'
-                        website: 'https://acme.example'
+                        domain: acme.example
                         source: tube-trend-tool
-                        custom:
-                          industry: SaaS
-                          employees: 40
-                        created_at: '2026-09-02T10:01:23+00:00'
-                        updated_at: '2026-09-02T10:01:23+00:00'
+                        extra:
+                          tube-trend-tool:
+                            industry: SaaS
+                            employees: 40
+                        created_at: '2026-09-09T07:01:40+00:00'
+                        updated_at: '2026-09-09T07:01:40+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -1621,19 +1784,24 @@ paths:
                         current_step: 0
                         stopped_at: null
                         stop_reason: null
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                         contact:
                           id: 2
                           email: sam.patel@globex.example
+                          email_status: pending
+                          email_checked_at: null
+                          email_provider: null
+                          profile_url: null
                           name: 'Sam Patel'
                           first_name: Sam
                           last_name: Patel
+                          job_title: null
                           company: Globex
-                          website: 'https://globex.example'
+                          domain: globex.example
                           source: tube-trend-tool
-                          custom: []
-                          created_at: '2026-09-02T10:01:23+00:00'
-                          updated_at: '2026-09-02T10:01:23+00:00'
+                          extra: []
+                          created_at: '2026-09-09T07:01:40+00:00'
+                          updated_at: '2026-09-09T07:01:40+00:00'
                       -
                         id: 1
                         contact_id: 1
@@ -1645,21 +1813,27 @@ paths:
                         current_step: 1
                         stopped_at: null
                         stop_reason: null
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                         contact:
                           id: 1
                           email: jane.doe@acme.example
+                          email_status: pending
+                          email_checked_at: null
+                          email_provider: null
+                          profile_url: null
                           name: 'Jane Doe'
                           first_name: Jane
                           last_name: Doe
+                          job_title: null
                           company: 'Acme Ltd'
-                          website: 'https://acme.example'
+                          domain: acme.example
                           source: tube-trend-tool
-                          custom:
-                            industry: SaaS
-                            employees: 40
-                          created_at: '2026-09-02T10:01:23+00:00'
-                          updated_at: '2026-09-02T10:01:23+00:00'
+                          extra:
+                            tube-trend-tool:
+                              industry: SaaS
+                              employees: 40
+                          created_at: '2026-09-09T07:01:40+00:00'
+                          updated_at: '2026-09-09T07:01:40+00:00'
                     items:
                       type: object
                       properties:
@@ -1697,7 +1871,7 @@ paths:
                           nullable: true
                         created_at:
                           type: string
-                          example: '2026-09-02T10:01:23+00:00'
+                          example: '2026-09-09T07:01:40+00:00'
                         contact:
                           type: object
                           properties:
@@ -1707,6 +1881,21 @@ paths:
                             email:
                               type: string
                               example: sam.patel@globex.example
+                            email_status:
+                              type: string
+                              example: pending
+                            email_checked_at:
+                              type: string
+                              example: null
+                              nullable: true
+                            email_provider:
+                              type: string
+                              example: null
+                              nullable: true
+                            profile_url:
+                              type: string
+                              example: null
+                              nullable: true
                             name:
                               type: string
                               example: 'Sam Patel'
@@ -1716,24 +1905,28 @@ paths:
                             last_name:
                               type: string
                               example: Patel
+                            job_title:
+                              type: string
+                              example: null
+                              nullable: true
                             company:
                               type: string
                               example: Globex
-                            website:
+                            domain:
                               type: string
-                              example: 'https://globex.example'
+                              example: globex.example
                             source:
                               type: string
                               example: tube-trend-tool
-                            custom:
+                            extra:
                               type: array
                               example: []
                             created_at:
                               type: string
-                              example: '2026-09-02T10:01:23+00:00'
+                              example: '2026-09-09T07:01:40+00:00'
                             updated_at:
                               type: string
-                              example: '2026-09-02T10:01:23+00:00'
+                              example: '2026-09-09T07:01:40+00:00'
                   meta:
                     type: object
                     properties:
@@ -1912,26 +2105,32 @@ paths:
                       body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                       edited_by_user: false
                       scheduled_at: null
-                      sent_at: '2026-09-01T10:01:23+00:00'
+                      sent_at: '2026-09-08T07:01:40+00:00'
                       approved_at: null
                       rejected_at: null
                       rejection_note: null
                       error: null
-                      created_at: '2026-09-02T10:01:23+00:00'
+                      created_at: '2026-09-09T07:01:40+00:00'
                       contact:
                         id: 1
                         email: jane.doe@acme.example
+                        email_status: pending
+                        email_checked_at: null
+                        email_provider: null
+                        profile_url: null
                         name: 'Jane Doe'
                         first_name: Jane
                         last_name: Doe
+                        job_title: null
                         company: 'Acme Ltd'
-                        website: 'https://acme.example'
+                        domain: acme.example
                         source: tube-trend-tool
-                        custom:
-                          industry: SaaS
-                          employees: 40
-                        created_at: '2026-09-02T10:01:23+00:00'
-                        updated_at: '2026-09-02T10:01:23+00:00'
+                        extra:
+                          tube-trend-tool:
+                            industry: SaaS
+                            employees: 40
+                        created_at: '2026-09-09T07:01:40+00:00'
+                        updated_at: '2026-09-09T07:01:40+00:00'
                     -
                       id: 2
                       enrollment_id: 2
@@ -1950,19 +2149,24 @@ paths:
                       rejected_at: null
                       rejection_note: null
                       error: null
-                      created_at: '2026-09-02T10:01:23+00:00'
+                      created_at: '2026-09-09T07:01:40+00:00'
                       contact:
                         id: 2
                         email: sam.patel@globex.example
+                        email_status: pending
+                        email_checked_at: null
+                        email_provider: null
+                        profile_url: null
                         name: 'Sam Patel'
                         first_name: Sam
                         last_name: Patel
+                        job_title: null
                         company: Globex
-                        website: 'https://globex.example'
+                        domain: globex.example
                         source: tube-trend-tool
-                        custom: []
-                        created_at: '2026-09-02T10:01:23+00:00'
-                        updated_at: '2026-09-02T10:01:23+00:00'
+                        extra: []
+                        created_at: '2026-09-09T07:01:40+00:00'
+                        updated_at: '2026-09-09T07:01:40+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -1991,26 +2195,32 @@ paths:
                         body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                         edited_by_user: false
                         scheduled_at: null
-                        sent_at: '2026-09-01T10:01:23+00:00'
+                        sent_at: '2026-09-08T07:01:40+00:00'
                         approved_at: null
                         rejected_at: null
                         rejection_note: null
                         error: null
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                         contact:
                           id: 1
                           email: jane.doe@acme.example
+                          email_status: pending
+                          email_checked_at: null
+                          email_provider: null
+                          profile_url: null
                           name: 'Jane Doe'
                           first_name: Jane
                           last_name: Doe
+                          job_title: null
                           company: 'Acme Ltd'
-                          website: 'https://acme.example'
+                          domain: acme.example
                           source: tube-trend-tool
-                          custom:
-                            industry: SaaS
-                            employees: 40
-                          created_at: '2026-09-02T10:01:23+00:00'
-                          updated_at: '2026-09-02T10:01:23+00:00'
+                          extra:
+                            tube-trend-tool:
+                              industry: SaaS
+                              employees: 40
+                          created_at: '2026-09-09T07:01:40+00:00'
+                          updated_at: '2026-09-09T07:01:40+00:00'
                       -
                         id: 2
                         enrollment_id: 2
@@ -2029,19 +2239,24 @@ paths:
                         rejected_at: null
                         rejection_note: null
                         error: null
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                         contact:
                           id: 2
                           email: sam.patel@globex.example
+                          email_status: pending
+                          email_checked_at: null
+                          email_provider: null
+                          profile_url: null
                           name: 'Sam Patel'
                           first_name: Sam
                           last_name: Patel
+                          job_title: null
                           company: Globex
-                          website: 'https://globex.example'
+                          domain: globex.example
                           source: tube-trend-tool
-                          custom: []
-                          created_at: '2026-09-02T10:01:23+00:00'
-                          updated_at: '2026-09-02T10:01:23+00:00'
+                          extra: []
+                          created_at: '2026-09-09T07:01:40+00:00'
+                          updated_at: '2026-09-09T07:01:40+00:00'
                     items:
                       type: object
                       properties:
@@ -2084,7 +2299,7 @@ paths:
                           nullable: true
                         sent_at:
                           type: string
-                          example: '2026-09-01T10:01:23+00:00'
+                          example: '2026-09-08T07:01:40+00:00'
                         approved_at:
                           type: string
                           example: null
@@ -2103,7 +2318,7 @@ paths:
                           nullable: true
                         created_at:
                           type: string
-                          example: '2026-09-02T10:01:23+00:00'
+                          example: '2026-09-09T07:01:40+00:00'
                         contact:
                           type: object
                           properties:
@@ -2113,6 +2328,21 @@ paths:
                             email:
                               type: string
                               example: jane.doe@acme.example
+                            email_status:
+                              type: string
+                              example: pending
+                            email_checked_at:
+                              type: string
+                              example: null
+                              nullable: true
+                            email_provider:
+                              type: string
+                              example: null
+                              nullable: true
+                            profile_url:
+                              type: string
+                              example: null
+                              nullable: true
                             name:
                               type: string
                               example: 'Jane Doe'
@@ -2122,30 +2352,37 @@ paths:
                             last_name:
                               type: string
                               example: Doe
+                            job_title:
+                              type: string
+                              example: null
+                              nullable: true
                             company:
                               type: string
                               example: 'Acme Ltd'
-                            website:
+                            domain:
                               type: string
-                              example: 'https://acme.example'
+                              example: acme.example
                             source:
                               type: string
                               example: tube-trend-tool
-                            custom:
+                            extra:
                               type: object
                               properties:
-                                industry:
-                                  type: string
-                                  example: SaaS
-                                employees:
-                                  type: integer
-                                  example: 40
+                                tube-trend-tool:
+                                  type: object
+                                  properties:
+                                    industry:
+                                      type: string
+                                      example: SaaS
+                                    employees:
+                                      type: integer
+                                      example: 40
                             created_at:
                               type: string
-                              example: '2026-09-02T10:01:23+00:00'
+                              example: '2026-09-09T07:01:40+00:00'
                             updated_at:
                               type: string
-                              example: '2026-09-02T10:01:23+00:00'
+                              example: '2026-09-09T07:01:40+00:00'
                   meta:
                     type: object
                     properties:
@@ -2192,26 +2429,32 @@ paths:
                     body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
                     edited_by_user: false
                     scheduled_at: null
-                    sent_at: '2026-09-01T10:01:23+00:00'
+                    sent_at: '2026-09-08T07:01:40+00:00'
                     approved_at: null
                     rejected_at: null
                     rejection_note: null
                     error: null
-                    created_at: '2026-09-02T10:01:23+00:00'
+                    created_at: '2026-09-09T07:01:40+00:00'
                     contact:
                       id: 1
                       email: jane.doe@acme.example
+                      email_status: pending
+                      email_checked_at: null
+                      email_provider: null
+                      profile_url: null
                       name: 'Jane Doe'
                       first_name: Jane
                       last_name: Doe
+                      job_title: null
                       company: 'Acme Ltd'
-                      website: 'https://acme.example'
+                      domain: acme.example
                       source: tube-trend-tool
-                      custom:
-                        industry: SaaS
-                        employees: 40
-                      created_at: '2026-09-02T10:01:23+00:00'
-                      updated_at: '2026-09-02T10:01:23+00:00'
+                      extra:
+                        tube-trend-tool:
+                          industry: SaaS
+                          employees: 40
+                      created_at: '2026-09-09T07:01:40+00:00'
+                      updated_at: '2026-09-09T07:01:40+00:00'
                 properties:
                   success:
                     type: boolean
@@ -2261,7 +2504,7 @@ paths:
                         nullable: true
                       sent_at:
                         type: string
-                        example: '2026-09-01T10:01:23+00:00'
+                        example: '2026-09-08T07:01:40+00:00'
                       approved_at:
                         type: string
                         example: null
@@ -2280,7 +2523,7 @@ paths:
                         nullable: true
                       created_at:
                         type: string
-                        example: '2026-09-02T10:01:23+00:00'
+                        example: '2026-09-09T07:01:40+00:00'
                       contact:
                         type: object
                         properties:
@@ -2290,6 +2533,21 @@ paths:
                           email:
                             type: string
                             example: jane.doe@acme.example
+                          email_status:
+                            type: string
+                            example: pending
+                          email_checked_at:
+                            type: string
+                            example: null
+                            nullable: true
+                          email_provider:
+                            type: string
+                            example: null
+                            nullable: true
+                          profile_url:
+                            type: string
+                            example: null
+                            nullable: true
                           name:
                             type: string
                             example: 'Jane Doe'
@@ -2299,30 +2557,37 @@ paths:
                           last_name:
                             type: string
                             example: Doe
+                          job_title:
+                            type: string
+                            example: null
+                            nullable: true
                           company:
                             type: string
                             example: 'Acme Ltd'
-                          website:
+                          domain:
                             type: string
-                            example: 'https://acme.example'
+                            example: acme.example
                           source:
                             type: string
                             example: tube-trend-tool
-                          custom:
+                          extra:
                             type: object
                             properties:
-                              industry:
-                                type: string
-                                example: SaaS
-                              employees:
-                                type: integer
-                                example: 40
+                              tube-trend-tool:
+                                type: object
+                                properties:
+                                  industry:
+                                    type: string
+                                    example: SaaS
+                                  employees:
+                                    type: integer
+                                    example: 40
                           created_at:
                             type: string
-                            example: '2026-09-02T10:01:23+00:00'
+                            example: '2026-09-09T07:01:40+00:00'
                           updated_at:
                             type: string
-                            example: '2026-09-02T10:01:23+00:00'
+                            example: '2026-09-09T07:01:40+00:00'
       tags:
         - Messages
     patch:
@@ -2513,22 +2778,28 @@ paths:
                       snippet: 'Happy to take a look, send it over.'
                       body_text: "Happy to take a look, send it over.\n\nJane"
                       classification: reply
-                      received_at: '2026-09-02T04:01:23+00:00'
+                      received_at: '2026-09-09T01:01:40+00:00'
                       read_at: null
                       contact:
                         id: 1
                         email: jane.doe@acme.example
+                        email_status: pending
+                        email_checked_at: null
+                        email_provider: null
+                        profile_url: null
                         name: 'Jane Doe'
                         first_name: Jane
                         last_name: Doe
+                        job_title: null
                         company: 'Acme Ltd'
-                        website: 'https://acme.example'
+                        domain: acme.example
                         source: tube-trend-tool
-                        custom:
-                          industry: SaaS
-                          employees: 40
-                        created_at: '2026-09-02T10:01:23+00:00'
-                        updated_at: '2026-09-02T10:01:23+00:00'
+                        extra:
+                          tube-trend-tool:
+                            industry: SaaS
+                            employees: 40
+                        created_at: '2026-09-09T07:01:40+00:00'
+                        updated_at: '2026-09-09T07:01:40+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -2555,22 +2826,28 @@ paths:
                         snippet: 'Happy to take a look, send it over.'
                         body_text: "Happy to take a look, send it over.\n\nJane"
                         classification: reply
-                        received_at: '2026-09-02T04:01:23+00:00'
+                        received_at: '2026-09-09T01:01:40+00:00'
                         read_at: null
                         contact:
                           id: 1
                           email: jane.doe@acme.example
+                          email_status: pending
+                          email_checked_at: null
+                          email_provider: null
+                          profile_url: null
                           name: 'Jane Doe'
                           first_name: Jane
                           last_name: Doe
+                          job_title: null
                           company: 'Acme Ltd'
-                          website: 'https://acme.example'
+                          domain: acme.example
                           source: tube-trend-tool
-                          custom:
-                            industry: SaaS
-                            employees: 40
-                          created_at: '2026-09-02T10:01:23+00:00'
-                          updated_at: '2026-09-02T10:01:23+00:00'
+                          extra:
+                            tube-trend-tool:
+                              industry: SaaS
+                              employees: 40
+                          created_at: '2026-09-09T07:01:40+00:00'
+                          updated_at: '2026-09-09T07:01:40+00:00'
                     items:
                       type: object
                       properties:
@@ -2606,7 +2883,7 @@ paths:
                           example: reply
                         received_at:
                           type: string
-                          example: '2026-09-02T04:01:23+00:00'
+                          example: '2026-09-09T01:01:40+00:00'
                         read_at:
                           type: string
                           example: null
@@ -2620,6 +2897,21 @@ paths:
                             email:
                               type: string
                               example: jane.doe@acme.example
+                            email_status:
+                              type: string
+                              example: pending
+                            email_checked_at:
+                              type: string
+                              example: null
+                              nullable: true
+                            email_provider:
+                              type: string
+                              example: null
+                              nullable: true
+                            profile_url:
+                              type: string
+                              example: null
+                              nullable: true
                             name:
                               type: string
                               example: 'Jane Doe'
@@ -2629,30 +2921,37 @@ paths:
                             last_name:
                               type: string
                               example: Doe
+                            job_title:
+                              type: string
+                              example: null
+                              nullable: true
                             company:
                               type: string
                               example: 'Acme Ltd'
-                            website:
+                            domain:
                               type: string
-                              example: 'https://acme.example'
+                              example: acme.example
                             source:
                               type: string
                               example: tube-trend-tool
-                            custom:
+                            extra:
                               type: object
                               properties:
-                                industry:
-                                  type: string
-                                  example: SaaS
-                                employees:
-                                  type: integer
-                                  example: 40
+                                tube-trend-tool:
+                                  type: object
+                                  properties:
+                                    industry:
+                                      type: string
+                                      example: SaaS
+                                    employees:
+                                      type: integer
+                                      example: 40
                             created_at:
                               type: string
-                              example: '2026-09-02T10:01:23+00:00'
+                              example: '2026-09-09T07:01:40+00:00'
                             updated_at:
                               type: string
-                              example: '2026-09-02T10:01:23+00:00'
+                              example: '2026-09-09T07:01:40+00:00'
                   meta:
                     type: object
                     properties:
@@ -2697,22 +2996,28 @@ paths:
                     snippet: 'Happy to take a look, send it over.'
                     body_text: "Happy to take a look, send it over.\n\nJane"
                     classification: reply
-                    received_at: '2026-09-02T04:01:23+00:00'
+                    received_at: '2026-09-09T01:01:40+00:00'
                     read_at: null
                     contact:
                       id: 1
                       email: jane.doe@acme.example
+                      email_status: pending
+                      email_checked_at: null
+                      email_provider: null
+                      profile_url: null
                       name: 'Jane Doe'
                       first_name: Jane
                       last_name: Doe
+                      job_title: null
                       company: 'Acme Ltd'
-                      website: 'https://acme.example'
+                      domain: acme.example
                       source: tube-trend-tool
-                      custom:
-                        industry: SaaS
-                        employees: 40
-                      created_at: '2026-09-02T10:01:23+00:00'
-                      updated_at: '2026-09-02T10:01:23+00:00'
+                      extra:
+                        tube-trend-tool:
+                          industry: SaaS
+                          employees: 40
+                      created_at: '2026-09-09T07:01:40+00:00'
+                      updated_at: '2026-09-09T07:01:40+00:00'
                 properties:
                   success:
                     type: boolean
@@ -2755,7 +3060,7 @@ paths:
                         example: reply
                       received_at:
                         type: string
-                        example: '2026-09-02T04:01:23+00:00'
+                        example: '2026-09-09T01:01:40+00:00'
                       read_at:
                         type: string
                         example: null
@@ -2769,6 +3074,21 @@ paths:
                           email:
                             type: string
                             example: jane.doe@acme.example
+                          email_status:
+                            type: string
+                            example: pending
+                          email_checked_at:
+                            type: string
+                            example: null
+                            nullable: true
+                          email_provider:
+                            type: string
+                            example: null
+                            nullable: true
+                          profile_url:
+                            type: string
+                            example: null
+                            nullable: true
                           name:
                             type: string
                             example: 'Jane Doe'
@@ -2778,30 +3098,37 @@ paths:
                           last_name:
                             type: string
                             example: Doe
+                          job_title:
+                            type: string
+                            example: null
+                            nullable: true
                           company:
                             type: string
                             example: 'Acme Ltd'
-                          website:
+                          domain:
                             type: string
-                            example: 'https://acme.example'
+                            example: acme.example
                           source:
                             type: string
                             example: tube-trend-tool
-                          custom:
+                          extra:
                             type: object
                             properties:
-                              industry:
-                                type: string
-                                example: SaaS
-                              employees:
-                                type: integer
-                                example: 40
+                              tube-trend-tool:
+                                type: object
+                                properties:
+                                  industry:
+                                    type: string
+                                    example: SaaS
+                                  employees:
+                                    type: integer
+                                    example: 40
                           created_at:
                             type: string
-                            example: '2026-09-02T10:01:23+00:00'
+                            example: '2026-09-09T07:01:40+00:00'
                           updated_at:
                             type: string
-                            example: '2026-09-02T10:01:23+00:00'
+                            example: '2026-09-09T07:01:40+00:00'
       tags:
         - Replies
     parameters:
@@ -2817,7 +3144,7 @@ paths:
     get:
       summary: 'List suppressions'
       operationId: listSuppressions
-      description: "Everyone who must not be emailed.\n\nWorth reading before pushing contacts: ingest silently skips a\nsuppressed address, so a caller that does not check keeps offering\npeople who already opted out and never learns why nothing happens."
+      description: "Everyone who must not be emailed.\n\nWorth reading before pushing contacts. A suppressed person is stored but\nenrolled in nothing, and the push says how many of a batch that was, so a\ncaller can tell the difference between \"accepted\" and \"will be emailed\"."
       parameters:
         -
           in: query
@@ -2885,7 +3212,7 @@ paths:
                       email: no.thanks@globex.example
                       reason: unsubscribed
                       source_reply_id: null
-                      created_at: '2026-09-02T10:01:23+00:00'
+                      created_at: '2026-09-09T07:01:40+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -2906,7 +3233,7 @@ paths:
                         email: no.thanks@globex.example
                         reason: unsubscribed
                         source_reply_id: null
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                     items:
                       type: object
                       properties:
@@ -2925,7 +3252,7 @@ paths:
                           nullable: true
                         created_at:
                           type: string
-                          example: '2026-09-02T10:01:23+00:00'
+                          example: '2026-09-09T07:01:40+00:00'
                   meta:
                     type: object
                     properties:
@@ -3053,7 +3380,7 @@ paths:
                         sent: 84
                         bounce_rate: 0.0119
                         reply_rate: 0.0714
-                      last_polled_at: '2026-09-02T09:59:23+00:00'
+                      last_polled_at: '2026-09-09T06:59:40+00:00'
                       last_send_error: null
                   meta:
                     page: 1
@@ -3089,7 +3416,7 @@ paths:
                           sent: 84
                           bounce_rate: 0.0119
                           reply_rate: 0.0714
-                        last_polled_at: '2026-09-02T09:59:23+00:00'
+                        last_polled_at: '2026-09-09T06:59:40+00:00'
                         last_send_error: null
                     items:
                       type: object
@@ -3151,7 +3478,7 @@ paths:
                               example: 0.0714
                         last_polled_at:
                           type: string
-                          example: '2026-09-02T09:59:23+00:00'
+                          example: '2026-09-09T06:59:40+00:00'
                         last_send_error:
                           type: string
                           example: null
@@ -3208,7 +3535,7 @@ paths:
                       sent: 84
                       bounce_rate: 0.0119
                       reply_rate: 0.0714
-                    last_polled_at: '2026-09-02T09:59:23+00:00'
+                    last_polled_at: '2026-09-09T06:59:40+00:00'
                     last_send_error: null
                 properties:
                   success:
@@ -3277,7 +3604,7 @@ paths:
                             example: 0.0714
                       last_polled_at:
                         type: string
-                        example: '2026-09-02T09:59:23+00:00'
+                        example: '2026-09-09T06:59:40+00:00'
                       last_send_error:
                         type: string
                         example: null
@@ -3404,6 +3731,7 @@ paths:
                       suppressed: 1
                     enrollments:
                       active: 2
+                      waiting_email: 0
                       total: 2
                     queue:
                       pending_approval: 1
@@ -3451,6 +3779,9 @@ paths:
                           active:
                             type: integer
                             example: 2
+                          waiting_email:
+                            type: integer
+                            example: 0
                           total:
                             type: integer
                             example: 2
@@ -3594,7 +3925,7 @@ paths:
                       subject_id: null
                       retryable: true
                       retried_at: null
-                      created_at: '2026-09-02T10:01:23+00:00'
+                      created_at: '2026-09-09T07:01:40+00:00'
                     -
                       id: 1
                       event: email_sent
@@ -3605,7 +3936,7 @@ paths:
                       subject_id: 1
                       retryable: false
                       retried_at: null
-                      created_at: '2026-09-02T10:01:23+00:00'
+                      created_at: '2026-09-09T07:01:40+00:00'
                   meta:
                     page: 1
                     per_page: 50
@@ -3631,7 +3962,7 @@ paths:
                         subject_id: null
                         retryable: true
                         retried_at: null
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                       -
                         id: 1
                         event: email_sent
@@ -3642,7 +3973,7 @@ paths:
                         subject_id: 1
                         retryable: false
                         retried_at: null
-                        created_at: '2026-09-02T10:01:23+00:00'
+                        created_at: '2026-09-09T07:01:40+00:00'
                     items:
                       type: object
                       properties:
@@ -3678,7 +4009,7 @@ paths:
                           nullable: true
                         created_at:
                           type: string
-                          example: '2026-09-02T10:01:23+00:00'
+                          example: '2026-09-09T07:01:40+00:00'
                   meta:
                     type: object
                     properties:

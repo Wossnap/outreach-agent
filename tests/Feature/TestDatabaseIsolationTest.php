@@ -2,24 +2,37 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Support\Facades\DB;
+use Tests\Support\TestDatabase;
 use Tests\TestCase;
 
 /**
- * Guards against the suite running against a real database.
+ * The guard that keeps this suite off a real database.
  *
- * docker-compose sets DB_* and QUEUE_CONNECTION as container environment
- * variables. PHP exposes those in $_SERVER, which Laravel reads before $_ENV,
- * and PHPUnit's <env> element does not write to $_SERVER — so without matching
- * <server> entries in phpunit.xml the suite connects to the live Postgres
- * database and RefreshDatabase drops every table in it.
+ * Every test drops every table in whatever it is connected to, so the rule is
+ * that it may only ever connect to one named database. TestCase enforces it by
+ * stopping the process; what is checked here is that the rule itself answers
+ * correctly, since the enforcement cannot be exercised from inside a test that
+ * only runs when the rule has already passed.
  */
 class TestDatabaseIsolationTest extends TestCase
 {
-    public function test_tests_run_against_in_memory_sqlite(): void
+    public function test_the_suites_own_database_is_allowed(): void
     {
-        $this->assertSame('sqlite', DB::connection()->getDriverName());
-        $this->assertSame(':memory:', DB::connection()->getDatabaseName());
+        $this->assertNull(TestDatabase::refusalFor(TestDatabase::NAME));
+    }
+
+    public function test_any_other_database_is_refused_by_name(): void
+    {
+        $refusal = TestDatabase::refusalFor('outreach');
+
+        $this->assertNotNull($refusal);
+        $this->assertStringContainsString('outreach', $refusal);
+        $this->assertStringContainsString('config:clear', $refusal);
+    }
+
+    public function test_the_run_reached_that_database_and_no_other(): void
+    {
+        $this->assertSame(TestDatabase::NAME, \DB::connection()->getDatabaseName());
     }
 
     public function test_queue_runs_synchronously(): void

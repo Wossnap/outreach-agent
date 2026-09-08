@@ -62,12 +62,12 @@ class DocsExampleSeeder extends Seeder
 
         $contact = Contact::create([
             'email' => 'jane.doe@acme.example', 'name' => 'Jane Doe', 'first_name' => 'Jane', 'last_name' => 'Doe',
-            'company' => 'Acme Ltd', 'website' => 'https://acme.example',
-            'custom' => ['industry' => 'SaaS', 'employees' => 40], 'source' => 'tube-trend-tool',
+            'company' => 'Acme Ltd', 'domain' => 'acme.example',
+            'extra' => ['tube-trend-tool' => ['industry' => 'SaaS', 'employees' => 40]], 'source' => 'tube-trend-tool',
         ]);
         $sam = Contact::create([
             'email' => 'sam.patel@globex.example', 'name' => 'Sam Patel', 'first_name' => 'Sam', 'last_name' => 'Patel',
-            'company' => 'Globex', 'website' => 'https://globex.example', 'source' => 'tube-trend-tool',
+            'company' => 'Globex', 'domain' => 'globex.example', 'source' => 'tube-trend-tool',
         ]);
 
         $enrollment = Enrollment::create([

@@ -71,14 +71,17 @@ class AnthropicDrafter implements Drafter
             'Email: '.$contact->email,
         ];
 
-        foreach (['name' => 'Name', 'company' => 'Company', 'website' => 'Website'] as $field => $label) {
+        foreach (['name' => 'Name', 'job_title' => 'Job title', 'company' => 'Company', 'domain' => 'Company domain'] as $field => $label) {
             if ($contact->{$field}) {
                 $lines[] = $label.': '.$contact->{$field};
             }
         }
 
-        if (! empty($contact->custom)) {
-            $lines[] = 'Additional data: '.json_encode($contact->custom, JSON_UNESCAPED_SLASHES);
+        // Everything a caller or the scraper sent, and nothing the enrichment
+        // providers wrote: a confidence score is not something to write an
+        // email about, and naming it in the prompt invites the model to try.
+        if ([] !== $extra = $contact->extraForDrafting()) {
+            $lines[] = 'Additional data: '.json_encode($extra, JSON_UNESCAPED_SLASHES);
         }
 
         $thread = $this->priorThread($enrollment, $step);

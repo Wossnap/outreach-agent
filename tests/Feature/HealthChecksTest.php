@@ -10,7 +10,7 @@ use App\Models\Message;
 use App\Models\Reply;
 use App\Services\Health\DnsblChecker;
 use App\Services\Health\DnsHealthChecker;
-use App\Services\Health\DnsResolver;
+use App\Support\Dns\DnsResolver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -31,6 +31,12 @@ class FakeDnsResolver implements DnsResolver
     public function aRecords(string $host): array
     {
         return $this->a[$host] ?? [];
+    }
+
+    /** Nothing in the health checks asks this; the waterfall does. */
+    public function hasMailExchanger(string $domain): bool
+    {
+        return true;
     }
 }
 

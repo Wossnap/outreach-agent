@@ -3,6 +3,8 @@
 namespace App\Services\Inbound;
 
 use App\Models\Contact;
+use App\Models\EmailLookup;
+use App\Models\EnrichmentProvider;
 use App\Models\Enrollment;
 use App\Models\Mailbox;
 use App\Models\Message;
@@ -115,15 +117,87 @@ class InboundProcessor
 
     protected function handleBounce(Reply $reply, ?Enrollment $enrollment, ?Contact $contact): void
     {
-        $email = $contact?->email ?? $enrollment?->contact?->email;
+        $contact ??= $enrollment?->contact;
+        $email = $contact?->email;
 
         if ($email) {
             Suppression::suppress($email, Suppression::REASON_BOUNCED, $reply->id);
         }
 
+        if ($contact) {
+            $this->recordTheBounceAgainstTheAddress($contact, $reply);
+        }
+
         if ($enrollment) {
             $this->stopper->stop($enrollment, Enrollment::STATUS_STOPPED_BOUNCE, 'Delivery bounced');
         }
+
+        $this->stopEverythingElseOpenFor($contact, $enrollment, Enrollment::STATUS_STOPPED_BOUNCE, 'Their address bounced');
+    }
+
+    /**
+     * Suppressing somebody ends every sequence they are in, not just this one.
+     *
+     * Only the enrollment that produced the message is matched here, and a
+     * waiting one can never be matched at all: matching is scoped to the
+     * mailbox the mail arrived at, and an enrollment waiting for an address has
+     * no mailbox yet. So the same person could be in a second sequence,
+     * unstopped, after the first had proved their address was dead or they had
+     * asked never to be written to again.
+     *
+     * Nothing would have been sent - starting a waiting enrollment checks the
+     * opt-out list first - but the row stayed open for good, with nothing on
+     * any screen to say why it never went anywhere.
+     */
+    protected function stopEverythingElseOpenFor(?Contact $contact, ?Enrollment $matched, string $status, string $reason): void
+    {
+        if (! $contact) {
+            return;
+        }
+
+        $others = Enrollment::query()
+            ->where('contact_id', $contact->id)
+            ->whereIn('status', Enrollment::openStatuses())
+            ->when($matched, fn ($query) => $query->whereKeyNot($matched->id))
+            ->get();
+
+        foreach ($others as $enrollment) {
+            $this->stopper->stop($enrollment, $status, $reason);
+        }
+    }
+
+    /**
+     * Tell the email waterfall that an address it approved did not deliver.
+     *
+     * This is the only true measure of whether a "valid" verdict was right. A
+     * bounce writes an ordinary lookup row, so the provider that supplied the
+     * address is answerable for it on the same page that reports what it cost.
+     *
+     * Free, because nobody charged us for it. The status goes to invalid so the
+     * address is never sent to again even if the suppression list is later
+     * cleared, and so nothing re-checks it: a bounce is as settled as it gets.
+     */
+    protected function recordTheBounceAgainstTheAddress(Contact $contact, Reply $reply): void
+    {
+        EmailLookup::create([
+            'contact_id' => $contact->id,
+            'provider_name' => 'Delivery',
+            'driver' => EmailLookup::DRIVER_BOUNCE,
+            'kind' => EnrichmentProvider::KIND_VERIFY,
+            'result' => EmailLookup::RESULT_INVALID,
+            'cost' => 0,
+            'detail' => [
+                'reason' => 'The message bounced, so this address does not accept mail.',
+                'found_by' => $contact->email_provider,
+                'said_before_sending' => $contact->email_status,
+                'reply_id' => $reply->id,
+            ],
+        ]);
+
+        $contact->update([
+            'email_status' => Contact::EMAIL_INVALID,
+            'email_checked_at' => now(),
+        ]);
     }
 
     protected function handleUnsubscribe(Reply $reply, ?Enrollment $enrollment, ?Contact $contact): void
@@ -137,6 +211,15 @@ class InboundProcessor
         if ($enrollment) {
             $this->stopper->stop($enrollment, Enrollment::STATUS_STOPPED_UNSUBSCRIBE, 'Contact opted out');
         }
+
+        // Somebody asking not to be written to again means all of it, not the
+        // one sequence the message happened to be matched to.
+        $this->stopEverythingElseOpenFor(
+            $contact ?? $enrollment?->contact,
+            $enrollment,
+            Enrollment::STATUS_STOPPED_UNSUBSCRIBE,
+            'They opted out',
+        );
     }
 
     protected function handleReply(?Enrollment $enrollment): void

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\EnrollmentResource;
-use App\Jobs\DraftEmailJob;
 use App\Models\Automation;
 use App\Models\Contact;
 use App\Models\Enrollment;
 use App\Models\Suppression;
+use App\Services\Sending\EnrollmentActivator;
 use App\Services\Sending\EnrollmentStopper;
-use App\Services\Sending\MailboxSelector;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -25,7 +24,7 @@ class EnrollmentController extends ApiController
      *
      * Newest first.
      *
-     * @queryParam status string One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. e.g. active. No-example
+     * @queryParam status string One of active, waiting_email, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. `waiting_email` means enrolled, with no confirmed address to send to yet. e.g. active. No-example
      * @queryParam contact_id integer e.g. 1. No-example
      * @queryParam automation_id integer e.g. 1. No-example
      * @queryParam tag string Automation tag. e.g. seo-backlinks. No-example
@@ -67,7 +66,7 @@ class EnrollmentController extends ApiController
      * @bodyParam contact_id integer Alternative to email. Left out of the example below so the request is sendable as it stands. No-example
      * @bodyParam automation_id integer Alternative to tag. Left out of the example below so the request is sendable as it stands. No-example
      */
-    public function store(Request $request, MailboxSelector $selector): JsonResponse
+    public function store(Request $request, EnrollmentActivator $activator): JsonResponse
     {
         $payload = $request->validate([
             'contact_id' => ['required_without:email', 'integer', 'exists:contacts,id'],
@@ -100,29 +99,17 @@ class EnrollmentController extends ApiController
             return $this->fail('That automation is switched off.', 409);
         }
 
-        $existing = Enrollment::query()
-            ->where('contact_id', $contact->id)
-            ->where('automation_id', $automation->id)
-            ->where('status', Enrollment::STATUS_ACTIVE)
-            ->first();
-
-        if ($existing) {
+        if ($activator->hasOpenEnrollment($contact, $automation)) {
             return $this->fail('That contact is already active in this automation.', 409);
         }
 
-        $enrollment = Enrollment::query()->create([
-            'contact_id' => $contact->id,
-            'automation_id' => $automation->id,
-            'mailbox_id' => $selector->select()?->id,
-            'status' => Enrollment::STATUS_ACTIVE,
-            'current_step' => 0,
-        ]);
-
-        DraftEmailJob::dispatch($enrollment->id, 1);
+        $enrollment = $activator->enroll($contact, $automation);
 
         return $this->ok(
             new EnrollmentResource($enrollment->load(['contact', 'automation', 'mailbox'])),
-            'Enrolled; drafting the first email.',
+            $enrollment->isActive()
+                ? 'Enrolled; drafting the first email.'
+                : 'Enrolled, and waiting for a confirmed email address before anything is drafted.',
             201,
         );
     }
@@ -145,7 +132,10 @@ class EnrollmentController extends ApiController
             return $this->fail('Enrollment not found.', 404);
         }
 
-        if (! $model->isActive()) {
+        // Waiting counts as open, so it can be called off like any other: a
+        // caller who has changed their mind about somebody should not have to
+        // wait for an address to turn up before they can say so.
+        if (! in_array($model->status, Enrollment::openStatuses(), true)) {
             return $this->fail('That enrollment is already stopped.', 409);
         }
 

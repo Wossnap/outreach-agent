@@ -24,7 +24,8 @@ class ContactController extends ApiController
      * @queryParam company string Partial match on company. e.g. Acme. No-example
      * @queryParam q string Partial match on email, either name, or company. e.g. acme. No-example
      * @queryParam tag string Only contacts enrolled in this automation. e.g. seo-backlinks. No-example
-     * @queryParam status string Only contacts with an enrollment in this state. e.g. active. No-example
+     * @queryParam status string Only contacts with an enrollment in this state. `waiting_email` means enrolled with no confirmed address yet. e.g. active. No-example
+     * @queryParam email_status string How far the waterfall has got: pending, finding, verifying, valid, risky, invalid, not_found. Only `valid` is sendable on its own. e.g. valid. No-example
      * @queryParam suppressed boolean true for opted-out contacts only, false to exclude them. e.g. true. No-example
      * @queryParam since string ISO date. Only rows created on or after it. e.g. 2026-08-01. No-example
      * @queryParam per_page integer Rows per page. Clamped to 200. e.g. 50. No-example
@@ -38,14 +39,26 @@ class ContactController extends ApiController
             $query->where('email', mb_strtolower(trim((string) $email)));
         }
 
+        /*
+         * Matched without regard to case, on both sides.
+         *
+         * Postgres LIKE is case-sensitive, so searching for "globex" would not
+         * find anybody at "Globex". Lower-casing both sides is explicit about
+         * the intent rather than relying on how a given database compares.
+         */
+        $matches = fn ($q, string $column, string $value) => $q->whereRaw(
+            'lower('.$column.') like ?',
+            ['%'.mb_strtolower($value).'%'],
+        );
+
         if ($company = $request->query('company')) {
-            $query->where('company', 'like', '%'.$company.'%');
+            $matches($query, 'company', (string) $company);
         }
 
         if ($term = $request->query('q')) {
-            $query->where(function ($q) use ($term) {
+            $query->where(function ($q) use ($term, $matches) {
                 foreach (['email', 'name', 'first_name', 'last_name', 'company'] as $column) {
-                    $q->orWhere($column, 'like', '%'.$term.'%');
+                    $q->orWhere(fn ($inner) => $matches($inner, $column, (string) $term));
                 }
             });
         }
@@ -58,13 +71,21 @@ class ContactController extends ApiController
             $query->whereHas('enrollments', fn ($q) => $q->where('status', $status));
         }
 
+        if ($emailStatus = $request->query('email_status')) {
+            $query->where('email_status', $emailStatus);
+        }
+
         if ($request->filled('suppressed')) {
             $suppressed = $request->boolean('suppressed');
             $emails = Suppression::query()->select('email');
 
+            // Somebody with no address cannot be on a list of addresses, so
+            // they belong in "not suppressed". NOT IN is never true for a null,
+            // so they have to be asked for separately or every contact the
+            // scraper found would be missing from this filter.
             $suppressed
                 ? $query->whereIn('email', $emails)
-                : $query->whereNotIn('email', $emails);
+                : $query->where(fn ($q) => $q->whereNull('email')->orWhereNotIn('email', $emails));
         }
 
         if ($since = $request->query('since')) {

@@ -23,7 +23,7 @@
 
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
-                    <thead class="text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-left text-gray-500 dark:text-gray-300">
                         <tr>
                             <th class="px-6 py-3 font-medium">Name</th>
                             <th class="px-6 py-3 font-medium">Tag</th>
@@ -42,7 +42,7 @@
                                 <td class="px-6 py-4">{{ $automation->active_enrollments_count }}</td>
                                 <td class="px-6 py-4">
                                     <button wire:click="toggleActive({{ $automation->id }})"
-                                        class="px-2 py-1 rounded text-xs font-semibold {{ $automation->active ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-600' }}">
+                                        class="px-2 py-1 rounded text-xs font-semibold {{ $automation->active ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-600 dark:text-gray-300' }}">
                                         {{ $automation->active ? 'Active' : 'Inactive' }}
                                     </button>
                                 </td>
@@ -53,7 +53,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-10 text-center text-gray-500">
+                                <td colspan="6" class="px-6 py-10 text-center text-gray-500 dark:text-gray-300">
                                     No automations yet. Create one above — its tag is what your other apps send to <code class="font-mono">POST /api/contacts</code>.
                                 </td>
                             </tr>

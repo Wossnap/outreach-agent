@@ -6,7 +6,7 @@
         @if ($sortField === $field)
             <span class="text-indigo-500">{{ $sortDirection === 'asc' ? '▲' : '▼' }}</span>
         @else
-            <span class="text-gray-300 dark:text-gray-600">↕</span>
+            <span class="text-gray-400 dark:text-gray-500" aria-hidden="true">↕</span>
         @endif
     </button>
 </th>

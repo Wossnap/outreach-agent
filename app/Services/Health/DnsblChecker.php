@@ -4,6 +4,7 @@ namespace App\Services\Health;
 
 use App\Models\Domain;
 use App\Models\HealthCheck;
+use App\Support\Dns\DnsResolver;
 
 /**
  * Checks the domain against domain-based blocklists (Spamhaus DBL, SURBL,

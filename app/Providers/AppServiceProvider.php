@@ -2,13 +2,18 @@
 
 namespace App\Providers;
 
+use App\Models\ApiKey;
 use App\Services\Drafting\AnthropicDrafter;
 use App\Services\Drafting\Drafter;
 use App\Services\Drafting\MockDrafter;
-use App\Services\Health\DnsResolver;
-use App\Services\Health\PhpDnsResolver;
+use App\Support\Dns\DnsResolver;
+use App\Support\Dns\PhpDnsResolver;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Knuckles\Scribe\Scribe;
+use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,7 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(DnsResolver::class, PhpDnsResolver::class);
+        // A singleton so the check for a lying resolver, which costs one DNS
+        // lookup, happens once per process rather than once per contact.
+        $this->app->singleton(DnsResolver::class, PhpDnsResolver::class);
 
         $this->app->bind(Drafter::class, fn () => config('services.anthropic.drafter') === 'mock'
             ? new MockDrafter
@@ -29,7 +36,31 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        /*
+         * API keys come back as ApiKey rather than Sanctum's own token model.
+         *
+         * ApiKey lists the abilities this system uses, so the middleware, the
+         * settings page and the docs all read one list. Sanctum has to be told
+         * to use it, or nothing ever instantiates it.
+         */
+        Sanctum::usePersonalAccessTokenModel(ApiKey::class);
+
+        $this->configureRateLimiting();
         $this->prettyPrintPostmanBodies();
+    }
+
+    /**
+     * Counted per API key, not per address.
+     *
+     * Several systems can push from one server, and keying on the address would
+     * let a busy one throttle the others. A generous ceiling: these are trusted
+     * callers holding a key, and the limit is there to stop a runaway loop
+     * rather than to ration anybody.
+     */
+    protected function configureRateLimiting(): void
+    {
+        RateLimiter::for('push-contacts', fn (Request $request): Limit => Limit::perMinute(120)
+            ->by($request->attributes->get('api_token')?->id ?? $request->ip()));
     }
 
     /**
@@ -107,6 +138,28 @@ class AppServiceProvider extends ServiceProvider
                 $decoded = json_decode($request['body']['raw'], true);
 
                 if (is_array($decoded) && json_last_error() === JSON_ERROR_NONE) {
+                    $request['body']['raw'] = json_encode(
+                        $decoded,
+                        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+                    );
+                }
+            }
+
+            /*
+             * The push example carries one shape, not both.
+             *
+             * `contacts` is documented as what you send INSTEAD of the fields
+             * above it, but the generator lists every body parameter, so the
+             * example arrived with a single contact and a batch of invented
+             * ones in the same object. Nobody could send it as it stood, and it
+             * is the one request in this collection people actually run.
+             */
+            if (($request['body']['mode'] ?? null) === 'raw' && is_string($request['body']['raw'] ?? null)) {
+                $decoded = json_decode($request['body']['raw'], true);
+
+                if (is_array($decoded) && array_key_exists('contacts', $decoded) && count($decoded) > 1) {
+                    unset($decoded['contacts']);
+
                     $request['body']['raw'] = json_encode(
                         $decoded,
                         JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,

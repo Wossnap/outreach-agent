@@ -4,7 +4,7 @@
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
                     Approval queue
-                    <span class="ml-2 text-sm font-normal text-gray-500">{{ $messages->total() }} pending</span>
+                    <span class="ml-2 text-sm font-normal text-gray-500 dark:text-gray-300">{{ $messages->total() }} pending</span>
                 </h2>
                 @if ($messages->total() > 0)
                     <button wire:click="bulkApprove"
@@ -53,10 +53,10 @@
                                 <p class="font-semibold text-gray-900 dark:text-gray-100">
                                     {{ $message->contact->name ?: $message->contact->email }}
                                     @if ($message->contact->company)
-                                        <span class="font-normal text-gray-500">· {{ $message->contact->company }}</span>
+                                        <span class="font-normal text-gray-500 dark:text-gray-300">· {{ $message->contact->company }}</span>
                                     @endif
                                 </p>
-                                <p class="text-xs text-gray-500">
+                                <p class="text-xs text-gray-500 dark:text-gray-300">
                                     to {{ $message->contact->email }}
                                     · from {{ $message->mailbox?->email ?? 'no mailbox yet' }}
                                 </p>
@@ -77,13 +77,13 @@
 
                     @if (($priorThreads[$message->enrollment_id] ?? null)?->isNotEmpty())
                         <details class="text-sm">
-                            <summary class="cursor-pointer text-gray-500 hover:text-gray-700">
+                            <summary class="cursor-pointer text-gray-500 dark:text-gray-300 hover:text-gray-700">
                                 Prior emails in this thread ({{ $priorThreads[$message->enrollment_id]->count() }})
                             </summary>
                             <div class="mt-2 space-y-3 border-l-2 border-gray-200 dark:border-gray-700 pl-4">
                                 @foreach ($priorThreads[$message->enrollment_id] as $prior)
                                     <div>
-                                        <p class="text-xs text-gray-500">{{ $prior->sent_at?->timezone(config('outreach.timezone'))->format('D j M, H:i') }} — {{ $prior->subject }}</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-300">{{ $prior->sent_at?->timezone(config('outreach.timezone'))->format('D j M, H:i') }} — {{ $prior->subject }}</p>
                                         <p class="whitespace-pre-line text-gray-700 dark:text-gray-300 text-xs mt-1">{{ $prior->body_text }}</p>
                                     </div>
                                 @endforeach
@@ -99,7 +99,7 @@
                             <x-text-input class="mt-1 w-full bg-gray-100 dark:bg-gray-800"
                                 value="Re: {{ ($priorThreads[$message->enrollment_id] ?? null)?->first()?->subject ?? $message->subject }}"
                                 disabled readonly />
-                            <p class="mt-1 text-xs text-gray-500">Follow-ups keep the first email's subject so they stay in the same conversation.</p>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-300">Follow-ups keep the first email's subject so they stay in the same conversation.</p>
                         @else
                             <x-input-label value="Subject" />
                             <x-text-input wire:model.blur="drafts.{{ $message->id }}.subject" class="mt-1 w-full" />
@@ -117,12 +117,12 @@
                         {{-- Shown before the approve button on purpose: approving sends whatever
                              is attached, so it must not be something you only find out afterwards. --}}
                         <div class="rounded-md bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm">
-                            <span class="text-xs uppercase tracking-wide text-gray-500">Sends with</span>
+                            <span class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-300">Sends with</span>
                             <ul class="mt-1 space-y-0.5">
                                 @foreach ($attachments as $attachment)
                                     <li class="text-gray-700 dark:text-gray-300">
                                         {{ $attachment['filename'] }}
-                                        <span class="text-xs text-gray-500">({{ number_format($attachment['size'] / 1024, 0) }} KB)</span>
+                                        <span class="text-xs text-gray-500 dark:text-gray-300">({{ number_format($attachment['size'] / 1024, 0) }} KB)</span>
                                     </li>
                                 @endforeach
                             </ul>
@@ -140,7 +140,7 @@
                                 Reject
                             </button>
                         </div>
-                        <p class="text-xs text-gray-400">drafted {{ $message->created_at->diffForHumans() }}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">drafted {{ $message->created_at->diffForHumans() }}</p>
                     </div>
 
                     @if ($rejectingId === $message->id)
@@ -155,7 +155,7 @@
                     @endif
                 </div>
             @empty
-                <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-10 text-center text-gray-500">
+                <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-10 text-center text-gray-500 dark:text-gray-300">
                     Nothing waiting for approval. Drafts appear here as soon as your apps send contacts to the API.
                 </div>
             @endforelse

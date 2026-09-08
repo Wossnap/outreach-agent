@@ -31,3 +31,6 @@ Thumbs.db
 # real-looking bearer token into them. The published docs in public/docs are
 # committed and contain no token; regenerate from DocsExampleSeeder.
 /.scribe
+
+# The API key minted to capture real responses in the docs. Local only.
+storage/docs-token.txt

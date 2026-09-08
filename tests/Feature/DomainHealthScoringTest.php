@@ -8,7 +8,7 @@ use App\Models\Mailbox;
 use App\Models\User;
 use App\Services\Health\AutoPauseRules;
 use App\Services\Health\DnsHealthChecker;
-use App\Services\Health\DnsResolver;
+use App\Support\Dns\DnsResolver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Livewire\Livewire;

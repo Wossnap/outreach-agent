@@ -16,7 +16,7 @@
                 <div class="rounded-md bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-800 dark:text-red-200">{{ session('error') }}</div>
             @endif
 
-            <p class="text-sm text-gray-500">
+            <p class="text-sm text-gray-500 dark:text-gray-300">
                 Mail is sent through the Gmail API from Google's servers, so IP reputation is handled by Google.
                 What matters here: keep each domain's SPF/DKIM/DMARC green (see Health), let warmup ramp volume slowly, and watch bounce rates.
             </p>
@@ -28,10 +28,10 @@
                             <p class="font-semibold text-gray-900 dark:text-gray-100">
                                 {{ $mailbox->email }}
                                 @if ($mailbox->display_name)
-                                    <span class="font-normal text-gray-500">({{ $mailbox->display_name }})</span>
+                                    <span class="font-normal text-gray-500 dark:text-gray-300">({{ $mailbox->display_name }})</span>
                                 @endif
                             </p>
-                            <p class="text-xs text-gray-500">
+                            <p class="text-xs text-gray-500 dark:text-gray-300">
                                 {{ $mailbox->domain->name }}
                                 · sent today {{ $sentToday->get($mailbox->id, 0) }}/{{ $mailbox->effectiveDailyCap() }}
                                 @if ($mailbox->isWarming())
@@ -41,7 +41,7 @@
                             </p>
                             @if ($mailbox->paused_reason)
                                 {{-- Why it stopped. A record of the past, written once. --}}
-                                <p class="text-xs text-gray-500 mt-1">{{ $mailbox->paused_reason }}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-300 mt-1">{{ $mailbox->paused_reason }}</p>
                             @endif
 
                             @php($blocker = $blockers[$mailbox->id] ?? null)
@@ -59,7 +59,7 @@
                                 @endif
 
                                 @if ($blocker['summary'])
-                                    <p class="text-xs text-gray-500">{{ $mailbox->domain?->name }}: {{ $blocker['summary'] }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-300">{{ $mailbox->domain?->name }}: {{ $blocker['summary'] }}</p>
                                 @endif
                             @endif
                         </div>
@@ -70,7 +70,7 @@
                                 'bg-yellow-100 text-yellow-800' => $mailbox->status === 'paused',
                                 'bg-red-100 text-red-800' => in_array($mailbox->status, ['disconnected', 'error']),
                             ])>{{ $mailbox->status }}</span>
-                            <span class="text-xs text-gray-500">bounce {{ number_format($mailbox->bounce_rate_7d * 100, 1) }}% · reply {{ number_format($mailbox->reply_rate_7d * 100, 1) }}% (7d)</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-300">bounce {{ number_format($mailbox->bounce_rate_7d * 100, 1) }}% · reply {{ number_format($mailbox->reply_rate_7d * 100, 1) }}% (7d)</span>
                             @if ($mailbox->status === 'active')
                                 <button wire:click="pause({{ $mailbox->id }})" class="text-xs text-yellow-700 hover:underline">Pause</button>
                             @elseif ($mailbox->status === 'paused')
@@ -130,10 +130,10 @@
                             </div>
                             <div class="flex items-end gap-4 pb-1">
                                 <label class="inline-flex items-center gap-2">
-                                    <input type="checkbox" wire:model="form.send_weekends" class="rounded border-gray-300"> Weekends
+                                    <input type="checkbox" wire:model="form.send_weekends" class="rounded border-gray-300 dark:border-gray-600"> Weekends
                                 </label>
                                 <label class="inline-flex items-center gap-2">
-                                    <input type="checkbox" wire:model="form.warmup_enabled" class="rounded border-gray-300"> Warmup
+                                    <input type="checkbox" wire:model="form.warmup_enabled" class="rounded border-gray-300 dark:border-gray-600"> Warmup
                                 </label>
                             </div>
                             <div class="sm:col-span-3 flex gap-2">
@@ -144,7 +144,7 @@
                     @endif
                 </div>
             @empty
-                <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-10 text-center text-gray-500">
+                <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-10 text-center text-gray-500 dark:text-gray-300">
                     No mailboxes connected yet. Connect a Google Workspace mailbox to start sending.
                     <br>See <code class="font-mono text-xs">docs/google-cloud-setup.md</code> for the one-time Google Cloud setup.
                 </div>

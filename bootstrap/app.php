@@ -64,6 +64,16 @@ return Application::configure(basePath: dirname(__DIR__))
             'api.auth' => ApiAuth::class,
             'api.enabled' => EnsureApiActionIsEnabled::class,
         ]);
+
+        /*
+         * The resolved light-or-dark theme, written by the browser.
+         *
+         * Left unencrypted because JavaScript sets it and the layout reads it
+         * back to put the right class on <html> before anything is painted. It
+         * holds one word, chosen by the person looking at the screen, and is
+         * never trusted for anything but which stylesheet rules apply.
+         */
+        $middleware->encryptCookies(except: ['theme_resolved']);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

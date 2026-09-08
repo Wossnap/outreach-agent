@@ -22,8 +22,8 @@ class MockDrafterTest extends TestCase
         $contact = Contact::factory()->create([
             'name' => 'Jane',
             'company' => 'Acme',
-            'website' => 'https://acme.com',
-            'custom' => ['niche' => 'gardening'],
+            'domain' => 'acme.com',
+            'extra' => ['api' => ['niche' => 'gardening']],
         ]);
         $mailbox = Mailbox::factory()->connected()->create(['display_name' => 'Sean']);
 
@@ -46,7 +46,7 @@ class MockDrafterTest extends TestCase
         $this->assertStringContainsString('[MOCK DRAFT]', $draft['subject']);
         $this->assertStringContainsString('Acme', $draft['subject']);
         $this->assertStringContainsString('Jane', $draft['body']);
-        $this->assertStringContainsString('https://acme.com', $draft['body']);
+        $this->assertStringContainsString('acme.com', $draft['body']);
         $this->assertStringContainsString('gardening', $draft['body']);
         $this->assertStringContainsString('Ask about their backlink strategy.', $draft['body']);
         $this->assertStringContainsString('Sean', $draft['body']);

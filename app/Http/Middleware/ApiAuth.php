@@ -15,11 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
  *   read     - GET anything
  *   write    - create and change data, including pushing contacts
  *   approve  - approve a draft so it sends (also gated by config, see below)
- *   ingest   - legacy, kept so keys issued before abilities existed still
- *              reach POST /api/contacts
  *
  * Routes list the abilities that satisfy them and the key needs any one:
- * `api.auth:write,ingest`.
+ * `api.auth:read,write`.
  */
 class ApiAuth
 {
@@ -52,6 +50,11 @@ class ApiAuth
 
         $token->forceFill(['last_used_at' => now()])->save();
         $request->setUserResolver(fn () => $token->tokenable);
+
+        // Stashed for the rate limiter, which has to count per key rather than
+        // per address: several systems pushing from one server must not
+        // throttle each other.
+        $request->attributes->set('api_token', $token);
 
         return $next($request);
     }

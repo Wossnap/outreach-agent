@@ -19,16 +19,33 @@ class Suppression extends Model
 
     protected $fillable = ['email', 'reason', 'source_reply_id'];
 
-    public static function suppress(string $email, string $reason, ?int $sourceReplyId = null): self
+    /**
+     * Add an address to the never-email list.
+     *
+     * Null is accepted and does nothing, because a contact does not have to
+     * have an address. This list is keyed on the address, so there is nothing
+     * to record for somebody we can only name. Whether that person should be
+     * emailed is decided by the enrollment, which is stopped separately.
+     */
+    public static function suppress(?string $email, string $reason, ?int $sourceReplyId = null): ?self
     {
+        $email = mb_strtolower(trim((string) $email));
+
+        if ($email === '') {
+            return null;
+        }
+
         return static::query()->firstOrCreate(
-            ['email' => mb_strtolower(trim($email))],
+            ['email' => $email],
             ['reason' => $reason, 'source_reply_id' => $sourceReplyId],
         );
     }
 
-    public static function isSuppressed(string $email): bool
+    /** Nobody with no address is on a list of addresses. */
+    public static function isSuppressed(?string $email): bool
     {
-        return static::query()->where('email', mb_strtolower(trim($email)))->exists();
+        $email = mb_strtolower(trim((string) $email));
+
+        return $email !== '' && static::query()->where('email', $email)->exists();
     }
 }

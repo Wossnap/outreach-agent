@@ -26,7 +26,7 @@
             </style>
 
     <script>
-        var tryItOutBaseUrl = "https://outreach.seannocode.com";
+        var tryItOutBaseUrl = "http://localhost:8010";
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
@@ -247,7 +247,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: September 2, 2026</li>
+        <li>Last updated: September 9, 2026</li>
     </ul>
 </div>
 
@@ -256,7 +256,7 @@
     <div class="content">
         <h1 id="introduction">Introduction</h1>
 <aside>
-    <strong>Base URL</strong>: <code>https://outreach.seannocode.com</code>
+    <strong>Base URL</strong>: <code>http://localhost:8010</code>
 </aside>
 <pre><code>Push leads in, read what came back out, and run the sequences that sit between the two.
 
@@ -319,14 +319,14 @@ is safe to poll from a monitor.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/health" \
+    --get "http://localhost:8010/api/health" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/health"
+    "http://localhost:8010/api/health"
 );
 
 const headers = {
@@ -448,7 +448,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/contacts" \
+    --get "http://localhost:8010/api/contacts" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -456,7 +456,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/contacts"
+    "http://localhost:8010/api/contacts"
 );
 
 const headers = {
@@ -493,31 +493,43 @@ access-control-allow-origin: *
         {
             &quot;id&quot;: 2,
             &quot;email&quot;: &quot;sam.patel@globex.example&quot;,
+            &quot;email_status&quot;: &quot;pending&quot;,
+            &quot;email_checked_at&quot;: null,
+            &quot;email_provider&quot;: null,
+            &quot;profile_url&quot;: null,
             &quot;name&quot;: &quot;Sam Patel&quot;,
             &quot;first_name&quot;: &quot;Sam&quot;,
             &quot;last_name&quot;: &quot;Patel&quot;,
+            &quot;job_title&quot;: null,
             &quot;company&quot;: &quot;Globex&quot;,
-            &quot;website&quot;: &quot;https://globex.example&quot;,
+            &quot;domain&quot;: &quot;globex.example&quot;,
             &quot;source&quot;: &quot;tube-trend-tool&quot;,
-            &quot;custom&quot;: [],
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+            &quot;extra&quot;: [],
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
         },
         {
             &quot;id&quot;: 1,
             &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
+            &quot;email_status&quot;: &quot;pending&quot;,
+            &quot;email_checked_at&quot;: null,
+            &quot;email_provider&quot;: null,
+            &quot;profile_url&quot;: null,
             &quot;name&quot;: &quot;Jane Doe&quot;,
             &quot;first_name&quot;: &quot;Jane&quot;,
             &quot;last_name&quot;: &quot;Doe&quot;,
+            &quot;job_title&quot;: null,
             &quot;company&quot;: &quot;Acme Ltd&quot;,
-            &quot;website&quot;: &quot;https://acme.example&quot;,
+            &quot;domain&quot;: &quot;acme.example&quot;,
             &quot;source&quot;: &quot;tube-trend-tool&quot;,
-            &quot;custom&quot;: {
-                &quot;industry&quot;: &quot;SaaS&quot;,
-                &quot;employees&quot;: 40
+            &quot;extra&quot;: {
+                &quot;tube-trend-tool&quot;: {
+                    &quot;industry&quot;: &quot;SaaS&quot;,
+                    &quot;employees&quot;: 40
+                }
             },
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
         }
     ],
     &quot;meta&quot;: {
@@ -671,7 +683,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="query">
     <br>
-<p>Only contacts with an enrollment in this state. e.g. active.</p>
+<p>Only contacts with an enrollment in this state. <code>waiting_email</code> means enrolled with no confirmed address yet. e.g. active.</p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>email_status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="email_status"                data-endpoint="GETapi-contacts"
+               value=""
+               data-component="query">
+    <br>
+<p>How far the waterfall has got: pending, finding, verifying, valid, risky, invalid, not_found. Only <code>valid</code> is sendable on its own. e.g. valid.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>suppressed</code></b>&nbsp;&nbsp;
@@ -748,7 +772,7 @@ reply received, in one request.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/contacts/jane.doe@acme.example" \
+    --get "http://localhost:8010/api/contacts/jane.doe@acme.example" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -756,7 +780,7 @@ reply received, in one request.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/contacts/jane.doe@acme.example"
+    "http://localhost:8010/api/contacts/jane.doe@acme.example"
 );
 
 const headers = {
@@ -792,19 +816,26 @@ access-control-allow-origin: *
     &quot;data&quot;: {
         &quot;id&quot;: 1,
         &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
+        &quot;email_status&quot;: &quot;pending&quot;,
+        &quot;email_checked_at&quot;: null,
+        &quot;email_provider&quot;: null,
+        &quot;profile_url&quot;: null,
         &quot;name&quot;: &quot;Jane Doe&quot;,
         &quot;first_name&quot;: &quot;Jane&quot;,
         &quot;last_name&quot;: &quot;Doe&quot;,
+        &quot;job_title&quot;: null,
         &quot;company&quot;: &quot;Acme Ltd&quot;,
-        &quot;website&quot;: &quot;https://acme.example&quot;,
+        &quot;domain&quot;: &quot;acme.example&quot;,
         &quot;source&quot;: &quot;tube-trend-tool&quot;,
-        &quot;custom&quot;: {
-            &quot;industry&quot;: &quot;SaaS&quot;,
-            &quot;employees&quot;: 40
+        &quot;extra&quot;: {
+            &quot;tube-trend-tool&quot;: {
+                &quot;industry&quot;: &quot;SaaS&quot;,
+                &quot;employees&quot;: 40
+            }
         },
         &quot;suppressed&quot;: false,
-        &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
-        &quot;updated_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
+        &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
+        &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
         &quot;enrollments&quot;: [
             {
                 &quot;id&quot;: 1,
@@ -817,7 +848,7 @@ access-control-allow-origin: *
                 &quot;current_step&quot;: 1,
                 &quot;stopped_at&quot;: null,
                 &quot;stop_reason&quot;: null,
-                &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
             }
         ],
         &quot;messages&quot;: [
@@ -834,12 +865,12 @@ access-control-allow-origin: *
                 &quot;body_text&quot;: &quot;Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex&quot;,
                 &quot;edited_by_user&quot;: false,
                 &quot;scheduled_at&quot;: null,
-                &quot;sent_at&quot;: &quot;2026-09-01T10:01:23+00:00&quot;,
+                &quot;sent_at&quot;: &quot;2026-09-08T07:01:40+00:00&quot;,
                 &quot;approved_at&quot;: null,
                 &quot;rejected_at&quot;: null,
                 &quot;rejection_note&quot;: null,
                 &quot;error&quot;: null,
-                &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
             }
         ],
         &quot;replies&quot;: [
@@ -854,7 +885,7 @@ access-control-allow-origin: *
                 &quot;snippet&quot;: &quot;Happy to take a look, send it over.&quot;,
                 &quot;body_text&quot;: &quot;Happy to take a look, send it over.\n\nJane&quot;,
                 &quot;classification&quot;: &quot;reply&quot;,
-                &quot;received_at&quot;: &quot;2026-09-02T04:01:23+00:00&quot;,
+                &quot;received_at&quot;: &quot;2026-09-09T01:01:40+00:00&quot;,
                 &quot;read_at&quot;: null
             }
         ]
@@ -966,9 +997,16 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
-<p>Upserts the contact and enrolls them in the automation matching each
-tag. A suppressed address is accepted and nothing is enrolled, so read
-GET /api/suppressions first if you need to know that happened.</p>
+<p>Upserts the contact and enrolls them in the automation matching each tag.</p>
+<p>A contact does not have to arrive with an email address. Send whichever
+you have: an email, a LinkedIn profile_url, or a name together with a
+domain, and the address is found and checked for you. Until something has
+confirmed an address, enrollments are created but held at
+<code>waiting_email</code>, and they start on their own the moment it is confirmed.</p>
+<p>Submitting the same person again updates them rather than creating a
+second record, so a caller that has lost track of what it already sent
+can safely send it again. A suppressed address is stored and nothing is
+enrolled.</p>
 
 <span id="example-requests-POSTapi-contacts">
 <blockquote>Example request:</blockquote>
@@ -976,23 +1014,41 @@ GET /api/suppressions first if you need to know that happened.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "https://outreach.seannocode.com/api/contacts" \
+    "http://localhost:8010/api/contacts" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
     \"email\": \"jane.doe@acme.example\",
+    \"profile_url\": \"https:\\/\\/linkedin.com\\/in\\/jane-doe\",
     \"name\": \"Jane Doe\",
     \"first_name\": \"Jane\",
     \"last_name\": \"Doe\",
     \"company\": \"Acme Ltd\",
-    \"website\": \"https:\\/\\/acme.example\",
-    \"custom\": {
+    \"domain\": \"acme.example\",
+    \"job_title\": \"Head of Operations\",
+    \"source\": \"tube-trend-tool\",
+    \"extra\": {
         \"industry\": \"SaaS\"
     },
-    \"source\": \"tube-trend-tool\",
     \"tags\": [
         \"seo-backlinks\"
+    ],
+    \"contacts\": [
+        {
+            \"email\": \"marquardt.noah@example.com\",
+            \"profile_url\": \"http:\\/\\/hauck.com\\/\",
+            \"name\": \"w\",
+            \"first_name\": \"r\",
+            \"last_name\": \"s\",
+            \"company\": \"i\",
+            \"domain\": \"t\",
+            \"job_title\": \"c\",
+            \"source\": \"p\",
+            \"tags\": [
+                \"s\"
+            ]
+        }
     ]
 }"
 </code></pre></div>
@@ -1000,7 +1056,7 @@ GET /api/suppressions first if you need to know that happened.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/contacts"
+    "http://localhost:8010/api/contacts"
 );
 
 const headers = {
@@ -1011,17 +1067,35 @@ const headers = {
 
 let body = {
     "email": "jane.doe@acme.example",
+    "profile_url": "https:\/\/linkedin.com\/in\/jane-doe",
     "name": "Jane Doe",
     "first_name": "Jane",
     "last_name": "Doe",
     "company": "Acme Ltd",
-    "website": "https:\/\/acme.example",
-    "custom": {
+    "domain": "acme.example",
+    "job_title": "Head of Operations",
+    "source": "tube-trend-tool",
+    "extra": {
         "industry": "SaaS"
     },
-    "source": "tube-trend-tool",
     "tags": [
         "seo-backlinks"
+    ],
+    "contacts": [
+        {
+            "email": "marquardt.noah@example.com",
+            "profile_url": "http:\/\/hauck.com\/",
+            "name": "w",
+            "first_name": "r",
+            "last_name": "s",
+            "company": "i",
+            "domain": "t",
+            "job_title": "c",
+            "source": "p",
+            "tags": [
+                "s"
+            ]
+        }
     ]
 };
 
@@ -1120,9 +1194,155 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                                 <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>contacts</code></b>&nbsp;&nbsp;
+<small>object[]</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+<br>
+<p>Send this INSTEAD of every field above to push up to 500 people at once. Each entry takes exactly the same fields as a single push. A batch is all or nothing, so a caller never has to work out which half of it landed. Left out of the example below so the request is sendable as it stands.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.email"                data-endpoint="POSTapi-contacts"
+               value="marquardt.noah@example.com"
+               data-component="body">
+    <br>
+<p>Must be a valid email address. Must not be greater than 255 characters. Example: <code>marquardt.noah@example.com</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>profile_url</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.profile_url"                data-endpoint="POSTapi-contacts"
+               value="http://hauck.com/"
+               data-component="body">
+    <br>
+<p>Must be a valid URL. Must not be greater than 255 characters. Example: <code>http://hauck.com/</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.name"                data-endpoint="POSTapi-contacts"
+               value="w"
+               data-component="body">
+    <br>
+<p>Must not be greater than 255 characters. Example: <code>w</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>first_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.first_name"                data-endpoint="POSTapi-contacts"
+               value="r"
+               data-component="body">
+    <br>
+<p>Must not be greater than 255 characters. Example: <code>r</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>last_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.last_name"                data-endpoint="POSTapi-contacts"
+               value="s"
+               data-component="body">
+    <br>
+<p>Must not be greater than 255 characters. Example: <code>s</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>company</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.company"                data-endpoint="POSTapi-contacts"
+               value="i"
+               data-component="body">
+    <br>
+<p>Must not be greater than 255 characters. Example: <code>i</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>domain</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.domain"                data-endpoint="POSTapi-contacts"
+               value="t"
+               data-component="body">
+    <br>
+<p>Must not be greater than 2048 characters. Example: <code>t</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>job_title</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.job_title"                data-endpoint="POSTapi-contacts"
+               value="c"
+               data-component="body">
+    <br>
+<p>Must not be greater than 1000 characters. Example: <code>c</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>source</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.source"                data-endpoint="POSTapi-contacts"
+               value="p"
+               data-component="body">
+    <br>
+<p>Must not be greater than 255 characters. Example: <code>p</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>extra</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.extra"                data-endpoint="POSTapi-contacts"
+               value=""
+               data-component="body">
+    <br>
+
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>tags</code></b>&nbsp;&nbsp;
+<small>string[]</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.tags[0]"                data-endpoint="POSTapi-contacts"
+               data-component="body">
+        <input type="text" style="display: none"
+               name="contacts.0.tags[1]"                data-endpoint="POSTapi-contacts"
+               data-component="body">
+    <br>
+<p>Must not be greater than 255 characters.</p>
+                    </div>
+                                    </details>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-contacts"
@@ -1130,6 +1350,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="body">
     <br>
 <p>The contact's address. Example: <code>jane.doe@acme.example</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>profile_url</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="profile_url"                data-endpoint="POSTapi-contacts"
+               value="https://linkedin.com/in/jane-doe"
+               data-component="body">
+    <br>
+<p>A LinkedIn profile. Example: <code>https://linkedin.com/in/jane-doe</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
@@ -1180,28 +1412,28 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>Acme Ltd</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>website</code></b>&nbsp;&nbsp;
+            <b style="line-height: 2;"><code>domain</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="website"                data-endpoint="POSTapi-contacts"
-               value="https://acme.example"
+                              name="domain"                data-endpoint="POSTapi-contacts"
+               value="acme.example"
                data-component="body">
     <br>
-<p>Example: <code>https://acme.example</code></p>
+<p>The company's domain, which is what an address is searched by. A full URL is fine; it is reduced to the host. Example: <code>acme.example</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>custom</code></b>&nbsp;&nbsp;
-<small>object</small>&nbsp;
+            <b style="line-height: 2;"><code>job_title</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="custom"                data-endpoint="POSTapi-contacts"
-               value=""
+                              name="job_title"                data-endpoint="POSTapi-contacts"
+               value="Head of Operations"
                data-component="body">
     <br>
-<p>Anything else worth passing to the drafter.</p>
+<p>Example: <code>Head of Operations</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>source</code></b>&nbsp;&nbsp;
@@ -1216,9 +1448,21 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Where the lead came from. Example: <code>tube-trend-tool</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>extra</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="extra"                data-endpoint="POSTapi-contacts"
+               value=""
+               data-component="body">
+    <br>
+<p>Anything else worth passing to the drafter. Filed under your source, so two callers can both send a "score" and mean different things.</p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>tags</code></b>&nbsp;&nbsp;
 <small>string[]</small>&nbsp;
- &nbsp;
+<i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
                               name="tags[0]"                data-endpoint="POSTapi-contacts"
@@ -1227,7 +1471,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                name="tags[1]"                data-endpoint="POSTapi-contacts"
                data-component="body">
     <br>
-<p>One or more automation tags to enroll into.</p>
+<p>Automation tags to enroll into.</p>
         </div>
         </form>
 
@@ -1249,7 +1493,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/automations" \
+    --get "http://localhost:8010/api/automations" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1257,7 +1501,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/automations"
+    "http://localhost:8010/api/automations"
 );
 
 const headers = {
@@ -1297,8 +1541,8 @@ access-control-allow-origin: *
             &quot;name&quot;: &quot;SEO backlinks outreach&quot;,
             &quot;description&quot;: &quot;Three touches for sites that could carry a link back to us.&quot;,
             &quot;active&quot;: true,
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
             &quot;steps&quot;: [
                 {
                     &quot;id&quot;: 1,
@@ -1309,7 +1553,7 @@ access-control-allow-origin: *
                     &quot;drafting_instructions&quot;: &quot;Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.&quot;,
                     &quot;active&quot;: true,
                     &quot;attachments&quot;: [],
-                    &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+                    &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
                 },
                 {
                     &quot;id&quot;: 2,
@@ -1320,7 +1564,7 @@ access-control-allow-origin: *
                     &quot;drafting_instructions&quot;: &quot;Short nudge referencing the first note. Do not re-introduce yourself.&quot;,
                     &quot;active&quot;: true,
                     &quot;attachments&quot;: [],
-                    &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+                    &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
                 }
             ]
         }
@@ -1492,7 +1736,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/automations/seo-backlinks" \
+    --get "http://localhost:8010/api/automations/seo-backlinks" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1500,7 +1744,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/automations/seo-backlinks"
+    "http://localhost:8010/api/automations/seo-backlinks"
 );
 
 const headers = {
@@ -1539,8 +1783,8 @@ access-control-allow-origin: *
         &quot;name&quot;: &quot;SEO backlinks outreach&quot;,
         &quot;description&quot;: &quot;Three touches for sites that could carry a link back to us.&quot;,
         &quot;active&quot;: true,
-        &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
-        &quot;updated_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
+        &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
+        &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
         &quot;steps&quot;: [
             {
                 &quot;id&quot;: 1,
@@ -1551,7 +1795,7 @@ access-control-allow-origin: *
                 &quot;drafting_instructions&quot;: &quot;Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.&quot;,
                 &quot;active&quot;: true,
                 &quot;attachments&quot;: [],
-                &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
             },
             {
                 &quot;id&quot;: 2,
@@ -1562,7 +1806,7 @@ access-control-allow-origin: *
                 &quot;drafting_instructions&quot;: &quot;Short nudge referencing the first note. Do not re-introduce yourself.&quot;,
                 &quot;active&quot;: true,
                 &quot;attachments&quot;: [],
-                &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
             }
         ]
     }
@@ -1681,7 +1925,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/automations/seo-backlinks/steps" \
+    --get "http://localhost:8010/api/automations/seo-backlinks/steps" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1689,7 +1933,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/automations/seo-backlinks/steps"
+    "http://localhost:8010/api/automations/seo-backlinks/steps"
 );
 
 const headers = {
@@ -1732,7 +1976,7 @@ access-control-allow-origin: *
             &quot;drafting_instructions&quot;: &quot;Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.&quot;,
             &quot;active&quot;: true,
             &quot;attachments&quot;: [],
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
         },
         {
             &quot;id&quot;: 2,
@@ -1743,7 +1987,7 @@ access-control-allow-origin: *
             &quot;drafting_instructions&quot;: &quot;Short nudge referencing the first note. Do not re-introduce yourself.&quot;,
             &quot;active&quot;: true,
             &quot;attachments&quot;: [],
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
         }
     ]
 }</code>
@@ -1863,7 +2107,7 @@ POST /api/contacts starts them on this sequence.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "https://outreach.seannocode.com/api/automations" \
+    "http://localhost:8010/api/automations" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -1887,7 +2131,7 @@ POST /api/contacts starts them on this sequence.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/automations"
+    "http://localhost:8010/api/automations"
 );
 
 const headers = {
@@ -2162,7 +2406,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "https://outreach.seannocode.com/api/automations/seo-backlinks" \
+    "http://localhost:8010/api/automations/seo-backlinks" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -2177,7 +2421,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/automations/seo-backlinks"
+    "http://localhost:8010/api/automations/seo-backlinks"
 );
 
 const headers = {
@@ -2375,7 +2619,7 @@ delay_days and delay_hours after the previous one.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "https://outreach.seannocode.com/api/automations/seo-backlinks/steps" \
+    "http://localhost:8010/api/automations/seo-backlinks/steps" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -2391,7 +2635,7 @@ delay_days and delay_hours after the previous one.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/automations/seo-backlinks/steps"
+    "http://localhost:8010/api/automations/seo-backlinks/steps"
 );
 
 const headers = {
@@ -2601,7 +2845,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "https://outreach.seannocode.com/api/automations/seo-backlinks/steps/1" \
+    "http://localhost:8010/api/automations/seo-backlinks/steps/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -2617,7 +2861,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/automations/seo-backlinks/steps/1"
+    "http://localhost:8010/api/automations/seo-backlinks/steps/1"
 );
 
 const headers = {
@@ -2839,7 +3083,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "https://outreach.seannocode.com/api/automations/seo-backlinks/steps/1" \
+    "http://localhost:8010/api/automations/seo-backlinks/steps/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -2847,7 +3091,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/automations/seo-backlinks/steps/1"
+    "http://localhost:8010/api/automations/seo-backlinks/steps/1"
 );
 
 const headers = {
@@ -2994,16 +3238,16 @@ quarantine them, and that cost lands on the whole sending domain.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "https://outreach.seannocode.com/api/automations/seo-backlinks/steps/1/attachments" \
+    "http://localhost:8010/api/automations/seo-backlinks/steps/1/attachments" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "file=@/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/phpc476ticv1r3i3AcgaqE" </code></pre></div>
+    --form "file=@/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/phpuleo7ulhr7137NhaK8l" </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/automations/seo-backlinks/steps/1/attachments"
+    "http://localhost:8010/api/automations/seo-backlinks/steps/1/attachments"
 );
 
 const headers = {
@@ -3144,7 +3388,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>The file to attach. Choose it in Postman's Body tab. Example: <code>/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/phpc476ticv1r3i3AcgaqE</code></p>
+<p>The file to attach. Choose it in Postman's Body tab. Example: <code>/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/phpuleo7ulhr7137NhaK8l</code></p>
         </div>
         </form>
 
@@ -3162,7 +3406,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "https://outreach.seannocode.com/api/automations/seo-backlinks/steps/1/attachments/9b1c7e2a4f6d4c8e9a0b1c2d3e4f5a6b" \
+    "http://localhost:8010/api/automations/seo-backlinks/steps/1/attachments/9b1c7e2a4f6d4c8e9a0b1c2d3e4f5a6b" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3170,7 +3414,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/automations/seo-backlinks/steps/1/attachments/9b1c7e2a4f6d4c8e9a0b1c2d3e4f5a6b"
+    "http://localhost:8010/api/automations/seo-backlinks/steps/1/attachments/9b1c7e2a4f6d4c8e9a0b1c2d3e4f5a6b"
 );
 
 const headers = {
@@ -3329,7 +3573,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/enrollments" \
+    --get "http://localhost:8010/api/enrollments" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3337,7 +3581,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/enrollments"
+    "http://localhost:8010/api/enrollments"
 );
 
 const headers = {
@@ -3382,19 +3626,24 @@ access-control-allow-origin: *
             &quot;current_step&quot;: 0,
             &quot;stopped_at&quot;: null,
             &quot;stop_reason&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
             &quot;contact&quot;: {
                 &quot;id&quot;: 2,
                 &quot;email&quot;: &quot;sam.patel@globex.example&quot;,
+                &quot;email_status&quot;: &quot;pending&quot;,
+                &quot;email_checked_at&quot;: null,
+                &quot;email_provider&quot;: null,
+                &quot;profile_url&quot;: null,
                 &quot;name&quot;: &quot;Sam Patel&quot;,
                 &quot;first_name&quot;: &quot;Sam&quot;,
                 &quot;last_name&quot;: &quot;Patel&quot;,
+                &quot;job_title&quot;: null,
                 &quot;company&quot;: &quot;Globex&quot;,
-                &quot;website&quot;: &quot;https://globex.example&quot;,
+                &quot;domain&quot;: &quot;globex.example&quot;,
                 &quot;source&quot;: &quot;tube-trend-tool&quot;,
-                &quot;custom&quot;: [],
-                &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+                &quot;extra&quot;: [],
+                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
+                &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
             }
         },
         {
@@ -3408,22 +3657,29 @@ access-control-allow-origin: *
             &quot;current_step&quot;: 1,
             &quot;stopped_at&quot;: null,
             &quot;stop_reason&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
             &quot;contact&quot;: {
                 &quot;id&quot;: 1,
                 &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
+                &quot;email_status&quot;: &quot;pending&quot;,
+                &quot;email_checked_at&quot;: null,
+                &quot;email_provider&quot;: null,
+                &quot;profile_url&quot;: null,
                 &quot;name&quot;: &quot;Jane Doe&quot;,
                 &quot;first_name&quot;: &quot;Jane&quot;,
                 &quot;last_name&quot;: &quot;Doe&quot;,
+                &quot;job_title&quot;: null,
                 &quot;company&quot;: &quot;Acme Ltd&quot;,
-                &quot;website&quot;: &quot;https://acme.example&quot;,
+                &quot;domain&quot;: &quot;acme.example&quot;,
                 &quot;source&quot;: &quot;tube-trend-tool&quot;,
-                &quot;custom&quot;: {
-                    &quot;industry&quot;: &quot;SaaS&quot;,
-                    &quot;employees&quot;: 40
+                &quot;extra&quot;: {
+                    &quot;tube-trend-tool&quot;: {
+                        &quot;industry&quot;: &quot;SaaS&quot;,
+                        &quot;employees&quot;: 40
+                    }
                 },
-                &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
+                &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
             }
         }
     ],
@@ -3530,7 +3786,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="query">
     <br>
-<p>One of active, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. e.g. active.</p>
+<p>One of active, waiting_email, completed, stopped_reply, stopped_unsubscribe, stopped_bounce, stopped_suppressed, stopped_rejected, cancelled, failed. <code>waiting_email</code> means enrolled, with no confirmed address to send to yet. e.g. active.</p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>contact_id</code></b>&nbsp;&nbsp;
@@ -3624,7 +3880,7 @@ automation_id or tag.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "https://outreach.seannocode.com/api/enrollments" \
+    "http://localhost:8010/api/enrollments" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -3637,7 +3893,7 @@ automation_id or tag.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/enrollments"
+    "http://localhost:8010/api/enrollments"
 );
 
 const headers = {
@@ -3810,7 +4066,7 @@ further is sent.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "https://outreach.seannocode.com/api/enrollments/1" \
+    "http://localhost:8010/api/enrollments/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -3822,7 +4078,7 @@ further is sent.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/enrollments/1"
+    "http://localhost:8010/api/enrollments/1"
 );
 
 const headers = {
@@ -3974,7 +4230,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/messages" \
+    --get "http://localhost:8010/api/messages" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3982,7 +4238,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/messages"
+    "http://localhost:8010/api/messages"
 );
 
 const headers = {
@@ -4029,27 +4285,34 @@ access-control-allow-origin: *
             &quot;body_text&quot;: &quot;Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex&quot;,
             &quot;edited_by_user&quot;: false,
             &quot;scheduled_at&quot;: null,
-            &quot;sent_at&quot;: &quot;2026-09-01T10:01:23+00:00&quot;,
+            &quot;sent_at&quot;: &quot;2026-09-08T07:01:40+00:00&quot;,
             &quot;approved_at&quot;: null,
             &quot;rejected_at&quot;: null,
             &quot;rejection_note&quot;: null,
             &quot;error&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
             &quot;contact&quot;: {
                 &quot;id&quot;: 1,
                 &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
+                &quot;email_status&quot;: &quot;pending&quot;,
+                &quot;email_checked_at&quot;: null,
+                &quot;email_provider&quot;: null,
+                &quot;profile_url&quot;: null,
                 &quot;name&quot;: &quot;Jane Doe&quot;,
                 &quot;first_name&quot;: &quot;Jane&quot;,
                 &quot;last_name&quot;: &quot;Doe&quot;,
+                &quot;job_title&quot;: null,
                 &quot;company&quot;: &quot;Acme Ltd&quot;,
-                &quot;website&quot;: &quot;https://acme.example&quot;,
+                &quot;domain&quot;: &quot;acme.example&quot;,
                 &quot;source&quot;: &quot;tube-trend-tool&quot;,
-                &quot;custom&quot;: {
-                    &quot;industry&quot;: &quot;SaaS&quot;,
-                    &quot;employees&quot;: 40
+                &quot;extra&quot;: {
+                    &quot;tube-trend-tool&quot;: {
+                        &quot;industry&quot;: &quot;SaaS&quot;,
+                        &quot;employees&quot;: 40
+                    }
                 },
-                &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
+                &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
             }
         },
         {
@@ -4070,19 +4333,24 @@ access-control-allow-origin: *
             &quot;rejected_at&quot;: null,
             &quot;rejection_note&quot;: null,
             &quot;error&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
             &quot;contact&quot;: {
                 &quot;id&quot;: 2,
                 &quot;email&quot;: &quot;sam.patel@globex.example&quot;,
+                &quot;email_status&quot;: &quot;pending&quot;,
+                &quot;email_checked_at&quot;: null,
+                &quot;email_provider&quot;: null,
+                &quot;profile_url&quot;: null,
                 &quot;name&quot;: &quot;Sam Patel&quot;,
                 &quot;first_name&quot;: &quot;Sam&quot;,
                 &quot;last_name&quot;: &quot;Patel&quot;,
+                &quot;job_title&quot;: null,
                 &quot;company&quot;: &quot;Globex&quot;,
-                &quot;website&quot;: &quot;https://globex.example&quot;,
+                &quot;domain&quot;: &quot;globex.example&quot;,
                 &quot;source&quot;: &quot;tube-trend-tool&quot;,
-                &quot;custom&quot;: [],
-                &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+                &quot;extra&quot;: [],
+                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
+                &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
             }
         }
     ],
@@ -4279,7 +4547,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/messages/1" \
+    --get "http://localhost:8010/api/messages/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -4287,7 +4555,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/messages/1"
+    "http://localhost:8010/api/messages/1"
 );
 
 const headers = {
@@ -4333,27 +4601,34 @@ access-control-allow-origin: *
         &quot;body_text&quot;: &quot;Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex&quot;,
         &quot;edited_by_user&quot;: false,
         &quot;scheduled_at&quot;: null,
-        &quot;sent_at&quot;: &quot;2026-09-01T10:01:23+00:00&quot;,
+        &quot;sent_at&quot;: &quot;2026-09-08T07:01:40+00:00&quot;,
         &quot;approved_at&quot;: null,
         &quot;rejected_at&quot;: null,
         &quot;rejection_note&quot;: null,
         &quot;error&quot;: null,
-        &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
+        &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
         &quot;contact&quot;: {
             &quot;id&quot;: 1,
             &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
+            &quot;email_status&quot;: &quot;pending&quot;,
+            &quot;email_checked_at&quot;: null,
+            &quot;email_provider&quot;: null,
+            &quot;profile_url&quot;: null,
             &quot;name&quot;: &quot;Jane Doe&quot;,
             &quot;first_name&quot;: &quot;Jane&quot;,
             &quot;last_name&quot;: &quot;Doe&quot;,
+            &quot;job_title&quot;: null,
             &quot;company&quot;: &quot;Acme Ltd&quot;,
-            &quot;website&quot;: &quot;https://acme.example&quot;,
+            &quot;domain&quot;: &quot;acme.example&quot;,
             &quot;source&quot;: &quot;tube-trend-tool&quot;,
-            &quot;custom&quot;: {
-                &quot;industry&quot;: &quot;SaaS&quot;,
-                &quot;employees&quot;: 40
+            &quot;extra&quot;: {
+                &quot;tube-trend-tool&quot;: {
+                    &quot;industry&quot;: &quot;SaaS&quot;,
+                    &quot;employees&quot;: 40
+                }
             },
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
         }
     }
 }</code>
@@ -4473,7 +4748,7 @@ and a later edit would change an email that is already on its way out.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "https://outreach.seannocode.com/api/messages/1" \
+    "http://localhost:8010/api/messages/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -4486,7 +4761,7 @@ and a later edit would change an email that is already on its way out.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/messages/1"
+    "http://localhost:8010/api/messages/1"
 );
 
 const headers = {
@@ -4655,7 +4930,7 @@ nothing left to advance it.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "https://outreach.seannocode.com/api/messages/1/reject" \
+    "http://localhost:8010/api/messages/1/reject" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -4667,7 +4942,7 @@ nothing left to advance it.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/messages/1/reject"
+    "http://localhost:8010/api/messages/1/reject"
 );
 
 const headers = {
@@ -4821,7 +5096,7 @@ sendable at that moment, and the reconciler picks it up later.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "https://outreach.seannocode.com/api/messages/1/approve" \
+    "http://localhost:8010/api/messages/1/approve" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -4829,7 +5104,7 @@ sendable at that moment, and the reconciler picks it up later.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/messages/1/approve"
+    "http://localhost:8010/api/messages/1/approve"
 );
 
 const headers = {
@@ -4964,7 +5239,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/replies" \
+    --get "http://localhost:8010/api/replies" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -4972,7 +5247,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/replies"
+    "http://localhost:8010/api/replies"
 );
 
 const headers = {
@@ -5017,23 +5292,30 @@ access-control-allow-origin: *
             &quot;snippet&quot;: &quot;Happy to take a look, send it over.&quot;,
             &quot;body_text&quot;: &quot;Happy to take a look, send it over.\n\nJane&quot;,
             &quot;classification&quot;: &quot;reply&quot;,
-            &quot;received_at&quot;: &quot;2026-09-02T04:01:23+00:00&quot;,
+            &quot;received_at&quot;: &quot;2026-09-09T01:01:40+00:00&quot;,
             &quot;read_at&quot;: null,
             &quot;contact&quot;: {
                 &quot;id&quot;: 1,
                 &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
+                &quot;email_status&quot;: &quot;pending&quot;,
+                &quot;email_checked_at&quot;: null,
+                &quot;email_provider&quot;: null,
+                &quot;profile_url&quot;: null,
                 &quot;name&quot;: &quot;Jane Doe&quot;,
                 &quot;first_name&quot;: &quot;Jane&quot;,
                 &quot;last_name&quot;: &quot;Doe&quot;,
+                &quot;job_title&quot;: null,
                 &quot;company&quot;: &quot;Acme Ltd&quot;,
-                &quot;website&quot;: &quot;https://acme.example&quot;,
+                &quot;domain&quot;: &quot;acme.example&quot;,
                 &quot;source&quot;: &quot;tube-trend-tool&quot;,
-                &quot;custom&quot;: {
-                    &quot;industry&quot;: &quot;SaaS&quot;,
-                    &quot;employees&quot;: 40
+                &quot;extra&quot;: {
+                    &quot;tube-trend-tool&quot;: {
+                        &quot;industry&quot;: &quot;SaaS&quot;,
+                        &quot;employees&quot;: 40
+                    }
                 },
-                &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
+                &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
             }
         }
     ],
@@ -5252,7 +5534,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/replies/1" \
+    --get "http://localhost:8010/api/replies/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5260,7 +5542,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/replies/1"
+    "http://localhost:8010/api/replies/1"
 );
 
 const headers = {
@@ -5304,23 +5586,30 @@ access-control-allow-origin: *
         &quot;snippet&quot;: &quot;Happy to take a look, send it over.&quot;,
         &quot;body_text&quot;: &quot;Happy to take a look, send it over.\n\nJane&quot;,
         &quot;classification&quot;: &quot;reply&quot;,
-        &quot;received_at&quot;: &quot;2026-09-02T04:01:23+00:00&quot;,
+        &quot;received_at&quot;: &quot;2026-09-09T01:01:40+00:00&quot;,
         &quot;read_at&quot;: null,
         &quot;contact&quot;: {
             &quot;id&quot;: 1,
             &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
+            &quot;email_status&quot;: &quot;pending&quot;,
+            &quot;email_checked_at&quot;: null,
+            &quot;email_provider&quot;: null,
+            &quot;profile_url&quot;: null,
             &quot;name&quot;: &quot;Jane Doe&quot;,
             &quot;first_name&quot;: &quot;Jane&quot;,
             &quot;last_name&quot;: &quot;Doe&quot;,
+            &quot;job_title&quot;: null,
             &quot;company&quot;: &quot;Acme Ltd&quot;,
-            &quot;website&quot;: &quot;https://acme.example&quot;,
+            &quot;domain&quot;: &quot;acme.example&quot;,
             &quot;source&quot;: &quot;tube-trend-tool&quot;,
-            &quot;custom&quot;: {
-                &quot;industry&quot;: &quot;SaaS&quot;,
-                &quot;employees&quot;: 40
+            &quot;extra&quot;: {
+                &quot;tube-trend-tool&quot;: {
+                    &quot;industry&quot;: &quot;SaaS&quot;,
+                    &quot;employees&quot;: 40
+                }
             },
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
+            &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
         }
     }
 }</code>
@@ -5435,9 +5724,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
 </p>
 
 <p>Everyone who must not be emailed.</p>
-<p>Worth reading before pushing contacts: ingest silently skips a
-suppressed address, so a caller that does not check keeps offering
-people who already opted out and never learns why nothing happens.</p>
+<p>Worth reading before pushing contacts. A suppressed person is stored but
+enrolled in nothing, and the push says how many of a batch that was, so a
+caller can tell the difference between "accepted" and "will be emailed".</p>
 
 <span id="example-requests-GETapi-suppressions">
 <blockquote>Example request:</blockquote>
@@ -5445,7 +5734,7 @@ people who already opted out and never learns why nothing happens.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/suppressions" \
+    --get "http://localhost:8010/api/suppressions" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5453,7 +5742,7 @@ people who already opted out and never learns why nothing happens.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/suppressions"
+    "http://localhost:8010/api/suppressions"
 );
 
 const headers = {
@@ -5492,7 +5781,7 @@ access-control-allow-origin: *
             &quot;email&quot;: &quot;no.thanks@globex.example&quot;,
             &quot;reason&quot;: &quot;unsubscribed&quot;,
             &quot;source_reply_id&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
         }
     ],
     &quot;meta&quot;: {
@@ -5666,7 +5955,7 @@ emails queued behind it, so the address would still be written to.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "https://outreach.seannocode.com/api/suppressions" \
+    "http://localhost:8010/api/suppressions" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -5679,7 +5968,7 @@ emails queued behind it, so the address would still be written to.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/suppressions"
+    "http://localhost:8010/api/suppressions"
 );
 
 const headers = {
@@ -5830,7 +6119,7 @@ carries.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "https://outreach.seannocode.com/api/suppressions/no.thanks@globex.example" \
+    "http://localhost:8010/api/suppressions/no.thanks@globex.example" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5838,7 +6127,7 @@ carries.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/suppressions/no.thanks@globex.example"
+    "http://localhost:8010/api/suppressions/no.thanks@globex.example"
 );
 
 const headers = {
@@ -5976,7 +6265,7 @@ Google's own consent screen, in the dashboard.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/mailboxes" \
+    --get "http://localhost:8010/api/mailboxes" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5984,7 +6273,7 @@ Google's own consent screen, in the dashboard.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/mailboxes"
+    "http://localhost:8010/api/mailboxes"
 );
 
 const headers = {
@@ -6039,7 +6328,7 @@ access-control-allow-origin: *
                 &quot;bounce_rate&quot;: 0.0119,
                 &quot;reply_rate&quot;: 0.0714
             },
-            &quot;last_polled_at&quot;: &quot;2026-09-02T09:59:23+00:00&quot;,
+            &quot;last_polled_at&quot;: &quot;2026-09-09T06:59:40+00:00&quot;,
             &quot;last_send_error&quot;: null
         }
     ],
@@ -6188,7 +6477,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/mailboxes/1" \
+    --get "http://localhost:8010/api/mailboxes/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6196,7 +6485,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/mailboxes/1"
+    "http://localhost:8010/api/mailboxes/1"
 );
 
 const headers = {
@@ -6250,7 +6539,7 @@ access-control-allow-origin: *
             &quot;bounce_rate&quot;: 0.0119,
             &quot;reply_rate&quot;: 0.0714
         },
-        &quot;last_polled_at&quot;: &quot;2026-09-02T09:59:23+00:00&quot;,
+        &quot;last_polled_at&quot;: &quot;2026-09-09T06:59:40+00:00&quot;,
         &quot;last_send_error&quot;: null
     }
 }</code>
@@ -6368,7 +6657,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "https://outreach.seannocode.com/api/mailboxes/1/pause" \
+    "http://localhost:8010/api/mailboxes/1/pause" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -6380,7 +6669,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/mailboxes/1/pause"
+    "http://localhost:8010/api/mailboxes/1/pause"
 );
 
 const headers = {
@@ -6530,7 +6819,7 @@ in the dashboard instead.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "https://outreach.seannocode.com/api/mailboxes/1/resume" \
+    "http://localhost:8010/api/mailboxes/1/resume" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6538,7 +6827,7 @@ in the dashboard instead.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/mailboxes/1/resume"
+    "http://localhost:8010/api/mailboxes/1/resume"
 );
 
 const headers = {
@@ -6676,7 +6965,7 @@ mailbox rather than creating a second one.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "https://outreach.seannocode.com/api/mailboxes/1/disconnect" \
+    "http://localhost:8010/api/mailboxes/1/disconnect" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -6688,7 +6977,7 @@ mailbox rather than creating a second one.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/mailboxes/1/disconnect"
+    "http://localhost:8010/api/mailboxes/1/disconnect"
 );
 
 const headers = {
@@ -6843,7 +7132,7 @@ because 0 would read as "nobody replied" instead of "no data yet".</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/stats" \
+    --get "http://localhost:8010/api/stats" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6851,7 +7140,7 @@ because 0 would read as "nobody replied" instead of "no data yet".</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/stats"
+    "http://localhost:8010/api/stats"
 );
 
 const headers = {
@@ -6892,6 +7181,7 @@ access-control-allow-origin: *
         },
         &quot;enrollments&quot;: {
             &quot;active&quot;: 2,
+            &quot;waiting_email&quot;: 0,
             &quot;total&quot;: 2
         },
         &quot;queue&quot;: {
@@ -7035,7 +7325,7 @@ polling errors. This is what to watch for problems.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "https://outreach.seannocode.com/api/activity" \
+    --get "http://localhost:8010/api/activity" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -7043,7 +7333,7 @@ polling errors. This is what to watch for problems.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "https://outreach.seannocode.com/api/activity"
+    "http://localhost:8010/api/activity"
 );
 
 const headers = {
@@ -7087,7 +7377,7 @@ access-control-allow-origin: *
             &quot;subject_id&quot;: null,
             &quot;retryable&quot;: true,
             &quot;retried_at&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
         },
         {
             &quot;id&quot;: 1,
@@ -7099,7 +7389,7 @@ access-control-allow-origin: *
             &quot;subject_id&quot;: 1,
             &quot;retryable&quot;: false,
             &quot;retried_at&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-02T10:01:23+00:00&quot;
+            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
         }
     ],
     &quot;meta&quot;: {

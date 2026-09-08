@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Livewire\Contacts\Index;
 use App\Models\Contact;
+use App\Models\EmailLookup;
+use App\Models\EnrichmentProvider;
 use App\Models\Enrollment;
 use App\Models\Suppression;
 use App\Models\User;
@@ -97,6 +99,71 @@ class ContactsIndexTest extends TestCase
         $component->call('clearFilters');
 
         $this->assertSame(0, $component->instance()->activeFilterCount());
+    }
+
+    public function test_expanding_a_lead_shows_what_the_scraper_sent_about_them(): void
+    {
+        /*
+         * None of this was on the screen anywhere. A job title and a profile
+         * URL arrive from the scraper on every lead it finds, and the whole
+         * point of the merge is that the two systems describe one person: a
+         * person you cannot see is not much of a merge.
+         */
+        $contact = Contact::factory()->create([
+            'email' => 'sam@acme.com',
+            'job_title' => 'Head of Operations',
+            'domain' => 'acme.com',
+            'profile_url' => 'https://linkedin.com/in/sam-carter',
+            'email_provider' => 'Findymail',
+            'email_checked_at' => now(),
+            'extra' => ['linkedin' => ['degree' => '2nd', 'last_comment' => 'Congratulations on the new role']],
+        ]);
+
+        Livewire::test(Index::class)
+            ->call('toggleExpand', $contact->id)
+            ->assertSee('Head of Operations')
+            ->assertSee('acme.com')
+            ->assertSee('linkedin.com/in/sam-carter')
+            // Who supplied the address, which is the only way to know who to
+            // hold answerable when it bounces.
+            ->assertSee('Findymail')
+            // Filed under whoever sent it, rather than one line of JSON.
+            ->assertSee('Last comment')
+            ->assertSee('Congratulations on the new role');
+    }
+
+    public function test_a_lead_nobody_has_looked_up_says_so_rather_than_showing_a_blank(): void
+    {
+        $contact = Contact::factory()->create(['email_provider' => null, 'email_checked_at' => null]);
+
+        Livewire::test(Index::class)
+            ->call('toggleExpand', $contact->id)
+            ->assertSee('never checked');
+    }
+
+    public function test_what_a_provider_said_is_readable_on_the_lead(): void
+    {
+        $contact = Contact::factory()->create();
+        EmailLookup::create([
+            'contact_id' => $contact->id,
+            'provider_name' => 'Reoon',
+            'driver' => 'reoon',
+            'kind' => EnrichmentProvider::KIND_VERIFY,
+            'result' => EmailLookup::RESULT_VALID,
+            'cost' => 0.0006,
+            'detail' => ['status' => 'safe', 'score' => 93],
+        ]);
+
+        // It was printed here as raw JSON, which nobody could read.
+        Livewire::test(Index::class)
+            ->call('toggleExpand', $contact->id)
+            ->assertSee('Reoon')
+            // The name is bold and the verb is not, so they are separate nodes
+            // in the markup even though they read as one sentence.
+            ->assertSee('said it is good')
+            ->assertDontSee('said Said')
+            ->assertSee('status safe, score 93')
+            ->assertDontSee('{"status"');
     }
 
     public function test_manual_suppress_stops_active_enrollments(): void

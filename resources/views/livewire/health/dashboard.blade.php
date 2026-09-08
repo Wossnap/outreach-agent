@@ -40,7 +40,7 @@
 
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
-                    <thead class="text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-left text-gray-500 dark:text-gray-300">
                         <tr>
                             <th class="px-6 py-3 font-medium">Domain</th>
                             <th class="px-6 py-3 font-medium">SPF</th>
@@ -62,7 +62,7 @@
                                 <td class="px-6 py-3 font-medium">
                                     {{ $domain->name }}
                                     @unless ($scored)
-                                        <span class="ml-2 px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-600">not in use</span>
+                                        <span class="ml-2 px-2 py-1 rounded text-xs font-semibold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">not in use</span>
                                     @endunless
                                 </td>
                                 @foreach (['spf_status', 'dkim_status', 'dmarc_status'] as $field)
@@ -86,10 +86,10 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-3">{{ $domain->mailboxes_count }}</td>
-                                <td class="px-6 py-3 text-gray-500 text-xs">{{ $domain->last_dns_checked_at?->diffForHumans() ?? 'never' }}</td>
+                                <td class="px-6 py-3 text-gray-500 dark:text-gray-300 text-xs">{{ $domain->last_dns_checked_at?->diffForHumans() ?? 'never' }}</td>
                             </tr>
                         @empty
-                            <tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No domains yet. They appear automatically when you connect a mailbox.</td></tr>
+                            <tr><td colspan="7" class="px-6 py-8 text-center text-gray-500 dark:text-gray-300">No domains yet. They appear automatically when you connect a mailbox.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -97,7 +97,7 @@
 
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
-                    <thead class="text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-left text-gray-500 dark:text-gray-300">
                         <tr>
                             <th class="px-6 py-3 font-medium">Mailbox</th>
                             <th class="px-6 py-3 font-medium">Status</th>
@@ -126,7 +126,7 @@
                                 <td class="px-6 py-3">{{ number_format($mailbox->reply_rate_7d * 100, 1) }}%</td>
                             </tr>
                         @empty
-                            <tr><td colspan="6" class="px-6 py-8 text-center text-gray-500">No mailboxes connected yet.</td></tr>
+                            <tr><td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-gray-300">No mailboxes connected yet.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -138,7 +138,7 @@
                     <ul class="space-y-2 text-sm">
                         @foreach ($pauseEvents as $event)
                             <li class="text-gray-700 dark:text-gray-300">
-                                <span class="text-xs text-gray-400">{{ $event->created_at->timezone(config('outreach.timezone'))->format('j M H:i') }}</span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">{{ $event->created_at->timezone(config('outreach.timezone'))->format('j M H:i') }}</span>
                                 {{ $event->message }}
                             </li>
                         @endforeach

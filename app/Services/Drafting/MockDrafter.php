@@ -36,12 +36,12 @@ class MockDrafter implements Drafter
             ? ['Hi '.$who.',', '', 'Circling back on my last note about '.$company.'.']
             : ['Hi '.$who.',', '', 'I came across '.$company.' and wanted to reach out.'];
 
-        if ($contact->website) {
-            $lines[] = 'Website on file: '.$contact->website;
+        if ($contact->domain) {
+            $lines[] = 'Company domain on file: '.$contact->domain;
         }
 
-        if (! empty($contact->custom)) {
-            $lines[] = 'Custom data on file: '.json_encode($contact->custom, JSON_UNESCAPED_SLASHES);
+        if ([] !== $extra = $contact->extraForDrafting()) {
+            $lines[] = 'Custom data on file: '.json_encode($extra, JSON_UNESCAPED_SLASHES);
         }
 
         // Echo the inputs back so a tester can confirm the step's instructions

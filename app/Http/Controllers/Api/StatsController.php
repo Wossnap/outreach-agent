@@ -53,6 +53,11 @@ class StatsController extends ApiController
             ],
             'enrollments' => [
                 'active' => Enrollment::query()->where('status', Enrollment::STATUS_ACTIVE)->count(),
+                // People in a sequence with nowhere to send yet. Reported
+                // separately because it is the number that says whether the
+                // waterfall is keeping up: a total that climbs while active
+                // stands still means addresses are not being confirmed.
+                'waiting_email' => Enrollment::query()->where('status', Enrollment::STATUS_WAITING_EMAIL)->count(),
                 'total' => Enrollment::query()->count(),
             ],
             'queue' => [

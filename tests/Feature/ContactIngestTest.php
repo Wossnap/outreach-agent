@@ -3,12 +3,16 @@
 namespace Tests\Feature;
 
 use App\Jobs\DraftEmailJob;
+use App\Jobs\EnrichContact;
 use App\Models\Automation;
 use App\Models\Contact;
 use App\Models\Enrollment;
 use App\Models\Suppression;
 use App\Models\User;
+use App\Services\Ingest\ContactIngestService;
+use App\Services\Sending\VerifiedEmailSwitch;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
@@ -19,7 +23,7 @@ class ContactIngestTest extends TestCase
     protected function apiHeaders(): array
     {
         $user = User::factory()->create();
-        $token = $user->createToken('test', ['ingest'])->plainTextToken;
+        $token = $user->createToken('test', ['write'])->plainTextToken;
 
         return ['Authorization' => 'Bearer '.$token, 'Accept' => 'application/json'];
     }
@@ -68,7 +72,7 @@ class ContactIngestTest extends TestCase
             'email' => 'Jane@Example.com',
             'name' => 'Jane Doe',
             'company' => 'Acme',
-            'custom' => ['niche' => 'gardening'],
+            'extra' => ['niche' => 'gardening'],
             'tags' => ['seo-backlinks'],
         ], $this->apiHeaders());
 
@@ -76,9 +80,40 @@ class ContactIngestTest extends TestCase
 
         $contact = Contact::query()->where('email', 'jane@example.com')->firstOrFail();
         $this->assertSame('Jane Doe', $contact->name);
-        $this->assertSame(['niche' => 'gardening'], $contact->custom);
+        // Filed under the source that sent it, so two systems can both report
+        // a "niche" without overwriting each other.
+        $this->assertSame(['api' => ['niche' => 'gardening']], $contact->extra);
 
+        /*
+         * Enrolled, but not started. Nothing has confirmed this address yet,
+         * and by default nothing is sent to an address nobody has checked. The
+         * enrollment is real and holds their place; the waterfall releases it
+         * the moment an address is confirmed.
+         */
         $enrollment = Enrollment::query()->where('contact_id', $contact->id)->firstOrFail();
+        $this->assertSame($automation->id, $enrollment->automation_id);
+        $this->assertSame(Enrollment::STATUS_WAITING_EMAIL, $enrollment->status);
+        $this->assertNull($enrollment->mailbox_id);
+
+        Queue::assertNotPushed(DraftEmailJob::class);
+    }
+
+    public function test_drafts_at_once_when_an_address_need_not_be_confirmed(): void
+    {
+        // With the switch off, the address the caller supplied is trusted and
+        // drafting starts at once.
+        VerifiedEmailSwitch::turnOff();
+
+        Queue::fake();
+        $automation = Automation::factory()->create(['tag' => 'seo-backlinks']);
+
+        $this->postJson('/api/contacts', [
+            'email' => 'jane@example.com',
+            'name' => 'Jane Doe',
+            'tags' => ['seo-backlinks'],
+        ], $this->apiHeaders())->assertOk();
+
+        $enrollment = Enrollment::query()->firstOrFail();
         $this->assertSame($automation->id, $enrollment->automation_id);
         $this->assertSame(Enrollment::STATUS_ACTIVE, $enrollment->status);
 
@@ -89,19 +124,19 @@ class ContactIngestTest extends TestCase
     {
         Queue::fake();
         Automation::factory()->create(['tag' => 'pitch']);
-        Contact::factory()->create(['email' => 'jane@example.com', 'name' => 'Jane', 'company' => null, 'custom' => ['a' => 1]]);
+        Contact::factory()->create(['email' => 'jane@example.com', 'name' => 'Jane', 'company' => null, 'extra' => ['api' => ['a' => 1]]]);
 
         $this->postJson('/api/contacts', [
             'email' => 'jane@example.com',
             'company' => 'Acme',
-            'custom' => ['b' => 2],
+            'extra' => ['b' => 2],
             'tags' => ['pitch'],
         ], $this->apiHeaders())->assertOk();
 
         $contact = Contact::query()->where('email', 'jane@example.com')->firstOrFail();
         $this->assertSame('Jane', $contact->name);
         $this->assertSame('Acme', $contact->company);
-        $this->assertSame(['a' => 1, 'b' => 2], $contact->custom);
+        $this->assertSame(['api' => ['a' => 1, 'b' => 2]], $contact->extra);
         $this->assertSame(1, Contact::query()->count());
     }
 
@@ -121,7 +156,7 @@ class ContactIngestTest extends TestCase
             'tags' => ['collab'],
         ], $this->apiHeaders());
 
-        $response->assertOk()->assertJsonPath('data.enrollments.0.skipped', 'already_active');
+        $response->assertOk()->assertJsonPath('data.contacts.0.enrollments.0.skipped', 'already_active');
         $this->assertSame(1, Enrollment::query()->count());
         Queue::assertNotPushed(DraftEmailJob::class);
     }
@@ -145,7 +180,7 @@ class ContactIngestTest extends TestCase
         $this->assertSame(2, Enrollment::query()->count());
     }
 
-    public function test_suppressed_contact_is_skipped_entirely(): void
+    public function test_suppressed_contact_is_stored_but_never_enrolled(): void
     {
         Queue::fake();
         Automation::factory()->create(['tag' => 'pitch']);
@@ -156,8 +191,12 @@ class ContactIngestTest extends TestCase
             'tags' => ['pitch'],
         ], $this->apiHeaders());
 
-        $response->assertOk()->assertJsonPath('data.skipped_reason', 'suppressed');
-        $this->assertSame(0, Contact::query()->count());
+        $response->assertOk()->assertJsonPath('data.contacts.0.skipped_reason', 'suppressed');
+
+        // Stored, because forgetting somebody we already know just means the
+        // next push invents them again. What suppression forbids is emailing
+        // them, and that is what does not happen.
+        $this->assertSame(1, Contact::query()->count());
         $this->assertSame(0, Enrollment::query()->count());
         Queue::assertNotPushed(DraftEmailJob::class);
     }
@@ -173,7 +212,7 @@ class ContactIngestTest extends TestCase
         ], $this->apiHeaders());
 
         $response->assertOk()
-            ->assertJsonPath('data.unknown_tags.0', 'no-such-tag');
+            ->assertJsonPath('data.contacts.0.unknown_tags.0', 'no-such-tag');
         $this->assertSame(1, Enrollment::query()->count());
     }
 
@@ -187,7 +226,7 @@ class ContactIngestTest extends TestCase
             'tags' => ['paused-tag'],
         ], $this->apiHeaders());
 
-        $response->assertOk()->assertJsonPath('data.unknown_tags.0', 'paused-tag');
+        $response->assertOk()->assertJsonPath('data.contacts.0.unknown_tags.0', 'paused-tag');
         $this->assertSame(0, Enrollment::query()->count());
     }
 
@@ -202,8 +241,8 @@ class ContactIngestTest extends TestCase
         $automation = Automation::factory()->create(['tag' => 'collab']);
         $contact = Contact::factory()->create(['email' => 'jane@example.com']);
 
-        // Rejecting a draft stops the enrollment, so the contact is no longer
-        // counted as enrolled and another app can add them again.
+        // Rejecting a draft stops the enrollment, so the contact does not
+        // count as enrolled and another app can add them again.
         Enrollment::factory()->create([
             'contact_id' => $contact->id,
             'automation_id' => $automation->id,
@@ -215,8 +254,57 @@ class ContactIngestTest extends TestCase
             'tags' => ['collab'],
         ], $this->apiHeaders());
 
-        $response->assertOk()->assertJsonPath('data.enrollments.0.skipped', null);
+        $response->assertOk()->assertJsonPath('data.contacts.0.enrollments.0.skipped', null);
         $this->assertSame(2, Enrollment::query()->count());
         Queue::assertPushed(DraftEmailJob::class);
+    }
+
+    /**
+     * The lookup is queued after the transaction closes, never inside it.
+     *
+     * Only one lookup per contact may be waiting at a time, and the queue
+     * enforces that by inserting a lock row and letting the insert fail if one
+     * is already there. Postgres abandons an entire transaction the moment any
+     * statement in it fails, so taking that lock inside the batch transaction
+     * would fail the whole batch whenever one person was pushed again while
+     * their first lookup was still queued. Re-sending safely is the one thing
+     * a batch promises.
+     *
+     * Asserted as a property - nothing is dispatched until commit - rather than
+     * by reproducing the crash, because the assertion holds on any database and
+     * says plainly what the rule is.
+     *
+     * A job's own afterCommit() does NOT satisfy this: it defers the dispatch
+     * but takes the lock immediately.
+     */
+    public function test_the_lookup_is_queued_only_once_the_transaction_has_closed(): void
+    {
+        Queue::fake();
+
+        DB::beginTransaction();
+
+        app(ContactIngestService::class)->ingest([
+            'email' => 'jane@example.com',
+            'name' => 'Jane Doe',
+        ]);
+
+        Queue::assertNotPushed(EnrichContact::class);
+
+        DB::commit();
+
+        Queue::assertPushed(EnrichContact::class);
+    }
+
+    /** With no transaction open there is nothing to wait for. */
+    public function test_the_lookup_is_queued_at_once_when_nothing_is_open(): void
+    {
+        Queue::fake();
+
+        app(ContactIngestService::class)->ingest([
+            'email' => 'jane@example.com',
+            'name' => 'Jane Doe',
+        ]);
+
+        Queue::assertPushed(EnrichContact::class);
     }
 }

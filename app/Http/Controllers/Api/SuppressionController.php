@@ -21,9 +21,9 @@ class SuppressionController extends ApiController
      *
      * Everyone who must not be emailed.
      *
-     * Worth reading before pushing contacts: ingest silently skips a
-     * suppressed address, so a caller that does not check keeps offering
-     * people who already opted out and never learns why nothing happens.
+     * Worth reading before pushing contacts. A suppressed person is stored but
+     * enrolled in nothing, and the push says how many of a batch that was, so a
+     * caller can tell the difference between "accepted" and "will be emailed".
      *
      * @queryParam reason string One of unsubscribed, bounced, manual, complaint. e.g. unsubscribed. No-example
      * @queryParam email string Check one exact address. e.g. no.thanks@globex.example. No-example

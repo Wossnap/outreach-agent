@@ -13,7 +13,17 @@ class EnrollmentStopper
 {
     public function stop(Enrollment $enrollment, string $status, string $reason): void
     {
-        if (! $enrollment->isActive()) {
+        /*
+         * Anything still holding a place is stoppable, which now means waiting
+         * as well as active.
+         *
+         * Waiting counts as open. A waiting enrollment is every bit as live as
+         * an active one - it is why the person cannot be enrolled again - so
+         * unsubscribing, bouncing, suppressing and the cancel API all have to
+         * reach it. Stopping only active ones would leave the row in place for
+         * good, with nothing on any screen to say why.
+         */
+        if (! in_array($enrollment->status, Enrollment::openStatuses(), true)) {
             return;
         }
 

@@ -23,8 +23,8 @@
         <env name="BCRYPT_ROUNDS" value="4" force="true"/>
         <env name="BROADCAST_CONNECTION" value="null" force="true"/>
         <env name="CACHE_STORE" value="array" force="true"/>
-        <env name="DB_CONNECTION" value="sqlite" force="true"/>
-        <env name="DB_DATABASE" value=":memory:" force="true"/>
+        <env name="DB_CONNECTION" value="pgsql" force="true"/>
+        <env name="DB_DATABASE" value="outreach_test" force="true"/>
         <env name="DB_URL" value="" force="true"/>
         <env name="MAIL_MAILER" value="array" force="true"/>
         <env name="QUEUE_CONNECTION" value="sync" force="true"/>
@@ -32,15 +32,27 @@
         <env name="PULSE_ENABLED" value="false" force="true"/>
         <env name="TELESCOPE_ENABLED" value="false" force="true"/>
         <env name="NIGHTWATCH_ENABLED" value="false" force="true"/>
-        <!-- Docker sets DB_* and QUEUE_CONNECTION on the container. Laravel reads
-             $_SERVER first, which <env> does not write to, so these must be
-             declared here as well or the suite runs against the live database. -->
-        <server name="DB_CONNECTION" value="sqlite" force="true"/>
-        <server name="DB_DATABASE" value=":memory:" force="true"/>
-        <server name="DB_HOST" value="" force="true"/>
-        <server name="DB_PORT" value="" force="true"/>
-        <server name="DB_USERNAME" value="" force="true"/>
-        <server name="DB_PASSWORD" value="" force="true"/>
+        <!--
+            Postgres. Two behaviours the application depends on are specific
+            to it: an unaliased COUNT(*) in a grouped query throws, and LIKE
+            compares case, so a lead search for "acme" does not find "Acme".
+
+            Only the connection and the database name are forced. The host, port
+            and credentials are left to the environment, so this works from a
+            terminal, where .env points at localhost, and inside a container,
+            where Compose points at the postgres service.
+
+            Requires the database to exist:
+            docker compose exec postgres psql -U postgres -c "CREATE DATABASE outreach_test;"
+
+            Docker sets DB_* and QUEUE_CONNECTION as container environment
+            variables. Laravel reads $_SERVER first, which <env> does not write
+            to, so the name must be declared here as well - otherwise the suite
+            connects to the live database and RefreshDatabase drops every table
+            in it. TestDatabaseIsolationTest is the belt to this brace.
+        -->
+        <server name="DB_CONNECTION" value="pgsql" force="true"/>
+        <server name="DB_DATABASE" value="outreach_test" force="true"/>
         <server name="DB_URL" value="" force="true"/>
         <server name="QUEUE_CONNECTION" value="sync" force="true"/>
         <server name="CACHE_STORE" value="array" force="true"/>

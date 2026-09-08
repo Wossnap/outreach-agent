@@ -30,7 +30,7 @@
                             ])>{{ $log->level }}</span>
                             <div>
                                 <p class="text-sm text-gray-900 dark:text-gray-100">{{ $log->message }}</p>
-                                <p class="text-xs text-gray-400 mt-0.5">
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                                     {{ $log->event }} · {{ $log->created_at->timezone(config('outreach.timezone'))->format('D j M, H:i:s') }}
                                     @if ($log->retried_at) · retried {{ $log->retried_at->diffForHumans() }} @endif
                                 </p>
@@ -44,7 +44,7 @@
                         @endif
                     </div>
                 @empty
-                    <div class="p-10 text-center text-gray-500">Nothing logged yet. Failures (drafting, sending, polling, health pauses) show up here with retry buttons.</div>
+                    <div class="p-10 text-center text-gray-500 dark:text-gray-300">Nothing logged yet. Failures (drafting, sending, polling, health pauses) show up here with retry buttons.</div>
                 @endforelse
             </div>
 

@@ -4,7 +4,7 @@
             <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">API keys</h2>
 
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 space-y-4">
-                <p class="text-sm text-gray-600 dark:text-gray-400">
+                <p class="text-sm text-gray-600 dark:text-gray-300">
                     Your other apps authenticate to the API with these keys. Full reference at
                     <a href="{{ config('app.url') }}/docs" class="underline">{{ config('app.url') }}/docs</a>.
                     <code class="font-mono text-xs bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded block mt-2">curl -X POST {{ config('app.url') }}/api/contacts -H "Authorization: Bearer &lt;key&gt;" -H "Content-Type: application/json" -d '{"email":"jane@example.com","first_name":"Jane","last_name":"Doe","tags":["seo-backlinks"]}'</code>
@@ -26,13 +26,13 @@
                                         class="mt-1 rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900">
                                     <span>
                                         <span class="font-medium text-gray-900 dark:text-gray-100">{{ $ability }}</span>
-                                        <span class="block text-xs text-gray-500">{{ $description }}</span>
+                                        <span class="block text-xs text-gray-500 dark:text-gray-300">{{ $description }}</span>
                                     </span>
                                 </label>
                             @endforeach
                         </div>
                         <x-input-error :messages="$errors->get('newKeyAbilities')" class="mt-1" />
-                        <p class="mt-2 text-xs text-gray-500">
+                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-300">
                             Give a key only what it needs. A tool that just pushes leads needs
                             <span class="font-mono">write</span>, not <span class="font-mono">read</span>.
                         </p>
@@ -54,7 +54,7 @@
                     <div class="p-4 flex items-center justify-between" wire:key="token-{{ $token->id }}">
                         <div>
                             <p class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $token->name }}</p>
-                            <p class="text-xs text-gray-500">
+                            <p class="text-xs text-gray-500 dark:text-gray-300">
                                 {{ implode(', ', $token->abilities ?? []) }}
                                 · created {{ $token->created_at->diffForHumans() }}
                                 · last used {{ $token->last_used_at?->diffForHumans() ?? 'never' }}
@@ -65,7 +65,7 @@
                             class="text-xs text-red-600 hover:underline">Revoke</button>
                     </div>
                 @empty
-                    <div class="p-8 text-center text-gray-500 text-sm">No API keys yet.</div>
+                    <div class="p-8 text-center text-gray-500 dark:text-gray-300 text-sm">No API keys yet.</div>
                 @endforelse
             </div>
         </div>

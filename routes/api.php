@@ -21,9 +21,6 @@ use Illuminate\Support\Facades\Route;
 | Bearer auth with a key created in the dashboard under Settings > API keys.
 | Each route lists the abilities that satisfy it and a key needs any one of
 | them: `read` to GET, `write` to change data, `approve` to release an email.
-|
-| `ingest` is the legacy ability, accepted on POST /contacts only, so keys
-| issued before abilities existed keep working.
 */
 
 /*
@@ -67,7 +64,7 @@ Route::middleware('api.auth:read')->whereNumber($numericIds)->group(function () 
     Route::get('/stats', [StatsController::class, 'index']);
 });
 
-Route::middleware('api.auth:write,ingest')->whereNumber($numericIds)->group(function () {
+Route::middleware(['api.auth:write', 'throttle:push-contacts'])->whereNumber($numericIds)->group(function () {
     // The lead-magnet route: upsert a contact and enroll them by tag.
     Route::post('/contacts', [ContactIngestController::class, 'store']);
 });
@@ -93,8 +90,8 @@ Route::middleware('api.auth:write')->whereNumber($numericIds)->group(function ()
 
     Route::post('/mailboxes/{mailbox}/pause', [MailboxController::class, 'pause']);
     Route::post('/mailboxes/{mailbox}/resume', [MailboxController::class, 'resume']);
-    // Not guarded by a config switch: it only ever stops sending, and blocking
-    // a way to stop is worse than allowing it. Reversible by reconnecting.
+    // Not guarded by a config switch: it only ever stops sending, and it is
+    // reversible by reconnecting.
     Route::post('/mailboxes/{mailbox}/disconnect', [MailboxController::class, 'disconnect']);
 });
 

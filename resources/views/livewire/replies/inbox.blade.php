@@ -16,8 +16,8 @@
                         <option value="unsubscribe">Unsubscribes</option>
                         <option value="auto_reply">Auto-replies</option>
                     </select>
-                    <label class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                        <input type="checkbox" wire:model.live="unread" value="1" class="rounded border-gray-300"> Unread only
+                    <label class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                        <input type="checkbox" wire:model.live="unread" value="1" class="rounded border-gray-300 dark:border-gray-600"> Unread only
                     </label>
                     @if ($unreadCount > 0)
                         <button wire:click="markAllRead" class="text-indigo-600 hover:underline">Mark all read</button>
@@ -32,9 +32,9 @@
                         <div>
                             <p class="font-semibold text-gray-900 dark:text-gray-100">
                                 {{ $reply->contact?->name ?: $reply->from_email }}
-                                <span class="font-normal text-gray-500 text-sm">→ {{ $reply->mailbox->email }}</span>
+                                <span class="font-normal text-gray-500 dark:text-gray-300 text-sm">→ {{ $reply->mailbox->email }}</span>
                             </p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ $reply->subject }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">{{ $reply->subject }}</p>
                         </div>
                         <div class="flex items-center gap-2 text-xs">
                             <span @class([
@@ -47,16 +47,16 @@
                             @if ($reply->enrollment)
                                 <span class="px-2 py-1 rounded bg-indigo-100 text-indigo-800 font-mono">{{ $reply->enrollment->automation->tag }}</span>
                             @endif
-                            <span class="text-gray-400">{{ $reply->received_at?->timezone(config('outreach.timezone'))->format('D j M, H:i') }}</span>
+                            <span class="text-gray-500 dark:text-gray-400">{{ $reply->received_at?->timezone(config('outreach.timezone'))->format('D j M, H:i') }}</span>
                         </div>
                     </div>
                     <details @if(!$reply->read_at) x-on:toggle="$wire.markRead({{ $reply->id }})" @endif>
-                        <summary class="cursor-pointer text-sm text-gray-500 hover:text-gray-700">{{ $reply->snippet }}</summary>
+                        <summary class="cursor-pointer text-sm text-gray-500 dark:text-gray-300 hover:text-gray-700">{{ $reply->snippet }}</summary>
                         <p class="mt-2 whitespace-pre-line text-sm text-gray-700 dark:text-gray-300 border-l-2 border-gray-200 dark:border-gray-700 pl-4">{{ $reply->body_text }}</p>
                     </details>
                 </div>
             @empty
-                <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-10 text-center text-gray-500">
+                <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-10 text-center text-gray-500 dark:text-gray-300">
                     No inbound email yet. Replies, bounces and opt-outs will appear here as mailbox polling picks them up.
                 </div>
             @endforelse
