@@ -71,7 +71,7 @@ class AnthropicDrafter implements Drafter
             'Email: '.$contact->email,
         ];
 
-        foreach (['name' => 'Name', 'job_title' => 'Job title', 'company' => 'Company', 'category' => 'Category', 'niche' => 'Niche', 'domain' => 'Company domain'] as $field => $label) {
+        foreach (['name' => 'Name', 'job_title' => 'Job title', 'role' => 'Role', 'company' => 'Company', 'category' => 'Category', 'niche' => 'Niche', 'domain' => 'Company domain'] as $field => $label) {
             if ($contact->{$field}) {
                 $lines[] = $label.': '.$contact->{$field};
             }

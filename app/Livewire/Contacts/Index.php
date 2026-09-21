@@ -19,7 +19,7 @@ class Index extends Component
     use WithIndexTable, WithPagination;
 
     /** @var array<string> */
-    public array $sortable = ['email', 'name', 'company', 'category', 'niche', 'source', 'email_status', 'created_at'];
+    public array $sortable = ['email', 'name', 'company', 'role', 'category', 'niche', 'source', 'email_status', 'created_at'];
 
     public string $defaultSort = 'created_at';
 
@@ -43,6 +43,10 @@ class Index extends Component
     /** @var array<string> */
     #[Url]
     public array $emailStatuses = [];
+
+    /** @var array<string> */
+    #[Url]
+    public array $roles = [];
 
     /** @var array<string> */
     #[Url]
@@ -106,7 +110,7 @@ class Index extends Component
 
     protected function filterProperties(): array
     {
-        return ['email', 'name', 'company', 'sources', 'emailStatuses', 'categories', 'niches', 'includeNotFound', 'enrollmentStatuses', 'suppressed', 'createdFrom', 'createdTo'];
+        return ['email', 'name', 'company', 'sources', 'emailStatuses', 'roles', 'categories', 'niches', 'includeNotFound', 'enrollmentStatuses', 'suppressed', 'createdFrom', 'createdTo'];
     }
 
     public function toggleExpand(int $id): void
@@ -256,6 +260,7 @@ class Index extends Component
             ->when($this->company, fn ($q) => $q->whereRaw('lower(company) like ?', ['%'.mb_strtolower($this->company).'%']))
             ->when($this->sources !== [], fn ($q) => $q->whereIn('source', $this->sources))
             ->when($this->emailStatuses !== [], fn ($q) => $q->whereIn('email_status', $this->emailStatuses))
+            ->when($this->roles !== [], fn ($q) => $q->whereIn('role', $this->roles))
             ->when($this->categories !== [], fn ($q) => $q->whereIn('category', $this->categories))
             ->when($this->niches !== [], fn ($q) => $q->whereIn('niche', $this->niches))
             ->when($this->hidesNotFound(), fn ($q) => $q->where('email_status', '!=', Contact::EMAIL_NOT_FOUND))
@@ -293,6 +298,7 @@ class Index extends Component
             'expanded' => $expanded,
             'availableSources' => $this->distinctValues('source'),
             'availableEmailStatuses' => Contact::emailStatuses(),
+            'availableRoles' => $this->distinctValues('role'),
             'availableCategories' => $this->distinctValues('category'),
             'availableNiches' => $this->distinctValues('niche'),
             // Every status, worded as a person would say it. Waiting sits

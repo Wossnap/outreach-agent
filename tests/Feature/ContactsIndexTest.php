@@ -223,6 +223,30 @@ class ContactsIndexTest extends TestCase
             ->assertDontSee('garden@x.com');
     }
 
+    public function test_filters_by_role(): void
+    {
+        Contact::factory()->create(['email' => 'owner@x.com', 'role' => 'Owner']);
+        Contact::factory()->create(['email' => 'marketer@x.com', 'role' => 'Marketing lead']);
+
+        Livewire::test(Index::class)
+            ->set('roles', ['Owner'])
+            ->assertSee('owner@x.com')
+            ->assertDontSee('marketer@x.com');
+    }
+
+    public function test_the_detail_toggle_sits_beside_the_checkbox_and_opens_the_detail(): void
+    {
+        // On a table this wide a column at the far right scrolled out of
+        // view, which read as the detail having gone.
+        $contact = Contact::factory()->create(['email' => 'sam@acme.com', 'job_title' => 'Head of Operations']);
+
+        $component = Livewire::test(Index::class)->assertSee('Detail')->assertDontSee('Head of Operations');
+        $html = $component->html();
+        $this->assertLessThan(strpos($html, 'sam@acme.com'), strpos($html, 'toggleExpand('.$contact->id.')'));
+
+        $component->call('toggleExpand', $contact->id)->assertSee('Head of Operations')->assertSee('Hide');
+    }
+
     public function test_sorts_by_niche(): void
     {
         Contact::factory()->create(['email' => 'b@x.com', 'niche' => 'Beta']);

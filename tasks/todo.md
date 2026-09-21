@@ -82,3 +82,9 @@ Plan: ~/.claude/plans/i-want-to-add-fluttering-crown.md (same branch, still unco
 - composer.json: `php ^8.3` + `config.platform.php = 8.3.31`; lock re-resolved with the php@8.3 binary (Symfony 8.1 → 7.4, Laravel 13.17 → 13.32). Dockerfile `php:8.3-fpm`, README updated.
 - App code uses no 8.4-only syntax/functions (grepped). 509 tests green under PHP 8.3.32 and 8.5.6.
 - Local: `/opt/homebrew/opt/php@8.3/bin/php` exists; composer must be run with it (or trust the platform pin) so the lock never drifts back to 8.4-only packages.
+
+## 2026-09-21 — Role field, leads detail toggle, attachments lost on save
+- [x] `role` on contacts (migration + backfill from `extra.*.role`), accepted by `POST /api/contacts`, in the resource, drafter prompt, Leads column + multi-select filter + sort
+- [x] Leads "Detail" toggle moved beside the checkbox: with Category/Niche/Role the far-right column scrolled out of view, which read as the detail being gone
+- [x] Automation edit: a file chosen in a step row is attached by "Save automation" (validated first, works for a step saved in the same click); "Attach now" still works for saved steps; notice shows a chosen-but-unattached file
+- 512 tests green under PHP 8.3; browser check of all three.

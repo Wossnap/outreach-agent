@@ -137,7 +137,7 @@ class Edit extends Component
         [$this->steps[$index], $this->steps[$target]] = [$this->steps[$target], $this->steps[$index]];
     }
 
-    public function save(): void
+    public function save(StepAttachmentStore $store): void
     {
         $this->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -146,11 +146,17 @@ class Edit extends Component
             'steps.*.delay_days' => ['required', 'integer', 'min:0', 'max:365'],
             'steps.*.delay_hours' => ['required', 'integer', 'min:0', 'max:23'],
             'steps.*.drafting_instructions' => ['required', 'string'],
+            // A file chosen but not yet attached goes on with the save, so it
+            // is checked here, before anything is written.
+            'newAttachment.*' => ['nullable', ...StepAttachmentStore::rules()],
         ], attributes: [
             'steps.*.drafting_instructions' => 'drafting instructions',
+            'newAttachment.*' => 'file',
         ]);
 
-        DB::transaction(function () {
+        $saved = [];
+
+        DB::transaction(function () use (&$saved) {
             $this->automation->update([
                 'name' => $this->name,
                 'tag' => Str::slug($this->tag),
@@ -182,6 +188,7 @@ class Edit extends Component
                 }
 
                 $keptIds[] = $model->id;
+                $saved[$position] = $model;
             }
 
             $this->automation->steps()->whereNotIn('id', $keptIds)->delete();
@@ -191,6 +198,25 @@ class Edit extends Component
             }
         });
 
+        /*
+         * Files chosen in the step rows but never "Attached". Choosing a file
+         * and pressing Save is the natural thing to do, and it used to lose
+         * the file quietly. Now the save is what attaches it, which also
+         * covers a step that had no id to attach to until this moment.
+         */
+        // Keyed by step index, which is also the step's position: the rows
+        // are re-indexed on every add and remove, so the two never diverge.
+        foreach ($this->newAttachment as $position => $file) {
+            if ($file && isset($saved[$position])) {
+                try {
+                    $store->add($saved[$position]->fresh(), $file);
+                } catch (RuntimeException $e) {
+                    $this->addError('newAttachment.'.$position, $e->getMessage());
+                }
+            }
+        }
+
+        $this->newAttachment = [];
         $this->mount($this->automation->refresh());
         $this->dispatch('saved');
     }

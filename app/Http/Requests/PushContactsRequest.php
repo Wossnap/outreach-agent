@@ -15,7 +15,7 @@ class PushContactsRequest extends FormRequest
     /** Fields that describe one person, in both the single and batch shapes. */
     private const FIELDS = [
         'email', 'profile_url', 'name', 'first_name', 'last_name',
-        'company', 'domain', 'job_title', 'category', 'niche', 'company_url',
+        'company', 'domain', 'job_title', 'role', 'category', 'niche', 'company_url',
         'source', 'extra', 'tags',
     ];
 
@@ -45,6 +45,9 @@ class PushContactsRequest extends FormRequest
             // than entries in `extra` so the Leads page can filter and sort by
             // them.
             'category' => ['nullable', 'string', 'max:255'],
+            // A short label for the person's role ("Owner"), distinct from
+            // the free-text job title a profile carries.
+            'role' => ['nullable', 'string', 'max:255'],
             'niche' => ['nullable', 'string', 'max:255'],
             // The company's LinkedIn page; `profile_url` is the person's.
             'company_url' => ['nullable', 'url', 'max:255'],

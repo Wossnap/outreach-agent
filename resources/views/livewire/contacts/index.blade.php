@@ -36,6 +36,8 @@
                         </div>
                     @endforeach
 
+                    <x-index.multi-select model="roles" label="Role" :options="$availableRoles" :selected="$roles" placeholder="Any role" empty="No roles yet" />
+
                     <x-index.multi-select model="categories" label="Category" :options="$availableCategories" :selected="$categories" placeholder="Any category" empty="No categories yet" />
 
                     <x-index.multi-select model="niches" label="Niche" :options="$availableNiches" :selected="$niches" placeholder="Any niche" empty="No niches yet" />
@@ -105,16 +107,19 @@
                                     title="Select the leads on this page"
                                     class="rounded border-gray-300 dark:border-gray-600">
                             </th>
+                            {{-- The detail toggle sits here, beside the checkbox, because on a
+                                 table this wide a column at the far right scrolls out of view. --}}
+                            <th class="px-2 py-3 w-8"></th>
                             <x-index.sort-header field="email" :sort-field="$sortField" :sort-direction="$sortDirection">Email</x-index.sort-header>
                             <x-index.sort-header field="name" :sort-field="$sortField" :sort-direction="$sortDirection">Name</x-index.sort-header>
                             <x-index.sort-header field="company" :sort-field="$sortField" :sort-direction="$sortDirection">Company</x-index.sort-header>
+                            <x-index.sort-header field="role" :sort-field="$sortField" :sort-direction="$sortDirection">Role</x-index.sort-header>
                             <x-index.sort-header field="category" :sort-field="$sortField" :sort-direction="$sortDirection">Category</x-index.sort-header>
                             <x-index.sort-header field="niche" :sort-field="$sortField" :sort-direction="$sortDirection">Niche</x-index.sort-header>
                             <x-index.sort-header field="email_status" :sort-field="$sortField" :sort-direction="$sortDirection">Address</x-index.sort-header>
                             <x-index.sort-header field="source" :sort-field="$sortField" :sort-direction="$sortDirection">Source</x-index.sort-header>
                             <th class="px-6 py-3 font-medium">Enrollments</th>
                             <x-index.sort-header field="created_at" :sort-field="$sortField" :sort-direction="$sortDirection">Added</x-index.sort-header>
-                            <th class="px-6 py-3"></th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700 text-gray-900 dark:text-gray-100">
@@ -123,6 +128,13 @@
                                 <td class="px-6 py-3">
                                     <input type="checkbox" wire:model.live="selected" value="{{ $contact->id }}"
                                         class="rounded border-gray-300 dark:border-gray-600">
+                                </td>
+                                <td class="px-2 py-3">
+                                    <button wire:click="toggleExpand({{ $contact->id }})"
+                                        title="{{ $expandedId === $contact->id ? 'Hide detail' : 'Show detail' }}"
+                                        class="text-indigo-600 dark:text-indigo-400 hover:underline text-xs whitespace-nowrap">
+                                        {{ $expandedId === $contact->id ? '▾ Hide' : '▸ Detail' }}
+                                    </button>
                                 </td>
                                 <td class="px-6 py-3">
                                     {{ $contact->email }}
@@ -147,6 +159,7 @@
                                         {{ $contact->company }}
                                     @endif
                                 </td>
+                                <td class="px-6 py-3">{{ $contact->role }}</td>
                                 <td class="px-6 py-3">{{ $contact->category }}</td>
                                 <td class="px-6 py-3">{{ $contact->niche }}</td>
                                 <td class="px-6 py-3">
@@ -167,15 +180,10 @@
                                 <td class="px-6 py-3 text-xs font-mono">{{ $contact->source }}</td>
                                 <td class="px-6 py-3">{{ $contact->enrollments_count }}</td>
                                 <td class="px-6 py-3 text-xs text-gray-500 dark:text-gray-300">{{ $contact->created_at->timezone(config('outreach.timezone'))->format('j M Y') }}</td>
-                                <td class="px-6 py-3 text-right">
-                                    <button wire:click="toggleExpand({{ $contact->id }})" class="text-indigo-600 hover:underline text-xs">
-                                        {{ $expandedId === $contact->id ? 'Hide' : 'Detail' }}
-                                    </button>
-                                </td>
                             </tr>
                             @if ($expanded && $expandedId === $contact->id)
                                 <tr wire:key="contact-detail-{{ $contact->id }}">
-                                    <td colspan="11" class="px-6 py-4 bg-gray-50 dark:bg-gray-900/40">
+                                    <td colspan="12" class="px-6 py-4 bg-gray-50 dark:bg-gray-900/40">
                                         <div class="space-y-3 text-sm">
                                             <div class="flex items-center justify-between">
                                                 <p class="font-semibold">Enrollments &amp; messages</p>
@@ -337,7 +345,7 @@
                             @endif
                         @empty
                             <tr>
-                                <td colspan="11" class="px-6 py-10 text-center text-gray-500 dark:text-gray-300">
+                                <td colspan="12" class="px-6 py-10 text-center text-gray-500 dark:text-gray-300">
                                     @if ($this->activeFilterCount() > 0)
                                         No contacts match these filters. <button wire:click="clearFilters" class="text-indigo-600 hover:underline">Clear all</button>
                                     @else

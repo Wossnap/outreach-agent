@@ -70,6 +70,7 @@ class ContactIngestTest extends TestCase
         $this->postJson('/api/contacts', [
             'email' => 'jane@acme.example',
             'company' => 'Acme',
+            'role' => 'Owner',
             'category' => 'Home services',
             'niche' => 'Landscaping',
             'company_url' => 'https://linkedin.com/company/acme',
@@ -77,6 +78,7 @@ class ContactIngestTest extends TestCase
 
         $contact = Contact::query()->where('email', 'jane@acme.example')->sole();
 
+        $this->assertSame('Owner', $contact->role);
         $this->assertSame('Home services', $contact->category);
         $this->assertSame('Landscaping', $contact->niche);
         $this->assertSame('https://linkedin.com/company/acme', $contact->company_url);
@@ -84,6 +86,7 @@ class ContactIngestTest extends TestCase
         // A later push that says nothing about them leaves what is known alone.
         $this->postJson('/api/contacts', ['email' => 'jane@acme.example', 'name' => 'Jane'], $this->apiHeaders())->assertOk();
 
+        $this->assertSame('Owner', $contact->fresh()->role);
         $this->assertSame('Landscaping', $contact->fresh()->niche);
         $this->assertSame('https://linkedin.com/company/acme', $contact->fresh()->company_url);
     }

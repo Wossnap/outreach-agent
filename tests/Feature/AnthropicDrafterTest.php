@@ -108,7 +108,7 @@ class AnthropicDrafterTest extends TestCase
     public function test_the_prompt_names_the_leads_category_and_niche(): void
     {
         $this->fakeAnthropic('{"subject": "Hi", "body": "Yo"}');
-        $contact = Contact::factory()->create(['category' => 'Home services', 'niche' => 'Landscaping']);
+        $contact = Contact::factory()->create(['role' => 'Owner', 'category' => 'Home services', 'niche' => 'Landscaping']);
         $mailbox = Mailbox::factory()->connected()->create();
         $enrollment = Enrollment::factory()->create(['contact_id' => $contact->id, 'mailbox_id' => $mailbox->id]);
         $step = SequenceStep::factory()->create(['automation_id' => $enrollment->automation_id]);
@@ -118,7 +118,8 @@ class AnthropicDrafterTest extends TestCase
         Http::assertSent(function ($request) {
             $prompt = $request->data()['messages'][0]['content'];
 
-            return str_contains($prompt, 'Category: Home services')
+            return str_contains($prompt, 'Role: Owner')
+                && str_contains($prompt, 'Category: Home services')
                 && str_contains($prompt, 'Niche: Landscaping');
         });
     }

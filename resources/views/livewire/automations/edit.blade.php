@@ -90,19 +90,21 @@
                                     </ul>
                                 @endif
 
-                                @if ($step['id'])
-                                    <div class="mt-2 flex items-center gap-3">
-                                        <input type="file" wire:model="newAttachment.{{ $index }}"
-                                            class="text-sm text-gray-600 dark:text-gray-300 file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-gray-100 dark:file:bg-gray-700 dark:file:text-gray-200">
+                                <div class="mt-2 flex items-center gap-3">
+                                    <input type="file" wire:model="newAttachment.{{ $index }}"
+                                        class="text-sm text-gray-600 dark:text-gray-300 file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-gray-100 dark:file:bg-gray-700 dark:file:text-gray-200">
+                                    @if ($step['id'])
                                         <button type="button" wire:click="uploadAttachment({{ $index }})"
-                                            class="text-xs px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700">Attach</button>
-                                    </div>
-                                    <div wire:loading wire:target="newAttachment.{{ $index }}" class="mt-1 text-xs text-gray-500 dark:text-gray-300">Uploading...</div>
-                                @else
-                                    {{-- The automation may well be saved already; this particular step is not,
-                                         and a file attaches to a step. Say that, rather than "save the
-                                         automation first", which reads as nonsense on an edit page. --}}
-                                    <p class="mt-2 text-xs text-gray-500 dark:text-gray-300">This step has not been saved yet. Fill it in and press "Save automation", then come back to attach a file.</p>
+                                            class="text-xs px-3 py-1 rounded bg-gray-800 text-white hover:bg-gray-700">Attach now</button>
+                                    @endif
+                                </div>
+                                <div wire:loading wire:target="newAttachment.{{ $index }}" class="mt-1 text-xs text-gray-500 dark:text-gray-300">Uploading...</div>
+                                {{-- A chosen file is attached by "Save automation" too, so choosing
+                                     one and saving no longer loses it. --}}
+                                @if (! empty($newAttachment[$index]))
+                                    <p class="mt-1 text-xs text-amber-700 dark:text-amber-400">
+                                        {{ $newAttachment[$index]->getClientOriginalName() }} is chosen but not attached yet. Press "Attach now" or "Save automation".
+                                    </p>
                                 @endif
 
                                 <x-input-error :messages="$errors->get('newAttachment.'.$index)" class="mt-1" />

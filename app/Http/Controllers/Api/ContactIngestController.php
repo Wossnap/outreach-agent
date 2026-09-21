@@ -39,6 +39,7 @@ class ContactIngestController extends Controller
      * @bodyParam company string Example: Acme Ltd
      * @bodyParam domain string The company's domain, which is what an address is searched by. A full URL is fine; it is reduced to the host. Example: acme.example
      * @bodyParam job_title string Example: Head of Operations
+     * @bodyParam role string A short label for the person's role, distinct from the job title. Example: Owner
      * @bodyParam category string The lead's market category. Example: Home services
      * @bodyParam niche string The niche within that category. Example: Landscaping
      * @bodyParam company_url string The company's LinkedIn page. Example: https://linkedin.com/company/acme

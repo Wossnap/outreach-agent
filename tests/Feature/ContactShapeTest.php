@@ -48,7 +48,7 @@ class ContactShapeTest extends TestCase
 
     public function test_it_carries_what_every_source_has(): void
     {
-        foreach (['email', 'name', 'job_title', 'company', 'category', 'niche', 'company_url', 'domain', 'profile_url', 'source', 'extra'] as $column) {
+        foreach (['email', 'name', 'job_title', 'role', 'company', 'category', 'niche', 'company_url', 'domain', 'profile_url', 'source', 'extra'] as $column) {
             $this->assertTrue(Schema::hasColumn('contacts', $column), "The lead is missing [{$column}].");
         }
     }
