@@ -127,7 +127,7 @@ docker compose exec app php artisan migrate
 # http://localhost:8010/register, then set it back to false
 ```
 
-Local (no Docker) needs **PHP 8.4 or newer**: `composer install && npm install && npm run build && php artisan migrate && composer dev` — but you must also run `php artisan queue:work database` and `php artisan schedule:work` for anything to actually draft/send.
+Local (no Docker) needs **PHP 8.3 or newer** (the server runs 8.3; `composer.json` pins the platform to 8.3 so dependencies resolve for it): `composer install && npm install && npm run build && php artisan migrate && composer dev` — but you must also run `php artisan queue:work database` and `php artisan schedule:work` for anything to actually draft/send.
 
 ### Running the tests
 

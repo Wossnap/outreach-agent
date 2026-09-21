@@ -77,3 +77,8 @@ Plan: ~/.claude/plans/i-want-to-add-fluttering-crown.md (same branch, still unco
 - 509 tests / 1314 assertions green against local docker Postgres.
 - Browser check on a seeded `outreach_demo` DB: dashboard (all windows), Health page, pixel fetch returns image/gif no-store with no cookie and records the open.
 - Needs Sean: reconnect one mailbox (new scope), verify domains at postmaster.google.com, enable the Postmaster Tools API + scope in the Cloud project, run the three new migrations on the real DB, then `php artisan postmaster:sync`. Scribe docs not regenerated.
+
+## 2026-09-21 — PHP 8.3 (server runs 8.3.31)
+- composer.json: `php ^8.3` + `config.platform.php = 8.3.31`; lock re-resolved with the php@8.3 binary (Symfony 8.1 → 7.4, Laravel 13.17 → 13.32). Dockerfile `php:8.3-fpm`, README updated.
+- App code uses no 8.4-only syntax/functions (grepped). 509 tests green under PHP 8.3.32 and 8.5.6.
+- Local: `/opt/homebrew/opt/php@8.3/bin/php` exists; composer must be run with it (or trust the platform pin) so the lock never drifts back to 8.4-only packages.
