@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Domain extends Model
@@ -22,6 +23,7 @@ class Domain extends Model
     protected $fillable = [
         'name', 'dkim_selector', 'spf_status', 'dkim_status', 'dmarc_status',
         'dnsbl_listed', 'dnsbl_zones', 'health_status', 'last_dns_checked_at',
+        'postmaster_synced_at', 'postmaster_error', 'postmaster_verification', 'postmaster_compliance',
     ];
 
     protected function casts(): array
@@ -30,12 +32,25 @@ class Domain extends Model
             'dnsbl_listed' => 'boolean',
             'dnsbl_zones' => 'array',
             'last_dns_checked_at' => 'datetime',
+            'postmaster_synced_at' => 'datetime',
+            'postmaster_compliance' => 'array',
         ];
     }
 
     public function mailboxes(): HasMany
     {
         return $this->hasMany(Mailbox::class);
+    }
+
+    public function postmasterStats(): HasMany
+    {
+        return $this->hasMany(PostmasterStat::class);
+    }
+
+    /** The most recent day Gmail reported anything for this domain. */
+    public function latestPostmasterStat(): HasOne
+    {
+        return $this->hasOne(PostmasterStat::class)->latestOfMany('date');
     }
 
     public function healthChecks(): MorphMany

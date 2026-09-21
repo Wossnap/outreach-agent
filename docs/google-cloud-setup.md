@@ -6,6 +6,7 @@ The app sends and reads mail via the Gmail API using OAuth per mailbox. You need
 
 1. [console.cloud.google.com](https://console.cloud.google.com) → New project (e.g. `outreach-agent`).
 2. **APIs & Services → Library** → search **Gmail API** → Enable.
+   Also search **Gmail Postmaster Tools API** → Enable. This is what feeds the spam-rate figures on the dashboard; without it the daily `postmaster:sync` reports an API error for every domain.
 
 ## 2. OAuth consent screen
 
@@ -14,7 +15,7 @@ The app sends and reads mail via the Gmail API using OAuth per mailbox. You need
 - **Internal** (recommended): available if all sending mailboxes live in one Google Workspace organisation. No Google verification, no test-user cap, refresh tokens don't expire. Pick this if you can.
 - **External**: needed only if you mix mailboxes from different Workspace orgs / plain Gmail. In *Testing* mode you're capped at 100 test users **and refresh tokens expire after 7 days** (mailboxes would disconnect weekly) — so an External app realistically needs Google verification for production use. Prefer moving all sending domains under one Workspace org and using Internal.
 
-Fill app name + support email. Scopes: add `https://www.googleapis.com/auth/gmail.send` and `https://www.googleapis.com/auth/gmail.readonly` (plus `openid`, `email`).
+Fill app name + support email. Scopes: add `https://www.googleapis.com/auth/gmail.send`, `https://www.googleapis.com/auth/gmail.readonly` and `https://www.googleapis.com/auth/postmaster.traffic.readonly` (plus `openid`, `email`). The Postmaster scope is what lets the app read Gmail's spam-rate figures; a mailbox connected before it was added has to be reconnected once to grant it.
 
 ## 3. OAuth client
 

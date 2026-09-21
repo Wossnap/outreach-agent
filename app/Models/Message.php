@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class Message extends Model
 {
@@ -43,6 +44,7 @@ class Message extends Model
         'subject', 'body_text', 'ai_subject', 'ai_body', 'edited_by_user',
         'scheduled_at', 'sending_started_at', 'sent_at',
         'gmail_message_id', 'gmail_thread_id', 'rfc_message_id',
+        'open_token', 'first_opened_at', 'last_opened_at', 'open_count',
         'error', 'attempts', 'approved_at', 'rejected_at', 'rejection_note',
     ];
 
@@ -53,9 +55,26 @@ class Message extends Model
             'scheduled_at' => 'datetime',
             'sending_started_at' => 'datetime',
             'sent_at' => 'datetime',
+            'first_opened_at' => 'datetime',
+            'last_opened_at' => 'datetime',
             'approved_at' => 'datetime',
             'rejected_at' => 'datetime',
         ];
+    }
+
+    /**
+     * The secret the open-tracking pixel URL carries. Assigned at send time,
+     * so a draft that never sends never has one and the URL can never be
+     * guessed from the message id.
+     */
+    public static function generateOpenToken(): string
+    {
+        return Str::random(40);
+    }
+
+    public function isOpened(): bool
+    {
+        return $this->first_opened_at !== null;
     }
 
     public function enrollment(): BelongsTo

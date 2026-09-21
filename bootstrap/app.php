@@ -58,6 +58,11 @@ return Application::configure(basePath: dirname(__DIR__))
             ->dailyAt('06:30')
             ->withoutOverlapping(30)
             ->onFailure(fn () => Log::error('health:check-dns --dnsbl scheduled run failed'));
+
+        $schedule->command('postmaster:sync')
+            ->dailyAt('07:00')
+            ->withoutOverlapping(30)
+            ->onFailure(fn () => Log::error('postmaster:sync scheduled run failed'));
     })
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([

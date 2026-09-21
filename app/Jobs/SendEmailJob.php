@@ -48,6 +48,13 @@ class SendEmailJob implements ShouldQueue
 
         $message->increment('attempts');
 
+        // The pixel URL is built into the MIME, so the token has to be on the
+        // row before the send, not after: a hit that arrives while the
+        // post-send update is still running must still find its message.
+        if (config('outreach.open_tracking.enabled') && ! $message->open_token) {
+            $message->update(['open_token' => Message::generateOpenToken()]);
+        }
+
         $result = $sender->send($message);
 
         $message->update([

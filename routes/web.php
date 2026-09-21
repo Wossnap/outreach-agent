@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GoogleOAuthController;
+use App\Http\Controllers\OpenTrackingController;
 use App\Livewire\ApprovalQueue;
 use App\Livewire\Automations;
 use App\Livewire\Health\Dashboard;
@@ -14,7 +15,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
-Route::view('dashboard', 'dashboard')
+// The open-tracking pixel, fetched by recipients' mail clients. Public by
+// nature, and outside the whole web group so a fetch never starts a session,
+// sets a cookie, or is asked for a CSRF token by somebody's mail client.
+Route::get('t/o/{token}.gif', OpenTrackingController::class)
+    ->where('token', '[A-Za-z0-9]{20,64}')
+    ->withoutMiddleware('web')
+    ->name('track.open');
+
+Route::get('dashboard', App\Livewire\Dashboard::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 

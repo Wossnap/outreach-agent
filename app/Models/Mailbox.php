@@ -27,7 +27,7 @@ class Mailbox extends Model
         'daily_cap', 'min_gap_minutes', 'max_gap_minutes',
         'send_window_start', 'send_window_end', 'send_timezone', 'send_weekends',
         'warmup_enabled', 'warmup_started_at', 'warmup_start_per_day', 'warmup_increment_per_day',
-        'bounce_rate_7d', 'reply_rate_7d', 'sent_7d', 'health_status', 'last_polled_at', 'last_send_error',
+        'bounce_rate_7d', 'reply_rate_7d', 'open_rate_7d', 'sent_7d', 'health_status', 'last_polled_at', 'last_send_error',
     ];
 
     protected function casts(): array
@@ -42,8 +42,21 @@ class Mailbox extends Model
             'warmup_started_at' => 'datetime',
             'bounce_rate_7d' => 'float',
             'reply_rate_7d' => 'float',
+            'open_rate_7d' => 'float',
             'last_polled_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Whether Google granted this scope when the mailbox was connected.
+     *
+     * Scopes added to the app after a mailbox was connected are not on its
+     * token until it is reconnected, which is why this is asked rather than
+     * assumed.
+     */
+    public function hasScope(string $scope): bool
+    {
+        return in_array($scope, $this->google_scopes ?? [], true);
     }
 
     public function domain(): BelongsTo

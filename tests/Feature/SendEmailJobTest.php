@@ -49,6 +49,34 @@ class SendEmailJobTest extends TestCase
         $this->app->instance(GmailSender::class, $sender);
     }
 
+    public function test_assigns_an_open_token_before_the_send(): void
+    {
+        $message = $this->makeSending();
+
+        // The token must be on the row when the MIME is built, so the sender
+        // has to see it, not just the post-send update.
+        $sender = Mockery::mock(GmailSender::class);
+        $sender->shouldReceive('send')->once()
+            ->withArgs(fn (Message $m) => strlen((string) $m->open_token) === 40)
+            ->andReturn(['gmail_message_id' => 'gm-1', 'gmail_thread_id' => 't-1', 'rfc_message_id' => '<r@t>']);
+        $this->app->instance(GmailSender::class, $sender);
+
+        (new SendEmailJob($message->id))->handle(app(GmailSender::class));
+
+        $this->assertSame(40, strlen($message->fresh()->open_token));
+    }
+
+    public function test_leaves_the_token_empty_when_tracking_is_off(): void
+    {
+        config(['outreach.open_tracking.enabled' => false]);
+        $message = $this->makeSending();
+        $this->fakeSender();
+
+        (new SendEmailJob($message->id))->handle(app(GmailSender::class));
+
+        $this->assertNull($message->fresh()->open_token);
+    }
+
     public function test_sends_and_marks_sent_and_completes_single_step_enrollment(): void
     {
         $message = $this->makeSending();

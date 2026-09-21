@@ -230,7 +230,31 @@ class ReadApiTest extends TestCase
             // Null, not zero: zero would read as "nobody replied" rather than
             // "there is no data yet".
             ->assertJsonPath('data.sending.reply_rate', null)
-            ->assertJsonPath('data.sending.bounce_rate', null);
+            ->assertJsonPath('data.sending.bounce_rate', null)
+            ->assertJsonPath('data.sending.open_rate', null)
+            ->assertJsonPath('data.postmaster.worst', null);
+    }
+
+    public function test_stats_report_opens_against_tracked_messages_and_the_worst_spam_domain(): void
+    {
+        $mailbox = Mailbox::factory()->connected()->create();
+        Message::factory()->count(2)->sent()->create(['mailbox_id' => $mailbox->id, 'open_token' => fn () => Message::generateOpenToken(), 'first_opened_at' => now()]);
+        Message::factory()->count(2)->sent()->create(['mailbox_id' => $mailbox->id, 'open_token' => fn () => Message::generateOpenToken()]);
+        Message::factory()->sent()->create(['mailbox_id' => $mailbox->id]);
+
+        $calm = \App\Models\Domain::factory()->create(['name' => 'calm.test']);
+        $noisy = \App\Models\Domain::factory()->create(['name' => 'noisy.test']);
+        \App\Models\PostmasterStat::factory()->create(['domain_id' => $calm->id, 'spam_rate' => 0.0005]);
+        \App\Models\PostmasterStat::factory()->create(['domain_id' => $noisy->id, 'spam_rate' => 0.004]);
+
+        $this->getJson('/api/stats', $this->headers)
+            ->assertOk()
+            ->assertJsonPath('data.sending.sent', 5)
+            ->assertJsonPath('data.sending.tracked', 4)
+            ->assertJsonPath('data.sending.opened', 2)
+            ->assertJsonPath('data.sending.open_rate', 0.5)
+            ->assertJsonPath('data.postmaster.worst.domain', 'noisy.test')
+            ->assertJsonPath('data.postmaster.worst.spam_rate', 0.004);
     }
 
     public function test_page_size_is_clamped(): void

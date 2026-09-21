@@ -5,6 +5,7 @@ namespace App\Livewire\Health;
 use App\Models\ActivityLog;
 use App\Models\Domain;
 use App\Models\Mailbox;
+use Google\Service\PostmasterTools;
 use Illuminate\Support\Facades\Artisan;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -82,7 +83,13 @@ class Dashboard extends Component
     public function render()
     {
         return view('livewire.health.dashboard', [
-            'domains' => Domain::query()->with('mailboxes')->withCount('mailboxes')->orderBy('name')->get(),
+            'domains' => Domain::query()->with(['mailboxes', 'latestPostmasterStat'])->withCount('mailboxes')->orderBy('name')->get(),
+            // Postmaster access rides on a mailbox's Google token, and the
+            // scope was added after the first mailboxes were connected.
+            'postmasterScopeMissing' => Mailbox::query()
+                ->where('status', '!=', Mailbox::STATUS_DISCONNECTED)
+                ->get()
+                ->every(fn (Mailbox $m) => ! $m->hasScope(PostmasterTools::POSTMASTER_TRAFFIC_READONLY)),
             'mailboxes' => Mailbox::query()->with('domain')->orderBy('email')->get(),
             'pauseEvents' => ActivityLog::query()
                 ->whereIn('event', ['mailbox_paused', 'token_refresh_failed'])

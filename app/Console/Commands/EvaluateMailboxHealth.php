@@ -20,18 +20,25 @@ class EvaluateMailboxHealth extends Command
 {
     protected $signature = 'health:evaluate';
 
-    protected $description = 'Compute rolling bounce/reply rates per mailbox and auto-pause unhealthy ones';
+    protected $description = 'Compute rolling bounce/reply/open rates per mailbox and auto-pause unhealthy ones';
 
     public function handle(): int
     {
         $since = now()->subDays(7);
 
         foreach (Mailbox::query()->with('domain')->get() as $mailbox) {
-            $sent = Message::query()
+            $sentQuery = Message::query()
                 ->where('mailbox_id', $mailbox->id)
                 ->where('status', Message::STATUS_SENT)
-                ->where('sent_at', '>=', $since)
-                ->count();
+                ->where('sent_at', '>=', $since);
+
+            $sent = (clone $sentQuery)->count();
+
+            // Opens are measured against messages that carried a pixel, not
+            // against everything sent, or the rate would sink whenever
+            // tracking was off for part of the week.
+            $tracked = (clone $sentQuery)->whereNotNull('open_token')->count();
+            $opened = (clone $sentQuery)->whereNotNull('first_opened_at')->count();
 
             $bounces = Reply::query()
                 ->where('mailbox_id', $mailbox->id)
@@ -47,6 +54,7 @@ class EvaluateMailboxHealth extends Command
 
             $bounceRate = $sent > 0 ? round($bounces / $sent, 4) : 0.0;
             $replyRate = $sent > 0 ? round($replies / $sent, 4) : 0.0;
+            $openRate = $tracked > 0 ? round($opened / $tracked, 4) : 0.0;
 
             $health = $this->healthFor($mailbox, $sent, $bounceRate);
 
@@ -54,6 +62,7 @@ class EvaluateMailboxHealth extends Command
                 'sent_7d' => $sent,
                 'bounce_rate_7d' => $bounceRate,
                 'reply_rate_7d' => $replyRate,
+                'open_rate_7d' => $openRate,
                 'health_status' => $health,
             ]);
 
@@ -62,7 +71,7 @@ class EvaluateMailboxHealth extends Command
                 'checkable_id' => $mailbox->id,
                 'check_type' => 'engagement',
                 'status' => $health === Domain::HEALTH_HEALTHY ? HealthCheck::STATUS_OK : ($health === Domain::HEALTH_CRITICAL ? HealthCheck::STATUS_FAIL : HealthCheck::STATUS_WARN),
-                'detail' => ['sent_7d' => $sent, 'bounce_rate' => $bounceRate, 'reply_rate' => $replyRate],
+                'detail' => ['sent_7d' => $sent, 'bounce_rate' => $bounceRate, 'reply_rate' => $replyRate, 'open_rate' => $openRate, 'tracked_7d' => $tracked],
                 'checked_at' => now(),
             ]);
 

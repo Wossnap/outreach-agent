@@ -73,6 +73,38 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Open tracking
+    |--------------------------------------------------------------------------
+    | On, every email carries an HTML part with a 1x1 image served from this
+    | app (APP_URL must be the public host). Off, emails go out as plain text
+    | exactly as before. Opens are directional: image blocking undercounts,
+    | Gmail's image proxy and Apple Mail Privacy Protection overcount.
+    |
+    | A hit this soon after sending is a link scanner or a prefetch, not a
+    | person, and is not recorded.
+    */
+    'open_tracking' => [
+        'enabled' => (bool) env('OUTREACH_OPEN_TRACKING', true),
+        'ignore_seconds_after_send' => (int) env('OUTREACH_OPEN_TRACKING_IGNORE_SECONDS', 10),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Google Postmaster Tools
+    |--------------------------------------------------------------------------
+    | Gmail's own spam-rate figures per sending domain, pulled daily. A domain
+    | only reports once it is verified at postmaster.google.com by the same
+    | Google account as a connected mailbox, and only for days with enough
+    | Gmail volume. The first sync asks for lookback_days; later runs re-ask
+    | for the last week, because Postmaster lags by a day or three.
+    */
+    'postmaster' => [
+        'enabled' => (bool) env('OUTREACH_POSTMASTER_SYNC', true),
+        'lookback_days' => (int) env('OUTREACH_POSTMASTER_LOOKBACK_DAYS', 30),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | API surface
     |--------------------------------------------------------------------------
     | Two actions are withheld from API keys by default because they remove a

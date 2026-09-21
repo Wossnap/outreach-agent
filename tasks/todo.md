@@ -61,3 +61,19 @@ behind; the Leads page and the optional-email model only exist on that branch).
 - Migration backfill verified by rolling back and re-running against a contact carrying `extra.linkedin.{category,niche,company_url}`.
 - Not done: Scribe docs (`public/docs`) not regenerated; nav label still says "Contacts" for the Leads page; nothing committed.
 - Warning: local `.env` points at an AWS RDS host. Never run `php artisan migrate`/`test` locally without DB_* overrides to the docker Postgres.
+
+## 2026-09-21 — Open tracking, Gmail Postmaster spam rate, dashboard analytics
+
+Plan: ~/.claude/plans/i-want-to-add-fluttering-crown.md (same branch, still uncommitted).
+
+- [x] Open tracking: `open_token`/`first_opened_at`/`last_opened_at`/`open_count` on messages; token assigned in SendEmailJob before the send; GmailSender body is text/plain unless tracked, then multipart/alternative (text + HTML twin with pixel), nested inside multipart/mixed with attachments; public `GET /t/o/{token}.gif` outside the `web` group (no session/CSRF); `OpenRecorder` ignores hits within 10 s of sending; kill switch `OUTREACH_OPEN_TRACKING`
+- [x] Postmaster Tools v2 (`domains_domainStats->query`, SPAM_RATE/AUTH_SUCCESS_RATE/DELIVERY_ERROR_RATE): scope added to GmailClientFactory, `postmaster_stats` table, `PostmasterSync` + `postmaster:sync` daily 07:00, readable per-domain errors, "PostmasterTools" kept in composer.json vendor cleanup list
+- [x] Dashboard is now Livewire (`App\Livewire\Dashboard` + `OutreachAnalytics`): window 7/30/90/all, tiles, per-day CSS bars grouped in the display timezone, by-automation table, Gmail spam rate by domain with Sync now
+- [x] Health page: Open (7d) column, Spam rate (Gmail) column, reconnect banner; `health:evaluate` writes `open_rate_7d`
+- [x] `/api/stats`: `tracked`, `opened`, `open_rate`, `postmaster.{worst, domains}`
+- [x] README (env vars, "Open and spam tracking", schedule), docs/google-cloud-setup.md (API + scope), .env.example
+
+### Review — DONE
+- 509 tests / 1314 assertions green against local docker Postgres.
+- Browser check on a seeded `outreach_demo` DB: dashboard (all windows), Health page, pixel fetch returns image/gif no-store with no cookie and records the open.
+- Needs Sean: reconnect one mailbox (new scope), verify domains at postmaster.google.com, enable the Postmaster Tools API + scope in the Cloud project, run the three new migrations on the real DB, then `php artisan postmaster:sync`. Scribe docs not regenerated.

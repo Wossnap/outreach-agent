@@ -170,6 +170,10 @@ happens.
 | `OUTREACH_DAILY_CAP_DEFAULT` | per-mailbox daily cap (default 40) |
 | `OUTREACH_MIN_GAP_MINUTES` / `OUTREACH_MAX_GAP_MINUTES` | random gap between sends (default 3–15) |
 | `OUTREACH_SEND_WINDOW_START` / `OUTREACH_SEND_WINDOW_END` | default sending window (09:00–17:00) |
+| `OUTREACH_OPEN_TRACKING` | put an open-tracking pixel in every email (default `true`); `APP_URL` must be the public host |
+| `OUTREACH_OPEN_TRACKING_IGNORE_SECONDS` | pixel hits this soon after sending are scanners, not people (default 10) |
+| `OUTREACH_POSTMASTER_SYNC` | pull Gmail Postmaster Tools spam rates daily (default `true`) |
+| `OUTREACH_POSTMASTER_LOOKBACK_DAYS` | how far back the first Postmaster sync asks for (default 30) |
 
 ## Setup order
 
@@ -218,6 +222,19 @@ the response, never an error.
 - **Stop-on-reply**: any human reply stops the sequence and cancels queued follow-ups instantly (checked again at send time).
 - **Suppression list**: bounces and opt-out phrases ("unsubscribe", "remove me", …) suppress the address permanently, and stop every sequence that person is in, waiting ones included. A suppressed lead pushed to the API is stored but never enrolled.
 - **No blind send retries**: a failed send never auto-retries (duplicate risk); it surfaces on the Activity page with a retry button.
+- **Open tracking is the only HTML**: each email is the plain text plus an HTML twin saying exactly the same words, with a 1x1 image served by this app. Switch it off with `OUTREACH_OPEN_TRACKING=false` and emails are plain text again.
+
+## Open and spam tracking
+
+**Opens.** Every sent email carries a pixel at `{APP_URL}/t/o/{token}.gif`; the first fetch after the ignore window stamps `first_opened_at`, later ones bump `open_count`. The dashboard, the Health page and `/api/stats` count opens against messages that carried a pixel. Treat the figure as directional: image blocking undercounts, and Gmail's image proxy and Apple's Mail Privacy Protection fetch pixels nobody looked at. Serve the app over HTTPS on a host you control, because that host becomes part of the mail's reputation.
+
+**Spam.** Nobody outside Google can see whether an email landed in a spam folder. What Gmail does publish is the share of delivered mail its users marked as spam, per sending domain, through **Postmaster Tools**. `postmaster:sync` pulls that daily (`SPAM_RATE`, `AUTH_SUCCESS_RATE`, `DELIVERY_ERROR_RATE`) into `postmaster_stats`, and the dashboard shows the worst domain. To get figures:
+
+1. Enable the **Gmail Postmaster Tools API** in the Cloud project and add the `postmaster.traffic.readonly` scope to the consent screen (`docs/google-cloud-setup.md`).
+2. Add and verify each sending domain at [postmaster.google.com](https://postmaster.google.com) with the Google account of a connected mailbox.
+3. **Reconnect that mailbox** from the Mailboxes page so its token carries the new scope. The Health page says when no mailbox has it.
+
+Gmail only reports days with meaningful volume from the domain and lags by a day or three, so "no data yet" is normal for a new or low-volume domain.
 
 ## Deliverability & the proxy question
 
@@ -225,7 +242,8 @@ Mail is sent through the **Gmail API**, so it leaves **Google's IP ranges** — 
 
 - **Domain authentication** — SPF (must include `_spf.google.com`), DKIM (Workspace selector), DMARC. Checked daily via DNS.
 - **Domain blocklists** — Spamhaus DBL, SURBL, URIBL, checked daily (best-effort: some lists throttle public resolvers).
-- **Engagement** — rolling 7-day bounce/reply rates per mailbox.
+- **Engagement** — rolling 7-day bounce/reply/open rates per mailbox.
+- **Gmail's spam rate** — per domain, from Postmaster Tools (see above).
 
 **Auto-pause**: bounce rate > 5% (with ≥ 20 sends), a blocklisted domain, or missing SPF/DKIM pauses the affected mailboxes and logs an error. Fix the cause, then resume manually on the Mailboxes page.
 
@@ -237,8 +255,9 @@ Mail is sent through the **Gmail API**, so it leaves **Google's IP ranges** — 
 | `gmail:poll-mailboxes` | every 2 min | fetch replies/bounces per mailbox |
 | `outreach:advance-sequences` | every 10 min | draft next step when delay elapsed, no reply |
 | `outreach:reconcile-stuck` | every 15 min | heal/fail rows orphaned by worker crashes |
-| `health:evaluate` | hourly | bounce/reply rates + auto-pause |
+| `health:evaluate` | hourly | bounce/reply/open rates + auto-pause |
 | `health:check-dns` / `--dnsbl` | daily | SPF/DKIM/DMARC + blocklists |
+| `postmaster:sync` | daily | Gmail Postmaster spam-rate figures per domain |
 | `mailboxes:refresh-tokens` | daily | surface dead Google refresh tokens early |
 
 ## The API

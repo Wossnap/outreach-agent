@@ -48,4 +48,12 @@ class MailboxFactory extends Factory
             'google_token_expires_at' => now()->addHour(),
         ]);
     }
+
+    /** Connected with every scope the app asks for, including Postmaster. */
+    public function withPostmasterScope(): static
+    {
+        return $this->connected()->state(fn () => [
+            'google_scopes' => \App\Services\Gmail\GmailClientFactory::SCOPES,
+        ]);
+    }
 }

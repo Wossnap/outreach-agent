@@ -34,9 +34,17 @@
             <div class="bg-blue-50 dark:bg-blue-900/20 rounded-md p-4 text-sm text-blue-900 dark:text-blue-200">
                 Mail is sent through the Gmail API, so it leaves <strong>Google's IPs</strong>, so sending-IP reputation and proxies are not a factor here.
                 What this system owns and monitors: <strong>domain authentication</strong> (SPF/DKIM/DMARC), <strong>domain blocklists</strong>, and
-                <strong>engagement</strong> (bounce and reply rates, volume discipline via caps, warmup and randomized pacing).
+                <strong>engagement</strong> (bounce, reply and open rates, volume discipline via caps, warmup and randomized pacing),
+                and <strong>Gmail's own spam rate</strong> per domain from Postmaster Tools.
                 Mailboxes auto-pause when thresholds breach; resuming is manual once the cause is fixed.
             </div>
+
+            @if ($postmasterScopeMissing)
+                <div class="rounded-md bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-300 dark:border-yellow-700 p-4 text-sm text-yellow-900 dark:text-yellow-200">
+                    No connected mailbox has the Postmaster Tools scope yet, so Gmail spam rates cannot be read.
+                    <a href="{{ route('mailboxes.index') }}" class="underline" wire:navigate>Reconnect a mailbox</a> whose Google account has verified your domains at postmaster.google.com.
+                </div>
+            @endif
 
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
@@ -47,6 +55,7 @@
                             <th class="px-6 py-3 font-medium">DKIM</th>
                             <th class="px-6 py-3 font-medium">DMARC</th>
                             <th class="px-6 py-3 font-medium">Blocklists</th>
+                            <th class="px-6 py-3 font-medium">Spam rate (Gmail)</th>
                             <th class="px-6 py-3 font-medium">Mailboxes</th>
                             <th class="px-6 py-3 font-medium">Checked</th>
                         </tr>
@@ -85,11 +94,24 @@
                                         <span @class(['px-2 py-1 rounded text-xs font-semibold', 'bg-green-100 text-green-800' => $scored, 'bg-gray-100 text-gray-600' => ! $scored])>clear</span>
                                     @endif
                                 </td>
+                                <td class="px-6 py-3">
+                                    @php($stat = $domain->latestPostmasterStat)
+                                    @if ($stat && $stat->spam_rate !== null)
+                                        <x-spam-rate-badge :rate="$stat->spam_rate" />
+                                        <span class="block text-xs text-gray-500 dark:text-gray-300 mt-1">{{ $stat->date->format('j M') }}@if ($domain->postmaster_verification) · {{ strtolower($domain->postmaster_verification) }}@endif</span>
+                                    @elseif ($domain->postmaster_error)
+                                        <span class="text-xs text-red-600 dark:text-red-400">{{ $domain->postmaster_error }}</span>
+                                    @elseif ($domain->postmaster_synced_at)
+                                        <span class="text-xs text-gray-500 dark:text-gray-300">no data yet · synced {{ $domain->postmaster_synced_at->diffForHumans() }}</span>
+                                    @else
+                                        <span class="text-xs text-gray-500 dark:text-gray-300">not synced yet</span>
+                                    @endif
+                                </td>
                                 <td class="px-6 py-3">{{ $domain->mailboxes_count }}</td>
                                 <td class="px-6 py-3 text-gray-500 dark:text-gray-300 text-xs">{{ $domain->last_dns_checked_at?->diffForHumans() ?? 'never' }}</td>
                             </tr>
                         @empty
-                            <tr><td colspan="7" class="px-6 py-8 text-center text-gray-500 dark:text-gray-300">No domains yet. They appear automatically when you connect a mailbox.</td></tr>
+                            <tr><td colspan="8" class="px-6 py-8 text-center text-gray-500 dark:text-gray-300">No domains yet. They appear automatically when you connect a mailbox.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -103,6 +125,7 @@
                             <th class="px-6 py-3 font-medium">Status</th>
                             <th class="px-6 py-3 font-medium">Health</th>
                             <th class="px-6 py-3 font-medium">Sent (7d)</th>
+                            <th class="px-6 py-3 font-medium">Open (7d)</th>
                             <th class="px-6 py-3 font-medium">Bounce (7d)</th>
                             <th class="px-6 py-3 font-medium">Reply (7d)</th>
                         </tr>
@@ -122,11 +145,12 @@
                                     ])>{{ $mailbox->health_status }}</span>
                                 </td>
                                 <td class="px-6 py-3">{{ $mailbox->sent_7d }}</td>
+                                <td class="px-6 py-3">{{ number_format($mailbox->open_rate_7d * 100, 1) }}%</td>
                                 <td class="px-6 py-3">{{ number_format($mailbox->bounce_rate_7d * 100, 1) }}%</td>
                                 <td class="px-6 py-3">{{ number_format($mailbox->reply_rate_7d * 100, 1) }}%</td>
                             </tr>
                         @empty
-                            <tr><td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-gray-300">No mailboxes connected yet.</td></tr>
+                            <tr><td colspan="7" class="px-6 py-8 text-center text-gray-500 dark:text-gray-300">No mailboxes connected yet.</td></tr>
                         @endforelse
                     </tbody>
                 </table>

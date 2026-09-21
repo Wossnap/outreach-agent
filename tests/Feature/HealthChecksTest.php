@@ -146,6 +146,25 @@ class HealthChecksTest extends TestCase
         $this->assertTrue(ActivityLog::query()->where('event', 'mailbox_paused')->exists());
     }
 
+    public function test_evaluate_measures_opens_against_tracked_messages_only(): void
+    {
+        $domain = Domain::factory()->create(['spf_status' => 'ok', 'dkim_status' => 'ok']);
+        $mailbox = Mailbox::factory()->connected()->create(['domain_id' => $domain->id]);
+
+        // 25 tracked, 10 opened, plus 5 sent before tracking existed: the
+        // rate is 10/25, not 10/30, or turning tracking on would look like a
+        // drop in engagement.
+        Message::factory()->count(15)->sent()->create(['mailbox_id' => $mailbox->id, 'sent_at' => now()->subDay(), 'open_token' => fn () => Message::generateOpenToken()]);
+        Message::factory()->count(10)->sent()->create(['mailbox_id' => $mailbox->id, 'sent_at' => now()->subDay(), 'open_token' => fn () => Message::generateOpenToken(), 'first_opened_at' => now()->subHours(3), 'open_count' => 1]);
+        Message::factory()->count(5)->sent()->create(['mailbox_id' => $mailbox->id, 'sent_at' => now()->subDay()]);
+
+        $this->artisan(EvaluateMailboxHealth::class)->assertSuccessful();
+
+        $fresh = $mailbox->fresh();
+        $this->assertSame(30, $fresh->sent_7d);
+        $this->assertSame(0.4, $fresh->open_rate_7d);
+    }
+
     public function test_evaluate_does_not_pause_low_volume_mailboxes(): void
     {
         $domain = Domain::factory()->create(['spf_status' => 'ok', 'dkim_status' => 'ok']);

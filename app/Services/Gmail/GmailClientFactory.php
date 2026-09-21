@@ -6,6 +6,7 @@ use App\Models\ActivityLog;
 use App\Models\Mailbox;
 use Google\Client;
 use Google\Service\Gmail;
+use Google\Service\PostmasterTools;
 use RuntimeException;
 
 class GmailClientFactory
@@ -13,6 +14,9 @@ class GmailClientFactory
     public const SCOPES = [
         Gmail::GMAIL_SEND,
         Gmail::GMAIL_READONLY,
+        // Gmail's own spam-rate figures for our domains. Mailboxes connected
+        // before this scope existed have to be reconnected to grant it.
+        PostmasterTools::POSTMASTER_TRAFFIC_READONLY,
         'openid',
         'email',
     ];
@@ -41,6 +45,18 @@ class GmailClientFactory
     public function gmailFor(Mailbox $mailbox): Gmail
     {
         return new Gmail($this->authorizedClientFor($mailbox));
+    }
+
+    /**
+     * Postmaster Tools, authorized as this mailbox's Google account.
+     *
+     * Postmaster access belongs to the account, not the mailbox: whichever
+     * account verified a domain at postmaster.google.com is the one that can
+     * read its figures.
+     */
+    public function postmasterFor(Mailbox $mailbox): PostmasterTools
+    {
+        return new PostmasterTools($this->authorizedClientFor($mailbox));
     }
 
     public function authorizedClientFor(Mailbox $mailbox): Client

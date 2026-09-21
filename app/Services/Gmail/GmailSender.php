@@ -129,35 +129,118 @@ class GmailSender
         }
 
         $attachments = $message->sequenceStep?->attachmentList() ?? [];
+        $body = $this->bodyPart($message);
 
         if ($attachments === []) {
-            $headers[] = 'Content-Type: text/plain; charset=UTF-8';
-            $headers[] = 'Content-Transfer-Encoding: base64';
-
-            return implode("\r\n", $headers)."\r\n\r\n".$this->encodeBody($message->body_text);
+            return implode("\r\n", array_merge($headers, $body['headers']))."\r\n\r\n".$body['content'];
         }
 
-        return $this->buildMultipart($headers, $message->body_text, $attachments);
+        return $this->buildMultipart($headers, $body, $attachments);
     }
 
     /**
-     * multipart/mixed: the text body as the first part, then one part per file.
+     * The body as one MIME unit: headers and content.
+     *
+     * Plain text, byte for byte what was always sent, unless the message is
+     * being tracked. Then it is multipart/alternative with the same text and
+     * an HTML twin carrying the open pixel. Tracking is decided by the token,
+     * not the switch alone: the switch says whether tokens get assigned, the
+     * token says whether this message got one.
+     *
+     * @return array{headers: array<int, string>, content: string}
+     */
+    protected function bodyPart(Message $message): array
+    {
+        $pixelUrl = $this->trackingPixelUrl($message);
+
+        $text = [
+            'Content-Type: text/plain; charset=UTF-8',
+            'Content-Transfer-Encoding: base64',
+            '',
+            $this->encodeBody($message->body_text),
+        ];
+
+        if ($pixelUrl === null) {
+            return ['headers' => array_slice($text, 0, 2), 'content' => $text[3]];
+        }
+
+        // A different prefix from the mixed boundary, so the two can never
+        // collide when an attachment nests this inside multipart/mixed.
+        $boundary = 'alt-'.Str::random(30);
+
+        $html = [
+            'Content-Type: text/html; charset=UTF-8',
+            'Content-Transfer-Encoding: base64',
+            '',
+            $this->encodeBody($this->htmlBody($message->body_text, $pixelUrl)),
+        ];
+
+        // Text first, HTML last: a client picks the last alternative it can
+        // show, and the pixel only fires from the HTML one.
+        return [
+            'headers' => ['Content-Type: multipart/alternative; boundary="'.$boundary.'"'],
+            'content' => '--'.$boundary."\r\n"
+                .implode("\r\n", $text)."\r\n"
+                .'--'.$boundary."\r\n"
+                .implode("\r\n", $html)."\r\n"
+                .'--'.$boundary.'--',
+        ];
+    }
+
+    /**
+     * Where the open pixel for this message lives, or null when it has none.
+     */
+    protected function trackingPixelUrl(Message $message): ?string
+    {
+        if (! config('outreach.open_tracking.enabled') || blank($message->open_token)) {
+            return null;
+        }
+
+        return route('track.open', ['token' => $message->open_token]);
+    }
+
+    /**
+     * The plain text as HTML, and nothing more.
+     *
+     * The same words, escaped, with line breaks kept and bare URLs made
+     * clickable, so the HTML reads exactly like the text and a spam filter
+     * comparing the two parts finds them saying the same thing. The image is
+     * not hidden: some clients skip images styled display:none.
+     */
+    public function htmlBody(string $text, string $pixelUrl): string
+    {
+        $escaped = e($text);
+
+        // Trailing punctuation belongs to the sentence, not the link.
+        $linked = preg_replace_callback('~https?://[^\s<>"]+~i', function (array $match): string {
+            $url = rtrim($match[0], '.,;:!?)');
+            $trailing = substr($match[0], strlen($url));
+
+            return '<a href="'.$url.'">'.$url.'</a>'.$trailing;
+        }, $escaped);
+
+        return '<!DOCTYPE html><html><body>'
+            .'<div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5">'
+            .nl2br($linked, false)
+            .'</div>'
+            .'<img src="'.e($pixelUrl).'" width="1" height="1" alt="" style="border:0;width:1px;height:1px">'
+            .'</body></html>';
+    }
+
+    /**
+     * multipart/mixed: the body unit as the first part, then one part per file.
      *
      * @param  array<int, string>  $headers
+     * @param  array{headers: array<int, string>, content: string}  $body
      * @param  array<int, array{disk: string, path: string, filename: string, mime: string, size: int}>  $attachments
      */
-    protected function buildMultipart(array $headers, string $body, array $attachments): string
+    protected function buildMultipart(array $headers, array $body, array $attachments): string
     {
         $boundary = 'outreach-'.Str::random(30);
 
         $headers[] = 'Content-Type: multipart/mixed; boundary="'.$boundary.'"';
 
-        $parts = [implode("\r\n", [
-            'Content-Type: text/plain; charset=UTF-8',
-            'Content-Transfer-Encoding: base64',
-            '',
-            $this->encodeBody($body),
-        ])];
+        $parts = [implode("\r\n", $body['headers'])."\r\n\r\n".$body['content']];
 
         foreach ($attachments as $attachment) {
             $disk = Storage::disk($attachment['disk']);
