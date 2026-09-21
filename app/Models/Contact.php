@@ -55,7 +55,7 @@ class Contact extends Model
 
     protected $fillable = [
         'email', 'profile_url', 'name', 'first_name', 'last_name',
-        'job_title', 'company', 'domain', 'source',
+        'job_title', 'company', 'category', 'niche', 'company_url', 'domain', 'source',
         'email_status', 'email_checked_at', 'email_provider', 'extra',
     ];
 

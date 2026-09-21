@@ -39,6 +39,9 @@ class ContactIngestController extends Controller
      * @bodyParam company string Example: Acme Ltd
      * @bodyParam domain string The company's domain, which is what an address is searched by. A full URL is fine; it is reduced to the host. Example: acme.example
      * @bodyParam job_title string Example: Head of Operations
+     * @bodyParam category string The lead's market category. Example: Home services
+     * @bodyParam niche string The niche within that category. Example: Landscaping
+     * @bodyParam company_url string The company's LinkedIn page. Example: https://linkedin.com/company/acme
      * @bodyParam source string Where the lead came from. Example: tube-trend-tool
      * @bodyParam extra object Anything else worth passing to the drafter. Filed under your source, so two callers can both send a "score" and mean different things. Example: {"industry": "SaaS"}
      * @bodyParam tags string[] Automation tags to enroll into. Example: ["seo-backlinks"]

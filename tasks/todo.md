@@ -26,3 +26,38 @@ Full plan: ~/.claude/plans/piped-finding-truffle.md
   - Paused mailboxes still poll inbound (replies must stop sequences) — only disconnected ones don't.
 - Untracked-files trap (lessons.md): everything committed phase-by-phase in git from the start.
 - NOT yet done (needs Sean): fill .env (ANTHROPIC_API_KEY, GOOGLE_CLIENT_ID/SECRET — see README), Google Cloud project per docs/google-cloud-setup.md, register dashboard user, live end-to-end send test with a real mailbox.
+
+## 2026-09-20 — Leads page, drafter guardrail, approvals redesign
+
+Branch `feature/leads-page-approvals`, cut from `origin/feature/lead-enrichment` (local `main` was
+behind; the Leads page and the optional-email model only exist on that branch).
+
+### 1. Leads page
+- [x] Migration: `category`, `niche`, `company_url` on contacts (+ backfill from `extra.*`)
+- [x] Model fillable; API push accepts + resource exposes the three fields; ingest never blanks a known value
+- [x] Filters panel open by default
+- [x] Select2-style multi-select Blade component (Alpine): Address, Enrollment status, Category, Niche
+- [x] Hide `not_found` leads by default; "Include leads with no address found" toggle; explicit "Not found" selection wins
+- [x] Category + Niche columns, sortable
+- [x] Name → `profile_url`, Company → `company_url` links when present
+- [x] Tests
+
+### 2. Drafter
+- [x] Prompt guardrail: no unrequested asks/offers/CTAs ("Want me to send it over?"), no P.S.
+- [x] Test asserting the guardrail is in the prompt
+
+### 3. Approvals
+- [x] Compact view by default (lead + automation + checkbox, then the email as text), full/edit view toggle
+- [x] Sticky header row: select-all, Approve selected, Reject selected
+- [x] `bulkReject` (stops enrollments like single reject)
+- [x] Tests
+
+### Verification
+- [x] `php artisan test` green against local docker postgres (never RDS — local .env points at it)
+
+### Review (2026-09-21) — DONE
+- 485 tests / 1207 assertions green against local docker Postgres (`DB_HOST=127.0.0.1 DB_PORT=5433 DB_USERNAME=postgres DB_PASSWORD=postgres php artisan test`).
+- Browser walkthrough with Playwright against a throwaway `outreach_demo` DB: multi-select search/tick/chip-remove, URL persistence, not-found hidden by default, LinkedIn links, sticky approvals header, bulk reject note, per-row Edit, full view. No JS errors.
+- Migration backfill verified by rolling back and re-running against a contact carrying `extra.linkedin.{category,niche,company_url}`.
+- Not done: Scribe docs (`public/docs`) not regenerated; nav label still says "Contacts" for the Leads page; nothing committed.
+- Warning: local `.env` points at an AWS RDS host. Never run `php artisan migrate`/`test` locally without DB_* overrides to the docker Postgres.

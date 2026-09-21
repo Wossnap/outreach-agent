@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 servers:
   -
-    url: 'http://localhost:8010'
+    url: 'http://localhost:8000'
 tags:
   -
     name: Health
@@ -188,175 +188,22 @@ paths:
             description: 'Which page to return. e.g. 1.'
             example: null
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    -
-                      id: 2
-                      email: sam.patel@globex.example
-                      email_status: pending
-                      email_checked_at: null
-                      email_provider: null
-                      profile_url: null
-                      name: 'Sam Patel'
-                      first_name: Sam
-                      last_name: Patel
-                      job_title: null
-                      company: Globex
-                      domain: globex.example
-                      source: tube-trend-tool
-                      extra: []
-                      created_at: '2026-09-09T07:01:40+00:00'
-                      updated_at: '2026-09-09T07:01:40+00:00'
-                    -
-                      id: 1
-                      email: jane.doe@acme.example
-                      email_status: pending
-                      email_checked_at: null
-                      email_provider: null
-                      profile_url: null
-                      name: 'Jane Doe'
-                      first_name: Jane
-                      last_name: Doe
-                      job_title: null
-                      company: 'Acme Ltd'
-                      domain: acme.example
-                      source: tube-trend-tool
-                      extra:
-                        tube-trend-tool:
-                          industry: SaaS
-                          employees: 40
-                      created_at: '2026-09-09T07:01:40+00:00'
-                      updated_at: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    page: 1
-                    per_page: 50
-                    total: 2
-                    last_page: 1
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: array
-                    example:
-                      -
-                        id: 2
-                        email: sam.patel@globex.example
-                        email_status: pending
-                        email_checked_at: null
-                        email_provider: null
-                        profile_url: null
-                        name: 'Sam Patel'
-                        first_name: Sam
-                        last_name: Patel
-                        job_title: null
-                        company: Globex
-                        domain: globex.example
-                        source: tube-trend-tool
-                        extra: []
-                        created_at: '2026-09-09T07:01:40+00:00'
-                        updated_at: '2026-09-09T07:01:40+00:00'
-                      -
-                        id: 1
-                        email: jane.doe@acme.example
-                        email_status: pending
-                        email_checked_at: null
-                        email_provider: null
-                        profile_url: null
-                        name: 'Jane Doe'
-                        first_name: Jane
-                        last_name: Doe
-                        job_title: null
-                        company: 'Acme Ltd'
-                        domain: acme.example
-                        source: tube-trend-tool
-                        extra:
-                          tube-trend-tool:
-                            industry: SaaS
-                            employees: 40
-                        created_at: '2026-09-09T07:01:40+00:00'
-                        updated_at: '2026-09-09T07:01:40+00:00'
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 2
-                        email:
-                          type: string
-                          example: sam.patel@globex.example
-                        email_status:
-                          type: string
-                          example: pending
-                        email_checked_at:
-                          type: string
-                          example: null
-                          nullable: true
-                        email_provider:
-                          type: string
-                          example: null
-                          nullable: true
-                        profile_url:
-                          type: string
-                          example: null
-                          nullable: true
-                        name:
-                          type: string
-                          example: 'Sam Patel'
-                        first_name:
-                          type: string
-                          example: Sam
-                        last_name:
-                          type: string
-                          example: Patel
-                        job_title:
-                          type: string
-                          example: null
-                          nullable: true
-                        company:
-                          type: string
-                          example: Globex
-                        domain:
-                          type: string
-                          example: globex.example
-                        source:
-                          type: string
-                          example: tube-trend-tool
-                        extra:
-                          type: array
-                          example: []
-                        created_at:
-                          type: string
-                          example: '2026-09-09T07:01:40+00:00'
-                        updated_at:
-                          type: string
-                          example: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    type: object
-                    properties:
-                      page:
-                        type: integer
-                        example: 1
-                      per_page:
-                        type: integer
-                        example: 50
-                      total:
-                        type: integer
-                        example: 2
-                      last_page:
-                        type: integer
-                        example: 1
+                    example: 'Invalid API key.'
       tags:
         - Contacts
     post:
@@ -384,42 +231,57 @@ paths:
                       email:
                         type: string
                         description: 'Must be a valid email address. Must not be greater than 255 characters.'
-                        example: marquardt.noah@example.com
+                        example: bauch.marcelo@example.com
                         nullable: true
                       profile_url:
                         type: string
                         description: 'Must be a valid URL. Must not be greater than 255 characters.'
-                        example: 'http://hauck.com/'
+                        example: 'http://mclaughlin.info/dolores-enim-non-facere-tempora'
                         nullable: true
                       name:
                         type: string
                         description: 'Must not be greater than 255 characters.'
-                        example: w
+                        example: t
                         nullable: true
                       first_name:
                         type: string
                         description: 'Must not be greater than 255 characters.'
-                        example: r
+                        example: u
                         nullable: true
                       last_name:
                         type: string
                         description: 'Must not be greater than 255 characters.'
-                        example: s
+                        example: j
                         nullable: true
                       company:
                         type: string
                         description: 'Must not be greater than 255 characters.'
-                        example: i
+                        example: w
                         nullable: true
                       domain:
                         type: string
                         description: 'Must not be greater than 2048 characters.'
-                        example: t
+                        example: v
                         nullable: true
                       job_title:
                         type: string
                         description: 'Must not be greater than 1000 characters.'
-                        example: c
+                        example: l
+                        nullable: true
+                      category:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: x
+                        nullable: true
+                      niche:
+                        type: string
+                        description: 'Must not be greater than 255 characters.'
+                        example: j
+                        nullable: true
+                      company_url:
+                        type: string
+                        description: 'Must be a valid URL. Must not be greater than 255 characters.'
+                        example: 'http://www.kshlerin.com/'
                         nullable: true
                       source:
                         type: string
@@ -436,7 +298,7 @@ paths:
                         type: array
                         description: 'Must not be greater than 255 characters.'
                         example:
-                          - s
+                          - p
                         items:
                           type: string
                 email:
@@ -479,6 +341,21 @@ paths:
                   description: ''
                   example: 'Head of Operations'
                   nullable: true
+                category:
+                  type: string
+                  description: "The lead's market category."
+                  example: 'Home services'
+                  nullable: true
+                niche:
+                  type: string
+                  description: 'The niche within that category.'
+                  example: Landscaping
+                  nullable: true
+                company_url:
+                  type: string
+                  description: "The company's LinkedIn page."
+                  example: 'https://linkedin.com/company/acme'
+                  nullable: true
                 source:
                   type: string
                   description: 'Where the lead came from.'
@@ -505,350 +382,22 @@ paths:
       description: "The contact with its enrollments, every email sent to them and every\nreply received, in one request."
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    id: 1
-                    email: jane.doe@acme.example
-                    email_status: pending
-                    email_checked_at: null
-                    email_provider: null
-                    profile_url: null
-                    name: 'Jane Doe'
-                    first_name: Jane
-                    last_name: Doe
-                    job_title: null
-                    company: 'Acme Ltd'
-                    domain: acme.example
-                    source: tube-trend-tool
-                    extra:
-                      tube-trend-tool:
-                        industry: SaaS
-                        employees: 40
-                    suppressed: false
-                    created_at: '2026-09-09T07:01:40+00:00'
-                    updated_at: '2026-09-09T07:01:40+00:00'
-                    enrollments:
-                      -
-                        id: 1
-                        contact_id: 1
-                        automation_id: 1
-                        automation_tag: seo-backlinks
-                        mailbox_id: 1
-                        mailbox_email: hello@outreach.example
-                        status: active
-                        current_step: 1
-                        stopped_at: null
-                        stop_reason: null
-                        created_at: '2026-09-09T07:01:40+00:00'
-                    messages:
-                      -
-                        id: 1
-                        enrollment_id: 1
-                        contact_id: 1
-                        mailbox_id: 1
-                        mailbox_email: hello@outreach.example
-                        sequence_step_id: 1
-                        step_position: 1
-                        status: sent
-                        subject: 'Your guide on nursery irrigation'
-                        body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
-                        edited_by_user: false
-                        scheduled_at: null
-                        sent_at: '2026-09-08T07:01:40+00:00'
-                        approved_at: null
-                        rejected_at: null
-                        rejection_note: null
-                        error: null
-                        created_at: '2026-09-09T07:01:40+00:00'
-                    replies:
-                      -
-                        id: 1
-                        contact_id: 1
-                        enrollment_id: 1
-                        message_id: 1
-                        mailbox_id: 1
-                        from_email: jane.doe@acme.example
-                        subject: 'Re: Your guide on nursery irrigation'
-                        snippet: 'Happy to take a look, send it over.'
-                        body_text: "Happy to take a look, send it over.\n\nJane"
-                        classification: reply
-                        received_at: '2026-09-09T01:01:40+00:00'
-                        read_at: null
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      email:
-                        type: string
-                        example: jane.doe@acme.example
-                      email_status:
-                        type: string
-                        example: pending
-                      email_checked_at:
-                        type: string
-                        example: null
-                        nullable: true
-                      email_provider:
-                        type: string
-                        example: null
-                        nullable: true
-                      profile_url:
-                        type: string
-                        example: null
-                        nullable: true
-                      name:
-                        type: string
-                        example: 'Jane Doe'
-                      first_name:
-                        type: string
-                        example: Jane
-                      last_name:
-                        type: string
-                        example: Doe
-                      job_title:
-                        type: string
-                        example: null
-                        nullable: true
-                      company:
-                        type: string
-                        example: 'Acme Ltd'
-                      domain:
-                        type: string
-                        example: acme.example
-                      source:
-                        type: string
-                        example: tube-trend-tool
-                      extra:
-                        type: object
-                        properties:
-                          tube-trend-tool:
-                            type: object
-                            properties:
-                              industry:
-                                type: string
-                                example: SaaS
-                              employees:
-                                type: integer
-                                example: 40
-                      suppressed:
-                        type: boolean
-                        example: false
-                      created_at:
-                        type: string
-                        example: '2026-09-09T07:01:40+00:00'
-                      updated_at:
-                        type: string
-                        example: '2026-09-09T07:01:40+00:00'
-                      enrollments:
-                        type: array
-                        example:
-                          -
-                            id: 1
-                            contact_id: 1
-                            automation_id: 1
-                            automation_tag: seo-backlinks
-                            mailbox_id: 1
-                            mailbox_email: hello@outreach.example
-                            status: active
-                            current_step: 1
-                            stopped_at: null
-                            stop_reason: null
-                            created_at: '2026-09-09T07:01:40+00:00'
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            contact_id:
-                              type: integer
-                              example: 1
-                            automation_id:
-                              type: integer
-                              example: 1
-                            automation_tag:
-                              type: string
-                              example: seo-backlinks
-                            mailbox_id:
-                              type: integer
-                              example: 1
-                            mailbox_email:
-                              type: string
-                              example: hello@outreach.example
-                            status:
-                              type: string
-                              example: active
-                            current_step:
-                              type: integer
-                              example: 1
-                            stopped_at:
-                              type: string
-                              example: null
-                              nullable: true
-                            stop_reason:
-                              type: string
-                              example: null
-                              nullable: true
-                            created_at:
-                              type: string
-                              example: '2026-09-09T07:01:40+00:00'
-                      messages:
-                        type: array
-                        example:
-                          -
-                            id: 1
-                            enrollment_id: 1
-                            contact_id: 1
-                            mailbox_id: 1
-                            mailbox_email: hello@outreach.example
-                            sequence_step_id: 1
-                            step_position: 1
-                            status: sent
-                            subject: 'Your guide on nursery irrigation'
-                            body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
-                            edited_by_user: false
-                            scheduled_at: null
-                            sent_at: '2026-09-08T07:01:40+00:00'
-                            approved_at: null
-                            rejected_at: null
-                            rejection_note: null
-                            error: null
-                            created_at: '2026-09-09T07:01:40+00:00'
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            enrollment_id:
-                              type: integer
-                              example: 1
-                            contact_id:
-                              type: integer
-                              example: 1
-                            mailbox_id:
-                              type: integer
-                              example: 1
-                            mailbox_email:
-                              type: string
-                              example: hello@outreach.example
-                            sequence_step_id:
-                              type: integer
-                              example: 1
-                            step_position:
-                              type: integer
-                              example: 1
-                            status:
-                              type: string
-                              example: sent
-                            subject:
-                              type: string
-                              example: 'Your guide on nursery irrigation'
-                            body_text:
-                              type: string
-                              example: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
-                            edited_by_user:
-                              type: boolean
-                              example: false
-                            scheduled_at:
-                              type: string
-                              example: null
-                              nullable: true
-                            sent_at:
-                              type: string
-                              example: '2026-09-08T07:01:40+00:00'
-                            approved_at:
-                              type: string
-                              example: null
-                              nullable: true
-                            rejected_at:
-                              type: string
-                              example: null
-                              nullable: true
-                            rejection_note:
-                              type: string
-                              example: null
-                              nullable: true
-                            error:
-                              type: string
-                              example: null
-                              nullable: true
-                            created_at:
-                              type: string
-                              example: '2026-09-09T07:01:40+00:00'
-                      replies:
-                        type: array
-                        example:
-                          -
-                            id: 1
-                            contact_id: 1
-                            enrollment_id: 1
-                            message_id: 1
-                            mailbox_id: 1
-                            from_email: jane.doe@acme.example
-                            subject: 'Re: Your guide on nursery irrigation'
-                            snippet: 'Happy to take a look, send it over.'
-                            body_text: "Happy to take a look, send it over.\n\nJane"
-                            classification: reply
-                            received_at: '2026-09-09T01:01:40+00:00'
-                            read_at: null
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            contact_id:
-                              type: integer
-                              example: 1
-                            enrollment_id:
-                              type: integer
-                              example: 1
-                            message_id:
-                              type: integer
-                              example: 1
-                            mailbox_id:
-                              type: integer
-                              example: 1
-                            from_email:
-                              type: string
-                              example: jane.doe@acme.example
-                            subject:
-                              type: string
-                              example: 'Re: Your guide on nursery irrigation'
-                            snippet:
-                              type: string
-                              example: 'Happy to take a look, send it over.'
-                            body_text:
-                              type: string
-                              example: "Happy to take a look, send it over.\n\nJane"
-                            classification:
-                              type: string
-                              example: reply
-                            received_at:
-                              type: string
-                              example: '2026-09-09T01:01:40+00:00'
-                            read_at:
-                              type: string
-                              example: null
-                              nullable: true
+                    example: 'Invalid API key.'
       tags:
         - Contacts
     parameters:
@@ -907,181 +456,22 @@ paths:
             description: 'Which page to return. e.g. 1.'
             example: null
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    -
-                      id: 1
-                      tag: seo-backlinks
-                      name: 'SEO backlinks outreach'
-                      description: 'Three touches for sites that could carry a link back to us.'
-                      active: true
-                      created_at: '2026-09-09T07:01:40+00:00'
-                      updated_at: '2026-09-09T07:01:40+00:00'
-                      steps:
-                        -
-                          id: 1
-                          automation_id: 1
-                          position: 1
-                          delay_days: 0
-                          delay_hours: 0
-                          drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
-                          active: true
-                          attachments: []
-                          created_at: '2026-09-09T07:01:40+00:00'
-                        -
-                          id: 2
-                          automation_id: 1
-                          position: 2
-                          delay_days: 3
-                          delay_hours: 0
-                          drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
-                          active: true
-                          attachments: []
-                          created_at: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    page: 1
-                    per_page: 50
-                    total: 1
-                    last_page: 1
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: array
-                    example:
-                      -
-                        id: 1
-                        tag: seo-backlinks
-                        name: 'SEO backlinks outreach'
-                        description: 'Three touches for sites that could carry a link back to us.'
-                        active: true
-                        created_at: '2026-09-09T07:01:40+00:00'
-                        updated_at: '2026-09-09T07:01:40+00:00'
-                        steps:
-                          -
-                            id: 1
-                            automation_id: 1
-                            position: 1
-                            delay_days: 0
-                            delay_hours: 0
-                            drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
-                            active: true
-                            attachments: []
-                            created_at: '2026-09-09T07:01:40+00:00'
-                          -
-                            id: 2
-                            automation_id: 1
-                            position: 2
-                            delay_days: 3
-                            delay_hours: 0
-                            drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
-                            active: true
-                            attachments: []
-                            created_at: '2026-09-09T07:01:40+00:00'
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        tag:
-                          type: string
-                          example: seo-backlinks
-                        name:
-                          type: string
-                          example: 'SEO backlinks outreach'
-                        description:
-                          type: string
-                          example: 'Three touches for sites that could carry a link back to us.'
-                        active:
-                          type: boolean
-                          example: true
-                        created_at:
-                          type: string
-                          example: '2026-09-09T07:01:40+00:00'
-                        updated_at:
-                          type: string
-                          example: '2026-09-09T07:01:40+00:00'
-                        steps:
-                          type: array
-                          example:
-                            -
-                              id: 1
-                              automation_id: 1
-                              position: 1
-                              delay_days: 0
-                              delay_hours: 0
-                              drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
-                              active: true
-                              attachments: []
-                              created_at: '2026-09-09T07:01:40+00:00'
-                            -
-                              id: 2
-                              automation_id: 1
-                              position: 2
-                              delay_days: 3
-                              delay_hours: 0
-                              drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
-                              active: true
-                              attachments: []
-                              created_at: '2026-09-09T07:01:40+00:00'
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: integer
-                                example: 1
-                              automation_id:
-                                type: integer
-                                example: 1
-                              position:
-                                type: integer
-                                example: 1
-                              delay_days:
-                                type: integer
-                                example: 0
-                              delay_hours:
-                                type: integer
-                                example: 0
-                              drafting_instructions:
-                                type: string
-                                example: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
-                              active:
-                                type: boolean
-                                example: true
-                              attachments:
-                                type: array
-                                example: []
-                              created_at:
-                                type: string
-                                example: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    type: object
-                    properties:
-                      page:
-                        type: integer
-                        example: 1
-                      per_page:
-                        type: integer
-                        example: 50
-                      total:
-                        type: integer
-                        example: 1
-                      last_page:
-                        type: integer
-                        example: 1
+                    example: 'Invalid API key.'
       tags:
         - Automations
     post:
@@ -1162,128 +552,22 @@ paths:
       description: ''
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    id: 1
-                    tag: seo-backlinks
-                    name: 'SEO backlinks outreach'
-                    description: 'Three touches for sites that could carry a link back to us.'
-                    active: true
-                    created_at: '2026-09-09T07:01:40+00:00'
-                    updated_at: '2026-09-09T07:01:40+00:00'
-                    steps:
-                      -
-                        id: 1
-                        automation_id: 1
-                        position: 1
-                        delay_days: 0
-                        delay_hours: 0
-                        drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
-                        active: true
-                        attachments: []
-                        created_at: '2026-09-09T07:01:40+00:00'
-                      -
-                        id: 2
-                        automation_id: 1
-                        position: 2
-                        delay_days: 3
-                        delay_hours: 0
-                        drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
-                        active: true
-                        attachments: []
-                        created_at: '2026-09-09T07:01:40+00:00'
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      tag:
-                        type: string
-                        example: seo-backlinks
-                      name:
-                        type: string
-                        example: 'SEO backlinks outreach'
-                      description:
-                        type: string
-                        example: 'Three touches for sites that could carry a link back to us.'
-                      active:
-                        type: boolean
-                        example: true
-                      created_at:
-                        type: string
-                        example: '2026-09-09T07:01:40+00:00'
-                      updated_at:
-                        type: string
-                        example: '2026-09-09T07:01:40+00:00'
-                      steps:
-                        type: array
-                        example:
-                          -
-                            id: 1
-                            automation_id: 1
-                            position: 1
-                            delay_days: 0
-                            delay_hours: 0
-                            drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
-                            active: true
-                            attachments: []
-                            created_at: '2026-09-09T07:01:40+00:00'
-                          -
-                            id: 2
-                            automation_id: 1
-                            position: 2
-                            delay_days: 3
-                            delay_hours: 0
-                            drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
-                            active: true
-                            attachments: []
-                            created_at: '2026-09-09T07:01:40+00:00'
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            automation_id:
-                              type: integer
-                              example: 1
-                            position:
-                              type: integer
-                              example: 1
-                            delay_days:
-                              type: integer
-                              example: 0
-                            delay_hours:
-                              type: integer
-                              example: 0
-                            drafting_instructions:
-                              type: string
-                              example: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
-                            active:
-                              type: boolean
-                              example: true
-                            attachments:
-                              type: array
-                              example: []
-                            created_at:
-                              type: string
-                              example: '2026-09-09T07:01:40+00:00'
+                    example: 'Invalid API key.'
       tags:
         - Automations
     patch:
@@ -1334,96 +618,22 @@ paths:
       description: 'Every step of one automation, with the files attached to each.'
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    -
-                      id: 1
-                      automation_id: 1
-                      position: 1
-                      delay_days: 0
-                      delay_hours: 0
-                      drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
-                      active: true
-                      attachments: []
-                      created_at: '2026-09-09T07:01:40+00:00'
-                    -
-                      id: 2
-                      automation_id: 1
-                      position: 2
-                      delay_days: 3
-                      delay_hours: 0
-                      drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
-                      active: true
-                      attachments: []
-                      created_at: '2026-09-09T07:01:40+00:00'
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: array
-                    example:
-                      -
-                        id: 1
-                        automation_id: 1
-                        position: 1
-                        delay_days: 0
-                        delay_hours: 0
-                        drafting_instructions: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
-                        active: true
-                        attachments: []
-                        created_at: '2026-09-09T07:01:40+00:00'
-                      -
-                        id: 2
-                        automation_id: 1
-                        position: 2
-                        delay_days: 3
-                        delay_hours: 0
-                        drafting_instructions: 'Short nudge referencing the first note. Do not re-introduce yourself.'
-                        active: true
-                        attachments: []
-                        created_at: '2026-09-09T07:01:40+00:00'
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        automation_id:
-                          type: integer
-                          example: 1
-                        position:
-                          type: integer
-                          example: 1
-                        delay_days:
-                          type: integer
-                          example: 0
-                        delay_hours:
-                          type: integer
-                          example: 0
-                        drafting_instructions:
-                          type: string
-                          example: 'Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.'
-                        active:
-                          type: boolean
-                          example: true
-                        attachments:
-                          type: array
-                          example: []
-                        created_at:
-                          type: string
-                          example: '2026-09-09T07:01:40+00:00'
+                    example: 'Invalid API key.'
       tags:
         - Automations
     post:
@@ -1687,261 +897,22 @@ paths:
             description: 'Which page to return. e.g. 1.'
             example: null
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    -
-                      id: 2
-                      contact_id: 2
-                      automation_id: 1
-                      automation_tag: seo-backlinks
-                      mailbox_id: 1
-                      mailbox_email: hello@outreach.example
-                      status: active
-                      current_step: 0
-                      stopped_at: null
-                      stop_reason: null
-                      created_at: '2026-09-09T07:01:40+00:00'
-                      contact:
-                        id: 2
-                        email: sam.patel@globex.example
-                        email_status: pending
-                        email_checked_at: null
-                        email_provider: null
-                        profile_url: null
-                        name: 'Sam Patel'
-                        first_name: Sam
-                        last_name: Patel
-                        job_title: null
-                        company: Globex
-                        domain: globex.example
-                        source: tube-trend-tool
-                        extra: []
-                        created_at: '2026-09-09T07:01:40+00:00'
-                        updated_at: '2026-09-09T07:01:40+00:00'
-                    -
-                      id: 1
-                      contact_id: 1
-                      automation_id: 1
-                      automation_tag: seo-backlinks
-                      mailbox_id: 1
-                      mailbox_email: hello@outreach.example
-                      status: active
-                      current_step: 1
-                      stopped_at: null
-                      stop_reason: null
-                      created_at: '2026-09-09T07:01:40+00:00'
-                      contact:
-                        id: 1
-                        email: jane.doe@acme.example
-                        email_status: pending
-                        email_checked_at: null
-                        email_provider: null
-                        profile_url: null
-                        name: 'Jane Doe'
-                        first_name: Jane
-                        last_name: Doe
-                        job_title: null
-                        company: 'Acme Ltd'
-                        domain: acme.example
-                        source: tube-trend-tool
-                        extra:
-                          tube-trend-tool:
-                            industry: SaaS
-                            employees: 40
-                        created_at: '2026-09-09T07:01:40+00:00'
-                        updated_at: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    page: 1
-                    per_page: 50
-                    total: 2
-                    last_page: 1
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: array
-                    example:
-                      -
-                        id: 2
-                        contact_id: 2
-                        automation_id: 1
-                        automation_tag: seo-backlinks
-                        mailbox_id: 1
-                        mailbox_email: hello@outreach.example
-                        status: active
-                        current_step: 0
-                        stopped_at: null
-                        stop_reason: null
-                        created_at: '2026-09-09T07:01:40+00:00'
-                        contact:
-                          id: 2
-                          email: sam.patel@globex.example
-                          email_status: pending
-                          email_checked_at: null
-                          email_provider: null
-                          profile_url: null
-                          name: 'Sam Patel'
-                          first_name: Sam
-                          last_name: Patel
-                          job_title: null
-                          company: Globex
-                          domain: globex.example
-                          source: tube-trend-tool
-                          extra: []
-                          created_at: '2026-09-09T07:01:40+00:00'
-                          updated_at: '2026-09-09T07:01:40+00:00'
-                      -
-                        id: 1
-                        contact_id: 1
-                        automation_id: 1
-                        automation_tag: seo-backlinks
-                        mailbox_id: 1
-                        mailbox_email: hello@outreach.example
-                        status: active
-                        current_step: 1
-                        stopped_at: null
-                        stop_reason: null
-                        created_at: '2026-09-09T07:01:40+00:00'
-                        contact:
-                          id: 1
-                          email: jane.doe@acme.example
-                          email_status: pending
-                          email_checked_at: null
-                          email_provider: null
-                          profile_url: null
-                          name: 'Jane Doe'
-                          first_name: Jane
-                          last_name: Doe
-                          job_title: null
-                          company: 'Acme Ltd'
-                          domain: acme.example
-                          source: tube-trend-tool
-                          extra:
-                            tube-trend-tool:
-                              industry: SaaS
-                              employees: 40
-                          created_at: '2026-09-09T07:01:40+00:00'
-                          updated_at: '2026-09-09T07:01:40+00:00'
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 2
-                        contact_id:
-                          type: integer
-                          example: 2
-                        automation_id:
-                          type: integer
-                          example: 1
-                        automation_tag:
-                          type: string
-                          example: seo-backlinks
-                        mailbox_id:
-                          type: integer
-                          example: 1
-                        mailbox_email:
-                          type: string
-                          example: hello@outreach.example
-                        status:
-                          type: string
-                          example: active
-                        current_step:
-                          type: integer
-                          example: 0
-                        stopped_at:
-                          type: string
-                          example: null
-                          nullable: true
-                        stop_reason:
-                          type: string
-                          example: null
-                          nullable: true
-                        created_at:
-                          type: string
-                          example: '2026-09-09T07:01:40+00:00'
-                        contact:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              example: 2
-                            email:
-                              type: string
-                              example: sam.patel@globex.example
-                            email_status:
-                              type: string
-                              example: pending
-                            email_checked_at:
-                              type: string
-                              example: null
-                              nullable: true
-                            email_provider:
-                              type: string
-                              example: null
-                              nullable: true
-                            profile_url:
-                              type: string
-                              example: null
-                              nullable: true
-                            name:
-                              type: string
-                              example: 'Sam Patel'
-                            first_name:
-                              type: string
-                              example: Sam
-                            last_name:
-                              type: string
-                              example: Patel
-                            job_title:
-                              type: string
-                              example: null
-                              nullable: true
-                            company:
-                              type: string
-                              example: Globex
-                            domain:
-                              type: string
-                              example: globex.example
-                            source:
-                              type: string
-                              example: tube-trend-tool
-                            extra:
-                              type: array
-                              example: []
-                            created_at:
-                              type: string
-                              example: '2026-09-09T07:01:40+00:00'
-                            updated_at:
-                              type: string
-                              example: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    type: object
-                    properties:
-                      page:
-                        type: integer
-                        example: 1
-                      per_page:
-                        type: integer
-                        example: 50
-                      total:
-                        type: integer
-                        example: 2
-                      last_page:
-                        type: integer
-                        example: 1
+                    example: 'Invalid API key.'
       tags:
         - Enrollments
     post:
@@ -2082,322 +1053,22 @@ paths:
             description: 'Which page to return. e.g. 1.'
             example: null
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    -
-                      id: 1
-                      enrollment_id: 1
-                      contact_id: 1
-                      mailbox_id: 1
-                      mailbox_email: hello@outreach.example
-                      sequence_step_id: 1
-                      step_position: 1
-                      status: sent
-                      subject: 'Your guide on nursery irrigation'
-                      body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
-                      edited_by_user: false
-                      scheduled_at: null
-                      sent_at: '2026-09-08T07:01:40+00:00'
-                      approved_at: null
-                      rejected_at: null
-                      rejection_note: null
-                      error: null
-                      created_at: '2026-09-09T07:01:40+00:00'
-                      contact:
-                        id: 1
-                        email: jane.doe@acme.example
-                        email_status: pending
-                        email_checked_at: null
-                        email_provider: null
-                        profile_url: null
-                        name: 'Jane Doe'
-                        first_name: Jane
-                        last_name: Doe
-                        job_title: null
-                        company: 'Acme Ltd'
-                        domain: acme.example
-                        source: tube-trend-tool
-                        extra:
-                          tube-trend-tool:
-                            industry: SaaS
-                            employees: 40
-                        created_at: '2026-09-09T07:01:40+00:00'
-                        updated_at: '2026-09-09T07:01:40+00:00'
-                    -
-                      id: 2
-                      enrollment_id: 2
-                      contact_id: 2
-                      mailbox_id: 1
-                      mailbox_email: hello@outreach.example
-                      sequence_step_id: 1
-                      step_position: 1
-                      status: pending_approval
-                      subject: 'Quick thought on your resources page'
-                      body_text: "Hi Sam,\n\nYour resources page is missing a section we could help fill.\n\nWorth a quick chat?\n\nAlex"
-                      edited_by_user: false
-                      scheduled_at: null
-                      sent_at: null
-                      approved_at: null
-                      rejected_at: null
-                      rejection_note: null
-                      error: null
-                      created_at: '2026-09-09T07:01:40+00:00'
-                      contact:
-                        id: 2
-                        email: sam.patel@globex.example
-                        email_status: pending
-                        email_checked_at: null
-                        email_provider: null
-                        profile_url: null
-                        name: 'Sam Patel'
-                        first_name: Sam
-                        last_name: Patel
-                        job_title: null
-                        company: Globex
-                        domain: globex.example
-                        source: tube-trend-tool
-                        extra: []
-                        created_at: '2026-09-09T07:01:40+00:00'
-                        updated_at: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    page: 1
-                    per_page: 50
-                    total: 2
-                    last_page: 1
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: array
-                    example:
-                      -
-                        id: 1
-                        enrollment_id: 1
-                        contact_id: 1
-                        mailbox_id: 1
-                        mailbox_email: hello@outreach.example
-                        sequence_step_id: 1
-                        step_position: 1
-                        status: sent
-                        subject: 'Your guide on nursery irrigation'
-                        body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
-                        edited_by_user: false
-                        scheduled_at: null
-                        sent_at: '2026-09-08T07:01:40+00:00'
-                        approved_at: null
-                        rejected_at: null
-                        rejection_note: null
-                        error: null
-                        created_at: '2026-09-09T07:01:40+00:00'
-                        contact:
-                          id: 1
-                          email: jane.doe@acme.example
-                          email_status: pending
-                          email_checked_at: null
-                          email_provider: null
-                          profile_url: null
-                          name: 'Jane Doe'
-                          first_name: Jane
-                          last_name: Doe
-                          job_title: null
-                          company: 'Acme Ltd'
-                          domain: acme.example
-                          source: tube-trend-tool
-                          extra:
-                            tube-trend-tool:
-                              industry: SaaS
-                              employees: 40
-                          created_at: '2026-09-09T07:01:40+00:00'
-                          updated_at: '2026-09-09T07:01:40+00:00'
-                      -
-                        id: 2
-                        enrollment_id: 2
-                        contact_id: 2
-                        mailbox_id: 1
-                        mailbox_email: hello@outreach.example
-                        sequence_step_id: 1
-                        step_position: 1
-                        status: pending_approval
-                        subject: 'Quick thought on your resources page'
-                        body_text: "Hi Sam,\n\nYour resources page is missing a section we could help fill.\n\nWorth a quick chat?\n\nAlex"
-                        edited_by_user: false
-                        scheduled_at: null
-                        sent_at: null
-                        approved_at: null
-                        rejected_at: null
-                        rejection_note: null
-                        error: null
-                        created_at: '2026-09-09T07:01:40+00:00'
-                        contact:
-                          id: 2
-                          email: sam.patel@globex.example
-                          email_status: pending
-                          email_checked_at: null
-                          email_provider: null
-                          profile_url: null
-                          name: 'Sam Patel'
-                          first_name: Sam
-                          last_name: Patel
-                          job_title: null
-                          company: Globex
-                          domain: globex.example
-                          source: tube-trend-tool
-                          extra: []
-                          created_at: '2026-09-09T07:01:40+00:00'
-                          updated_at: '2026-09-09T07:01:40+00:00'
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        enrollment_id:
-                          type: integer
-                          example: 1
-                        contact_id:
-                          type: integer
-                          example: 1
-                        mailbox_id:
-                          type: integer
-                          example: 1
-                        mailbox_email:
-                          type: string
-                          example: hello@outreach.example
-                        sequence_step_id:
-                          type: integer
-                          example: 1
-                        step_position:
-                          type: integer
-                          example: 1
-                        status:
-                          type: string
-                          example: sent
-                        subject:
-                          type: string
-                          example: 'Your guide on nursery irrigation'
-                        body_text:
-                          type: string
-                          example: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
-                        edited_by_user:
-                          type: boolean
-                          example: false
-                        scheduled_at:
-                          type: string
-                          example: null
-                          nullable: true
-                        sent_at:
-                          type: string
-                          example: '2026-09-08T07:01:40+00:00'
-                        approved_at:
-                          type: string
-                          example: null
-                          nullable: true
-                        rejected_at:
-                          type: string
-                          example: null
-                          nullable: true
-                        rejection_note:
-                          type: string
-                          example: null
-                          nullable: true
-                        error:
-                          type: string
-                          example: null
-                          nullable: true
-                        created_at:
-                          type: string
-                          example: '2026-09-09T07:01:40+00:00'
-                        contact:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            email:
-                              type: string
-                              example: jane.doe@acme.example
-                            email_status:
-                              type: string
-                              example: pending
-                            email_checked_at:
-                              type: string
-                              example: null
-                              nullable: true
-                            email_provider:
-                              type: string
-                              example: null
-                              nullable: true
-                            profile_url:
-                              type: string
-                              example: null
-                              nullable: true
-                            name:
-                              type: string
-                              example: 'Jane Doe'
-                            first_name:
-                              type: string
-                              example: Jane
-                            last_name:
-                              type: string
-                              example: Doe
-                            job_title:
-                              type: string
-                              example: null
-                              nullable: true
-                            company:
-                              type: string
-                              example: 'Acme Ltd'
-                            domain:
-                              type: string
-                              example: acme.example
-                            source:
-                              type: string
-                              example: tube-trend-tool
-                            extra:
-                              type: object
-                              properties:
-                                tube-trend-tool:
-                                  type: object
-                                  properties:
-                                    industry:
-                                      type: string
-                                      example: SaaS
-                                    employees:
-                                      type: integer
-                                      example: 40
-                            created_at:
-                              type: string
-                              example: '2026-09-09T07:01:40+00:00'
-                            updated_at:
-                              type: string
-                              example: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    type: object
-                    properties:
-                      page:
-                        type: integer
-                        example: 1
-                      per_page:
-                        type: integer
-                        example: 50
-                      total:
-                        type: integer
-                        example: 2
-                      last_page:
-                        type: integer
-                        example: 1
+                    example: 'Invalid API key.'
       tags:
         - Messages
   '/api/messages/{message}':
@@ -2407,187 +1078,22 @@ paths:
       description: ''
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    id: 1
-                    enrollment_id: 1
-                    contact_id: 1
-                    mailbox_id: 1
-                    mailbox_email: hello@outreach.example
-                    sequence_step_id: 1
-                    step_position: 1
-                    status: sent
-                    subject: 'Your guide on nursery irrigation'
-                    body_text: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
-                    edited_by_user: false
-                    scheduled_at: null
-                    sent_at: '2026-09-08T07:01:40+00:00'
-                    approved_at: null
-                    rejected_at: null
-                    rejection_note: null
-                    error: null
-                    created_at: '2026-09-09T07:01:40+00:00'
-                    contact:
-                      id: 1
-                      email: jane.doe@acme.example
-                      email_status: pending
-                      email_checked_at: null
-                      email_provider: null
-                      profile_url: null
-                      name: 'Jane Doe'
-                      first_name: Jane
-                      last_name: Doe
-                      job_title: null
-                      company: 'Acme Ltd'
-                      domain: acme.example
-                      source: tube-trend-tool
-                      extra:
-                        tube-trend-tool:
-                          industry: SaaS
-                          employees: 40
-                      created_at: '2026-09-09T07:01:40+00:00'
-                      updated_at: '2026-09-09T07:01:40+00:00'
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      enrollment_id:
-                        type: integer
-                        example: 1
-                      contact_id:
-                        type: integer
-                        example: 1
-                      mailbox_id:
-                        type: integer
-                        example: 1
-                      mailbox_email:
-                        type: string
-                        example: hello@outreach.example
-                      sequence_step_id:
-                        type: integer
-                        example: 1
-                      step_position:
-                        type: integer
-                        example: 1
-                      status:
-                        type: string
-                        example: sent
-                      subject:
-                        type: string
-                        example: 'Your guide on nursery irrigation'
-                      body_text:
-                        type: string
-                        example: "Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex"
-                      edited_by_user:
-                        type: boolean
-                        example: false
-                      scheduled_at:
-                        type: string
-                        example: null
-                        nullable: true
-                      sent_at:
-                        type: string
-                        example: '2026-09-08T07:01:40+00:00'
-                      approved_at:
-                        type: string
-                        example: null
-                        nullable: true
-                      rejected_at:
-                        type: string
-                        example: null
-                        nullable: true
-                      rejection_note:
-                        type: string
-                        example: null
-                        nullable: true
-                      error:
-                        type: string
-                        example: null
-                        nullable: true
-                      created_at:
-                        type: string
-                        example: '2026-09-09T07:01:40+00:00'
-                      contact:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                            example: 1
-                          email:
-                            type: string
-                            example: jane.doe@acme.example
-                          email_status:
-                            type: string
-                            example: pending
-                          email_checked_at:
-                            type: string
-                            example: null
-                            nullable: true
-                          email_provider:
-                            type: string
-                            example: null
-                            nullable: true
-                          profile_url:
-                            type: string
-                            example: null
-                            nullable: true
-                          name:
-                            type: string
-                            example: 'Jane Doe'
-                          first_name:
-                            type: string
-                            example: Jane
-                          last_name:
-                            type: string
-                            example: Doe
-                          job_title:
-                            type: string
-                            example: null
-                            nullable: true
-                          company:
-                            type: string
-                            example: 'Acme Ltd'
-                          domain:
-                            type: string
-                            example: acme.example
-                          source:
-                            type: string
-                            example: tube-trend-tool
-                          extra:
-                            type: object
-                            properties:
-                              tube-trend-tool:
-                                type: object
-                                properties:
-                                  industry:
-                                    type: string
-                                    example: SaaS
-                                  employees:
-                                    type: integer
-                                    example: 40
-                          created_at:
-                            type: string
-                            example: '2026-09-09T07:01:40+00:00'
-                          updated_at:
-                            type: string
-                            example: '2026-09-09T07:01:40+00:00'
+                    example: 'Invalid API key.'
       tags:
         - Messages
     patch:
@@ -2757,216 +1263,22 @@ paths:
             description: 'Which page to return. e.g. 1.'
             example: null
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    -
-                      id: 1
-                      contact_id: 1
-                      enrollment_id: 1
-                      message_id: 1
-                      mailbox_id: 1
-                      from_email: jane.doe@acme.example
-                      subject: 'Re: Your guide on nursery irrigation'
-                      snippet: 'Happy to take a look, send it over.'
-                      body_text: "Happy to take a look, send it over.\n\nJane"
-                      classification: reply
-                      received_at: '2026-09-09T01:01:40+00:00'
-                      read_at: null
-                      contact:
-                        id: 1
-                        email: jane.doe@acme.example
-                        email_status: pending
-                        email_checked_at: null
-                        email_provider: null
-                        profile_url: null
-                        name: 'Jane Doe'
-                        first_name: Jane
-                        last_name: Doe
-                        job_title: null
-                        company: 'Acme Ltd'
-                        domain: acme.example
-                        source: tube-trend-tool
-                        extra:
-                          tube-trend-tool:
-                            industry: SaaS
-                            employees: 40
-                        created_at: '2026-09-09T07:01:40+00:00'
-                        updated_at: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    page: 1
-                    per_page: 50
-                    total: 1
-                    last_page: 1
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: array
-                    example:
-                      -
-                        id: 1
-                        contact_id: 1
-                        enrollment_id: 1
-                        message_id: 1
-                        mailbox_id: 1
-                        from_email: jane.doe@acme.example
-                        subject: 'Re: Your guide on nursery irrigation'
-                        snippet: 'Happy to take a look, send it over.'
-                        body_text: "Happy to take a look, send it over.\n\nJane"
-                        classification: reply
-                        received_at: '2026-09-09T01:01:40+00:00'
-                        read_at: null
-                        contact:
-                          id: 1
-                          email: jane.doe@acme.example
-                          email_status: pending
-                          email_checked_at: null
-                          email_provider: null
-                          profile_url: null
-                          name: 'Jane Doe'
-                          first_name: Jane
-                          last_name: Doe
-                          job_title: null
-                          company: 'Acme Ltd'
-                          domain: acme.example
-                          source: tube-trend-tool
-                          extra:
-                            tube-trend-tool:
-                              industry: SaaS
-                              employees: 40
-                          created_at: '2026-09-09T07:01:40+00:00'
-                          updated_at: '2026-09-09T07:01:40+00:00'
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        contact_id:
-                          type: integer
-                          example: 1
-                        enrollment_id:
-                          type: integer
-                          example: 1
-                        message_id:
-                          type: integer
-                          example: 1
-                        mailbox_id:
-                          type: integer
-                          example: 1
-                        from_email:
-                          type: string
-                          example: jane.doe@acme.example
-                        subject:
-                          type: string
-                          example: 'Re: Your guide on nursery irrigation'
-                        snippet:
-                          type: string
-                          example: 'Happy to take a look, send it over.'
-                        body_text:
-                          type: string
-                          example: "Happy to take a look, send it over.\n\nJane"
-                        classification:
-                          type: string
-                          example: reply
-                        received_at:
-                          type: string
-                          example: '2026-09-09T01:01:40+00:00'
-                        read_at:
-                          type: string
-                          example: null
-                          nullable: true
-                        contact:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            email:
-                              type: string
-                              example: jane.doe@acme.example
-                            email_status:
-                              type: string
-                              example: pending
-                            email_checked_at:
-                              type: string
-                              example: null
-                              nullable: true
-                            email_provider:
-                              type: string
-                              example: null
-                              nullable: true
-                            profile_url:
-                              type: string
-                              example: null
-                              nullable: true
-                            name:
-                              type: string
-                              example: 'Jane Doe'
-                            first_name:
-                              type: string
-                              example: Jane
-                            last_name:
-                              type: string
-                              example: Doe
-                            job_title:
-                              type: string
-                              example: null
-                              nullable: true
-                            company:
-                              type: string
-                              example: 'Acme Ltd'
-                            domain:
-                              type: string
-                              example: acme.example
-                            source:
-                              type: string
-                              example: tube-trend-tool
-                            extra:
-                              type: object
-                              properties:
-                                tube-trend-tool:
-                                  type: object
-                                  properties:
-                                    industry:
-                                      type: string
-                                      example: SaaS
-                                    employees:
-                                      type: integer
-                                      example: 40
-                            created_at:
-                              type: string
-                              example: '2026-09-09T07:01:40+00:00'
-                            updated_at:
-                              type: string
-                              example: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    type: object
-                    properties:
-                      page:
-                        type: integer
-                        example: 1
-                      per_page:
-                        type: integer
-                        example: 50
-                      total:
-                        type: integer
-                        example: 1
-                      last_page:
-                        type: integer
-                        example: 1
+                    example: 'Invalid API key.'
       tags:
         - Replies
   '/api/replies/{reply}':
@@ -2976,159 +1288,22 @@ paths:
       description: ''
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    id: 1
-                    contact_id: 1
-                    enrollment_id: 1
-                    message_id: 1
-                    mailbox_id: 1
-                    from_email: jane.doe@acme.example
-                    subject: 'Re: Your guide on nursery irrigation'
-                    snippet: 'Happy to take a look, send it over.'
-                    body_text: "Happy to take a look, send it over.\n\nJane"
-                    classification: reply
-                    received_at: '2026-09-09T01:01:40+00:00'
-                    read_at: null
-                    contact:
-                      id: 1
-                      email: jane.doe@acme.example
-                      email_status: pending
-                      email_checked_at: null
-                      email_provider: null
-                      profile_url: null
-                      name: 'Jane Doe'
-                      first_name: Jane
-                      last_name: Doe
-                      job_title: null
-                      company: 'Acme Ltd'
-                      domain: acme.example
-                      source: tube-trend-tool
-                      extra:
-                        tube-trend-tool:
-                          industry: SaaS
-                          employees: 40
-                      created_at: '2026-09-09T07:01:40+00:00'
-                      updated_at: '2026-09-09T07:01:40+00:00'
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      contact_id:
-                        type: integer
-                        example: 1
-                      enrollment_id:
-                        type: integer
-                        example: 1
-                      message_id:
-                        type: integer
-                        example: 1
-                      mailbox_id:
-                        type: integer
-                        example: 1
-                      from_email:
-                        type: string
-                        example: jane.doe@acme.example
-                      subject:
-                        type: string
-                        example: 'Re: Your guide on nursery irrigation'
-                      snippet:
-                        type: string
-                        example: 'Happy to take a look, send it over.'
-                      body_text:
-                        type: string
-                        example: "Happy to take a look, send it over.\n\nJane"
-                      classification:
-                        type: string
-                        example: reply
-                      received_at:
-                        type: string
-                        example: '2026-09-09T01:01:40+00:00'
-                      read_at:
-                        type: string
-                        example: null
-                        nullable: true
-                      contact:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                            example: 1
-                          email:
-                            type: string
-                            example: jane.doe@acme.example
-                          email_status:
-                            type: string
-                            example: pending
-                          email_checked_at:
-                            type: string
-                            example: null
-                            nullable: true
-                          email_provider:
-                            type: string
-                            example: null
-                            nullable: true
-                          profile_url:
-                            type: string
-                            example: null
-                            nullable: true
-                          name:
-                            type: string
-                            example: 'Jane Doe'
-                          first_name:
-                            type: string
-                            example: Jane
-                          last_name:
-                            type: string
-                            example: Doe
-                          job_title:
-                            type: string
-                            example: null
-                            nullable: true
-                          company:
-                            type: string
-                            example: 'Acme Ltd'
-                          domain:
-                            type: string
-                            example: acme.example
-                          source:
-                            type: string
-                            example: tube-trend-tool
-                          extra:
-                            type: object
-                            properties:
-                              tube-trend-tool:
-                                type: object
-                                properties:
-                                  industry:
-                                    type: string
-                                    example: SaaS
-                                  employees:
-                                    type: integer
-                                    example: 40
-                          created_at:
-                            type: string
-                            example: '2026-09-09T07:01:40+00:00'
-                          updated_at:
-                            type: string
-                            example: '2026-09-09T07:01:40+00:00'
+                    example: 'Invalid API key.'
       tags:
         - Replies
     parameters:
@@ -3197,77 +1372,22 @@ paths:
             description: 'Which page to return. e.g. 1.'
             example: null
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    -
-                      id: 1
-                      email: no.thanks@globex.example
-                      reason: unsubscribed
-                      source_reply_id: null
-                      created_at: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    page: 1
-                    per_page: 50
-                    total: 1
-                    last_page: 1
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: array
-                    example:
-                      -
-                        id: 1
-                        email: no.thanks@globex.example
-                        reason: unsubscribed
-                        source_reply_id: null
-                        created_at: '2026-09-09T07:01:40+00:00'
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        email:
-                          type: string
-                          example: no.thanks@globex.example
-                        reason:
-                          type: string
-                          example: unsubscribed
-                        source_reply_id:
-                          type: string
-                          example: null
-                          nullable: true
-                        created_at:
-                          type: string
-                          example: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    type: object
-                    properties:
-                      page:
-                        type: integer
-                        example: 1
-                      per_page:
-                        type: integer
-                        example: 50
-                      total:
-                        type: integer
-                        example: 1
-                      last_page:
-                        type: integer
-                        example: 1
+                    example: 'Invalid API key.'
       tags:
         - Suppressions
     post:
@@ -3351,153 +1471,22 @@ paths:
             description: 'Which page to return. e.g. 1.'
             example: null
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    -
-                      id: 1
-                      email: hello@outreach.example
-                      display_name: 'Alex Rivera'
-                      domain: outreach.example
-                      status: active
-                      paused_reason: null
-                      health_status: healthy
-                      daily_cap: 40
-                      send_window:
-                        start: '09:00'
-                        end: '17:00'
-                        timezone: UTC
-                        weekends: false
-                      warmup_enabled: true
-                      stats_7d:
-                        sent: 84
-                        bounce_rate: 0.0119
-                        reply_rate: 0.0714
-                      last_polled_at: '2026-09-09T06:59:40+00:00'
-                      last_send_error: null
-                  meta:
-                    page: 1
-                    per_page: 50
-                    total: 1
-                    last_page: 1
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: array
-                    example:
-                      -
-                        id: 1
-                        email: hello@outreach.example
-                        display_name: 'Alex Rivera'
-                        domain: outreach.example
-                        status: active
-                        paused_reason: null
-                        health_status: healthy
-                        daily_cap: 40
-                        send_window:
-                          start: '09:00'
-                          end: '17:00'
-                          timezone: UTC
-                          weekends: false
-                        warmup_enabled: true
-                        stats_7d:
-                          sent: 84
-                          bounce_rate: 0.0119
-                          reply_rate: 0.0714
-                        last_polled_at: '2026-09-09T06:59:40+00:00'
-                        last_send_error: null
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        email:
-                          type: string
-                          example: hello@outreach.example
-                        display_name:
-                          type: string
-                          example: 'Alex Rivera'
-                        domain:
-                          type: string
-                          example: outreach.example
-                        status:
-                          type: string
-                          example: active
-                        paused_reason:
-                          type: string
-                          example: null
-                          nullable: true
-                        health_status:
-                          type: string
-                          example: healthy
-                        daily_cap:
-                          type: integer
-                          example: 40
-                        send_window:
-                          type: object
-                          properties:
-                            start:
-                              type: string
-                              example: '09:00'
-                            end:
-                              type: string
-                              example: '17:00'
-                            timezone:
-                              type: string
-                              example: UTC
-                            weekends:
-                              type: boolean
-                              example: false
-                        warmup_enabled:
-                          type: boolean
-                          example: true
-                        stats_7d:
-                          type: object
-                          properties:
-                            sent:
-                              type: integer
-                              example: 84
-                            bounce_rate:
-                              type: number
-                              example: 0.0119
-                            reply_rate:
-                              type: number
-                              example: 0.0714
-                        last_polled_at:
-                          type: string
-                          example: '2026-09-09T06:59:40+00:00'
-                        last_send_error:
-                          type: string
-                          example: null
-                          nullable: true
-                  meta:
-                    type: object
-                    properties:
-                      page:
-                        type: integer
-                        example: 1
-                      per_page:
-                        type: integer
-                        example: 50
-                      total:
-                        type: integer
-                        example: 1
-                      last_page:
-                        type: integer
-                        example: 1
+                    example: 'Invalid API key.'
       tags:
         - Mailboxes
   '/api/mailboxes/{mailbox}':
@@ -3507,108 +1496,22 @@ paths:
       description: ''
       parameters: []
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    id: 1
-                    email: hello@outreach.example
-                    display_name: 'Alex Rivera'
-                    domain: outreach.example
-                    status: active
-                    paused_reason: null
-                    health_status: healthy
-                    daily_cap: 40
-                    send_window:
-                      start: '09:00'
-                      end: '17:00'
-                      timezone: UTC
-                      weekends: false
-                    warmup_enabled: true
-                    stats_7d:
-                      sent: 84
-                      bounce_rate: 0.0119
-                      reply_rate: 0.0714
-                    last_polled_at: '2026-09-09T06:59:40+00:00'
-                    last_send_error: null
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      email:
-                        type: string
-                        example: hello@outreach.example
-                      display_name:
-                        type: string
-                        example: 'Alex Rivera'
-                      domain:
-                        type: string
-                        example: outreach.example
-                      status:
-                        type: string
-                        example: active
-                      paused_reason:
-                        type: string
-                        example: null
-                        nullable: true
-                      health_status:
-                        type: string
-                        example: healthy
-                      daily_cap:
-                        type: integer
-                        example: 40
-                      send_window:
-                        type: object
-                        properties:
-                          start:
-                            type: string
-                            example: '09:00'
-                          end:
-                            type: string
-                            example: '17:00'
-                          timezone:
-                            type: string
-                            example: UTC
-                          weekends:
-                            type: boolean
-                            example: false
-                      warmup_enabled:
-                        type: boolean
-                        example: true
-                      stats_7d:
-                        type: object
-                        properties:
-                          sent:
-                            type: integer
-                            example: 84
-                          bounce_rate:
-                            type: number
-                            example: 0.0119
-                          reply_rate:
-                            type: number
-                            example: 0.0714
-                      last_polled_at:
-                        type: string
-                        example: '2026-09-09T06:59:40+00:00'
-                      last_send_error:
-                        type: string
-                        example: null
-                        nullable: true
+                    example: 'Invalid API key.'
       tags:
         - Mailboxes
     parameters:
@@ -3715,127 +1618,22 @@ paths:
             description: 'ISO date. Narrows the sent, reply and bounce counts to that window. Totals and the queue are current state and are not narrowed. e.g. 2026-08-01.'
             example: null
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    window_since: null
-                    contacts:
-                      total: 2
-                      suppressed: 1
-                    enrollments:
-                      active: 2
-                      waiting_email: 0
-                      total: 2
-                    queue:
-                      pending_approval: 1
-                      scheduled: 0
-                      draft_failed: 0
-                      send_failed: 0
-                    sending:
-                      sent: 1
-                      replies: 1
-                      bounces: 0
-                      unsubscribes: 0
-                      reply_rate: 1
-                      bounce_rate: 0
-                    mailboxes:
-                      total: 1
-                      active: 1
-                      paused: 0
-                      disconnected: 0
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: object
-                    properties:
-                      window_since:
-                        type: string
-                        example: null
-                        nullable: true
-                      contacts:
-                        type: object
-                        properties:
-                          total:
-                            type: integer
-                            example: 2
-                          suppressed:
-                            type: integer
-                            example: 1
-                      enrollments:
-                        type: object
-                        properties:
-                          active:
-                            type: integer
-                            example: 2
-                          waiting_email:
-                            type: integer
-                            example: 0
-                          total:
-                            type: integer
-                            example: 2
-                      queue:
-                        type: object
-                        properties:
-                          pending_approval:
-                            type: integer
-                            example: 1
-                          scheduled:
-                            type: integer
-                            example: 0
-                          draft_failed:
-                            type: integer
-                            example: 0
-                          send_failed:
-                            type: integer
-                            example: 0
-                      sending:
-                        type: object
-                        properties:
-                          sent:
-                            type: integer
-                            example: 1
-                          replies:
-                            type: integer
-                            example: 1
-                          bounces:
-                            type: integer
-                            example: 0
-                          unsubscribes:
-                            type: integer
-                            example: 0
-                          reply_rate:
-                            type: integer
-                            example: 1
-                          bounce_rate:
-                            type: integer
-                            example: 0
-                      mailboxes:
-                        type: object
-                        properties:
-                          total:
-                            type: integer
-                            example: 1
-                          active:
-                            type: integer
-                            example: 1
-                          paused:
-                            type: integer
-                            example: 0
-                          disconnected:
-                            type: integer
-                            example: 0
+                    example: 'Invalid API key.'
       tags:
         - Stats
   /api/activity:
@@ -3905,125 +1703,21 @@ paths:
             description: 'Which page to return. e.g. 1.'
             example: null
       responses:
-        200:
+        401:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  success: true
-                  message: ok
-                  data:
-                    -
-                      id: 2
-                      event: send_failed
-                      level: error
-                      message: 'Gmail returned 429 for hello@outreach.example'
-                      context: []
-                      subject_type: null
-                      subject_id: null
-                      retryable: true
-                      retried_at: null
-                      created_at: '2026-09-09T07:01:40+00:00'
-                    -
-                      id: 1
-                      event: email_sent
-                      level: info
-                      message: 'Sent to jane.doe@acme.example'
-                      context: []
-                      subject_type: App\Models\Message
-                      subject_id: 1
-                      retryable: false
-                      retried_at: null
-                      created_at: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    page: 1
-                    per_page: 50
-                    total: 2
-                    last_page: 1
+                  success: false
+                  message: 'Invalid API key.'
                 properties:
                   success:
                     type: boolean
-                    example: true
+                    example: false
                   message:
                     type: string
-                    example: ok
-                  data:
-                    type: array
-                    example:
-                      -
-                        id: 2
-                        event: send_failed
-                        level: error
-                        message: 'Gmail returned 429 for hello@outreach.example'
-                        context: []
-                        subject_type: null
-                        subject_id: null
-                        retryable: true
-                        retried_at: null
-                        created_at: '2026-09-09T07:01:40+00:00'
-                      -
-                        id: 1
-                        event: email_sent
-                        level: info
-                        message: 'Sent to jane.doe@acme.example'
-                        context: []
-                        subject_type: App\Models\Message
-                        subject_id: 1
-                        retryable: false
-                        retried_at: null
-                        created_at: '2026-09-09T07:01:40+00:00'
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 2
-                        event:
-                          type: string
-                          example: send_failed
-                        level:
-                          type: string
-                          example: error
-                        message:
-                          type: string
-                          example: 'Gmail returned 429 for hello@outreach.example'
-                        context:
-                          type: array
-                          example: []
-                        subject_type:
-                          type: string
-                          example: null
-                          nullable: true
-                        subject_id:
-                          type: string
-                          example: null
-                          nullable: true
-                        retryable:
-                          type: boolean
-                          example: true
-                        retried_at:
-                          type: string
-                          example: null
-                          nullable: true
-                        created_at:
-                          type: string
-                          example: '2026-09-09T07:01:40+00:00'
-                  meta:
-                    type: object
-                    properties:
-                      page:
-                        type: integer
-                        example: 1
-                      per_page:
-                        type: integer
-                        example: 50
-                      total:
-                        type: integer
-                        example: 2
-                      last_page:
-                        type: integer
-                        example: 1
+                    example: 'Invalid API key.'
       tags:
         - Activity

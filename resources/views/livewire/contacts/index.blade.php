@@ -36,40 +36,21 @@
                         </div>
                     @endforeach
 
-                    <div>
-                        <x-input-label value="Source app" />
-                        <div class="mt-1 space-y-1 max-h-28 overflow-y-auto">
-                            @forelse ($availableSources as $source)
-                                <label class="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                                    <input type="checkbox" wire:model.live="sources" value="{{ $source }}" class="rounded border-gray-300 dark:border-gray-600"> {{ $source }}
-                                </label>
-                            @empty
-                                <p class="text-gray-500 dark:text-gray-400 text-xs">No sources yet</p>
-                            @endforelse
-                        </div>
-                    </div>
+                    <x-index.multi-select model="categories" label="Category" :options="$availableCategories" :selected="$categories" placeholder="Any category" empty="No categories yet" />
+
+                    <x-index.multi-select model="niches" label="Niche" :options="$availableNiches" :selected="$niches" placeholder="Any niche" empty="No niches yet" />
+
+                    <x-index.multi-select model="sources" label="Source app" :options="$availableSources" :selected="$sources" placeholder="Any source" empty="No sources yet" />
 
                     <div>
-                        <x-input-label value="Address" />
-                        <div class="mt-1 space-y-1 max-h-64 overflow-y-auto">
-                            @foreach ($availableEmailStatuses as $value => $label)
-                                <label class="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                                    <input type="checkbox" wire:model.live="emailStatuses" value="{{ $value }}" class="rounded border-gray-300 dark:border-gray-600"> {{ $label }}
-                                </label>
-                            @endforeach
-                        </div>
+                        <x-index.multi-select model="emailStatuses" label="Address" :options="$availableEmailStatuses" :selected="$emailStatuses" placeholder="Any status" />
+                        <label class="mt-2 flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
+                            <input type="checkbox" wire:model.live="includeNotFound" class="rounded border-gray-300 dark:border-gray-600">
+                            Include leads with no address found
+                        </label>
                     </div>
 
-                    <div>
-                        <x-input-label value="Enrollment status" />
-                        <div class="mt-1 space-y-1 max-h-64 overflow-y-auto">
-                            @foreach ($availableStatuses as $status)
-                                <label class="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                                    <input type="checkbox" wire:model.live="enrollmentStatuses" value="{{ $status }}" class="rounded border-gray-300 dark:border-gray-600"> {{ str_replace('_', ' ', $status) }}
-                                </label>
-                            @endforeach
-                        </div>
-                    </div>
+                    <x-index.multi-select model="enrollmentStatuses" label="Enrollment status" :options="$availableStatuses" :selected="$enrollmentStatuses" placeholder="Any status" />
 
                     <div class="space-y-2">
                         <div>
@@ -127,6 +108,8 @@
                             <x-index.sort-header field="email" :sort-field="$sortField" :sort-direction="$sortDirection">Email</x-index.sort-header>
                             <x-index.sort-header field="name" :sort-field="$sortField" :sort-direction="$sortDirection">Name</x-index.sort-header>
                             <x-index.sort-header field="company" :sort-field="$sortField" :sort-direction="$sortDirection">Company</x-index.sort-header>
+                            <x-index.sort-header field="category" :sort-field="$sortField" :sort-direction="$sortDirection">Category</x-index.sort-header>
+                            <x-index.sort-header field="niche" :sort-field="$sortField" :sort-direction="$sortDirection">Niche</x-index.sort-header>
                             <x-index.sort-header field="email_status" :sort-field="$sortField" :sort-direction="$sortDirection">Address</x-index.sort-header>
                             <x-index.sort-header field="source" :sort-field="$sortField" :sort-direction="$sortDirection">Source</x-index.sort-header>
                             <th class="px-6 py-3 font-medium">Enrollments</th>
@@ -147,8 +130,25 @@
                                         <span class="ml-1 px-1.5 py-0.5 text-xs rounded bg-red-100 text-red-700">suppressed</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-3">{{ $contact->name }}</td>
-                                <td class="px-6 py-3">{{ $contact->company }}</td>
+                                {{-- The name opens the person's LinkedIn profile and the company
+                                     its page, when either is on file. Plain text otherwise, so a
+                                     link always goes somewhere. --}}
+                                <td class="px-6 py-3">
+                                    @if ($contact->name && $contact->profile_url)
+                                        <a href="{{ $contact->profile_url }}" target="_blank" rel="noopener" class="text-indigo-600 dark:text-indigo-400 hover:underline">{{ $contact->name }}</a>
+                                    @else
+                                        {{ $contact->name }}
+                                    @endif
+                                </td>
+                                <td class="px-6 py-3">
+                                    @if ($contact->company && $contact->company_url)
+                                        <a href="{{ $contact->company_url }}" target="_blank" rel="noopener" class="text-indigo-600 dark:text-indigo-400 hover:underline">{{ $contact->company }}</a>
+                                    @else
+                                        {{ $contact->company }}
+                                    @endif
+                                </td>
+                                <td class="px-6 py-3">{{ $contact->category }}</td>
+                                <td class="px-6 py-3">{{ $contact->niche }}</td>
                                 <td class="px-6 py-3">
                                     @php($status = $contact->email_status)
                                     <span class="text-xs px-2 py-0.5 rounded whitespace-nowrap
@@ -175,7 +175,7 @@
                             </tr>
                             @if ($expanded && $expandedId === $contact->id)
                                 <tr wire:key="contact-detail-{{ $contact->id }}">
-                                    <td colspan="9" class="px-6 py-4 bg-gray-50 dark:bg-gray-900/40">
+                                    <td colspan="11" class="px-6 py-4 bg-gray-50 dark:bg-gray-900/40">
                                         <div class="space-y-3 text-sm">
                                             <div class="flex items-center justify-between">
                                                 <p class="font-semibold">Enrollments &amp; messages</p>
@@ -337,7 +337,7 @@
                             @endif
                         @empty
                             <tr>
-                                <td colspan="9" class="px-6 py-10 text-center text-gray-500 dark:text-gray-300">
+                                <td colspan="11" class="px-6 py-10 text-center text-gray-500 dark:text-gray-300">
                                     @if ($this->activeFilterCount() > 0)
                                         No contacts match these filters. <button wire:click="clearFilters" class="text-indigo-600 hover:underline">Clear all</button>
                                     @else

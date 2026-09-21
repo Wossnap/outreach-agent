@@ -5,12 +5,12 @@
             "key": "baseUrl",
             "type": "string",
             "name": "string",
-            "value": "http://localhost:8010"
+            "value": "http://localhost:8000"
         }
     ],
     "info": {
         "name": "Outreach Agent API",
-        "_postman_id": "8f92e21f-2a6f-4fe6-9ded-cb6bf7a539c3",
+        "_postman_id": "5c907757-3bef-4222-a17c-aae4fa750cc7",
         "description": "",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -160,8 +160,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"email\":\"sam.patel@globex.example\",\"email_status\":\"pending\",\"email_checked_at\":null,\"email_provider\":null,\"profile_url\":null,\"name\":\"Sam Patel\",\"first_name\":\"Sam\",\"last_name\":\"Patel\",\"job_title\":null,\"company\":\"Globex\",\"domain\":\"globex.example\",\"source\":\"tube-trend-tool\",\"extra\":[],\"created_at\":\"2026-09-09T07:01:40+00:00\",\"updated_at\":\"2026-09-09T07:01:40+00:00\"},{\"id\":1,\"email\":\"jane.doe@acme.example\",\"email_status\":\"pending\",\"email_checked_at\":null,\"email_provider\":null,\"profile_url\":null,\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"job_title\":null,\"company\":\"Acme Ltd\",\"domain\":\"acme.example\",\"source\":\"tube-trend-tool\",\"extra\":{\"tube-trend-tool\":{\"industry\":\"SaaS\",\"employees\":40}},\"created_at\":\"2026-09-09T07:01:40+00:00\",\"updated_at\":\"2026-09-09T07:01:40+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -213,8 +213,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"email_status\":\"pending\",\"email_checked_at\":null,\"email_provider\":null,\"profile_url\":null,\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"job_title\":null,\"company\":\"Acme Ltd\",\"domain\":\"acme.example\",\"source\":\"tube-trend-tool\",\"extra\":{\"tube-trend-tool\":{\"industry\":\"SaaS\",\"employees\":40}},\"suppressed\":false,\"created_at\":\"2026-09-09T07:01:40+00:00\",\"updated_at\":\"2026-09-09T07:01:40+00:00\",\"enrollments\":[{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-09T07:01:40+00:00\"}],\"messages\":[{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-08T07:01:40+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-09T07:01:40+00:00\"}],\"replies\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-09T01:01:40+00:00\",\"read_at\":null}]}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -241,7 +241,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"jane.doe@acme.example\",\n    \"profile_url\": \"https://linkedin.com/in/jane-doe\",\n    \"name\": \"Jane Doe\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Doe\",\n    \"company\": \"Acme Ltd\",\n    \"domain\": \"acme.example\",\n    \"job_title\": \"Head of Operations\",\n    \"source\": \"tube-trend-tool\",\n    \"extra\": {\n        \"industry\": \"SaaS\"\n    },\n    \"tags\": [\n        \"seo-backlinks\"\n    ]\n}"
+                            "raw": "{\n    \"email\": \"jane.doe@acme.example\",\n    \"profile_url\": \"https://linkedin.com/in/jane-doe\",\n    \"name\": \"Jane Doe\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Doe\",\n    \"company\": \"Acme Ltd\",\n    \"domain\": \"acme.example\",\n    \"job_title\": \"Head of Operations\",\n    \"category\": \"Home services\",\n    \"niche\": \"Landscaping\",\n    \"company_url\": \"https://linkedin.com/company/acme\",\n    \"source\": \"tube-trend-tool\",\n    \"extra\": {\n        \"industry\": \"SaaS\"\n    },\n    \"tags\": [\n        \"seo-backlinks\"\n    ]\n}"
                         },
                         "description": "Upserts the contact and enrolls them in the automation matching each tag.\n\nA contact does not have to arrive with an email address. Send whichever\nyou have: an email, a LinkedIn profile_url, or a name together with a\ndomain, and the address is found and checked for you. Until something has\nconfirmed an address, enrollments are created but held at\n`waiting_email`, and they start on their own the moment it is confirmed.\n\nSubmitting the same person again updates them rather than creating a\nsecond record, so a caller that has lost track of what it already sent\ncan safely send it again. A suppressed address is stored and nothing is\nenrolled."
                     },
@@ -317,8 +317,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-09T07:01:40+00:00\",\"updated_at\":\"2026-09-09T07:01:40+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-09T07:01:40+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-09T07:01:40+00:00\"}]}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -370,8 +370,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"tag\":\"seo-backlinks\",\"name\":\"SEO backlinks outreach\",\"description\":\"Three touches for sites that could carry a link back to us.\",\"active\":true,\"created_at\":\"2026-09-09T07:01:40+00:00\",\"updated_at\":\"2026-09-09T07:01:40+00:00\",\"steps\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-09T07:01:40+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-09T07:01:40+00:00\"}]}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -423,8 +423,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"automation_id\":1,\"position\":1,\"delay_days\":0,\"delay_hours\":0,\"drafting_instructions\":\"Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-09T07:01:40+00:00\"},{\"id\":2,\"automation_id\":1,\"position\":2,\"delay_days\":3,\"delay_hours\":0,\"drafting_instructions\":\"Short nudge referencing the first note. Do not re-introduce yourself.\",\"active\":true,\"attachments\":[],\"created_at\":\"2026-09-09T07:01:40+00:00\"}]}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -791,8 +791,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"contact_id\":2,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":0,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-09T07:01:40+00:00\",\"contact\":{\"id\":2,\"email\":\"sam.patel@globex.example\",\"email_status\":\"pending\",\"email_checked_at\":null,\"email_provider\":null,\"profile_url\":null,\"name\":\"Sam Patel\",\"first_name\":\"Sam\",\"last_name\":\"Patel\",\"job_title\":null,\"company\":\"Globex\",\"domain\":\"globex.example\",\"source\":\"tube-trend-tool\",\"extra\":[],\"created_at\":\"2026-09-09T07:01:40+00:00\",\"updated_at\":\"2026-09-09T07:01:40+00:00\"}},{\"id\":1,\"contact_id\":1,\"automation_id\":1,\"automation_tag\":\"seo-backlinks\",\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"status\":\"active\",\"current_step\":1,\"stopped_at\":null,\"stop_reason\":null,\"created_at\":\"2026-09-09T07:01:40+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"email_status\":\"pending\",\"email_checked_at\":null,\"email_provider\":null,\"profile_url\":null,\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"job_title\":null,\"company\":\"Acme Ltd\",\"domain\":\"acme.example\",\"source\":\"tube-trend-tool\",\"extra\":{\"tube-trend-tool\":{\"industry\":\"SaaS\",\"employees\":40}},\"created_at\":\"2026-09-09T07:01:40+00:00\",\"updated_at\":\"2026-09-09T07:01:40+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -949,8 +949,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-08T07:01:40+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-09T07:01:40+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"email_status\":\"pending\",\"email_checked_at\":null,\"email_provider\":null,\"profile_url\":null,\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"job_title\":null,\"company\":\"Acme Ltd\",\"domain\":\"acme.example\",\"source\":\"tube-trend-tool\",\"extra\":{\"tube-trend-tool\":{\"industry\":\"SaaS\",\"employees\":40}},\"created_at\":\"2026-09-09T07:01:40+00:00\",\"updated_at\":\"2026-09-09T07:01:40+00:00\"}},{\"id\":2,\"enrollment_id\":2,\"contact_id\":2,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"pending_approval\",\"subject\":\"Quick thought on your resources page\",\"body_text\":\"Hi Sam,\\n\\nYour resources page is missing a section we could help fill.\\n\\nWorth a quick chat?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":null,\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-09T07:01:40+00:00\",\"contact\":{\"id\":2,\"email\":\"sam.patel@globex.example\",\"email_status\":\"pending\",\"email_checked_at\":null,\"email_provider\":null,\"profile_url\":null,\"name\":\"Sam Patel\",\"first_name\":\"Sam\",\"last_name\":\"Patel\",\"job_title\":null,\"company\":\"Globex\",\"domain\":\"globex.example\",\"source\":\"tube-trend-tool\",\"extra\":[],\"created_at\":\"2026-09-09T07:01:40+00:00\",\"updated_at\":\"2026-09-09T07:01:40+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -1002,8 +1002,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"enrollment_id\":1,\"contact_id\":1,\"mailbox_id\":1,\"mailbox_email\":\"hello@outreach.example\",\"sequence_step_id\":1,\"step_position\":1,\"status\":\"sent\",\"subject\":\"Your guide on nursery irrigation\",\"body_text\":\"Hi Jane,\\n\\nI read your piece on drip irrigation and it lines up closely with what we publish.\\n\\nWould a link swap make sense?\\n\\nAlex\",\"edited_by_user\":false,\"scheduled_at\":null,\"sent_at\":\"2026-09-08T07:01:40+00:00\",\"approved_at\":null,\"rejected_at\":null,\"rejection_note\":null,\"error\":null,\"created_at\":\"2026-09-09T07:01:40+00:00\",\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"email_status\":\"pending\",\"email_checked_at\":null,\"email_provider\":null,\"profile_url\":null,\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"job_title\":null,\"company\":\"Acme Ltd\",\"domain\":\"acme.example\",\"source\":\"tube-trend-tool\",\"extra\":{\"tube-trend-tool\":{\"industry\":\"SaaS\",\"employees\":40}},\"created_at\":\"2026-09-09T07:01:40+00:00\",\"updated_at\":\"2026-09-09T07:01:40+00:00\"}}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -1207,8 +1207,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-09T01:01:40+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"email_status\":\"pending\",\"email_checked_at\":null,\"email_provider\":null,\"profile_url\":null,\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"job_title\":null,\"company\":\"Acme Ltd\",\"domain\":\"acme.example\",\"source\":\"tube-trend-tool\",\"extra\":{\"tube-trend-tool\":{\"industry\":\"SaaS\",\"employees\":40}},\"created_at\":\"2026-09-09T07:01:40+00:00\",\"updated_at\":\"2026-09-09T07:01:40+00:00\"}}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -1260,8 +1260,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"contact_id\":1,\"enrollment_id\":1,\"message_id\":1,\"mailbox_id\":1,\"from_email\":\"jane.doe@acme.example\",\"subject\":\"Re: Your guide on nursery irrigation\",\"snippet\":\"Happy to take a look, send it over.\",\"body_text\":\"Happy to take a look, send it over.\\n\\nJane\",\"classification\":\"reply\",\"received_at\":\"2026-09-09T01:01:40+00:00\",\"read_at\":null,\"contact\":{\"id\":1,\"email\":\"jane.doe@acme.example\",\"email_status\":\"pending\",\"email_checked_at\":null,\"email_provider\":null,\"profile_url\":null,\"name\":\"Jane Doe\",\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"job_title\":null,\"company\":\"Acme Ltd\",\"domain\":\"acme.example\",\"source\":\"tube-trend-tool\",\"extra\":{\"tube-trend-tool\":{\"industry\":\"SaaS\",\"employees\":40}},\"created_at\":\"2026-09-09T07:01:40+00:00\",\"updated_at\":\"2026-09-09T07:01:40+00:00\"}}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -1342,8 +1342,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"no.thanks@globex.example\",\"reason\":\"unsubscribed\",\"source_reply_id\":null,\"created_at\":\"2026-09-09T07:01:40+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -1473,8 +1473,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-09T06:59:40+00:00\",\"last_send_error\":null}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":1,\"last_page\":1}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -1526,8 +1526,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"id\":1,\"email\":\"hello@outreach.example\",\"display_name\":\"Alex Rivera\",\"domain\":\"outreach.example\",\"status\":\"active\",\"paused_reason\":null,\"health_status\":\"healthy\",\"daily_cap\":40,\"send_window\":{\"start\":\"09:00\",\"end\":\"17:00\",\"timezone\":\"UTC\",\"weekends\":false},\"warmup_enabled\":true,\"stats_7d\":{\"sent\":84,\"bounce_rate\":0.0119,\"reply_rate\":0.0714},\"last_polled_at\":\"2026-09-09T06:59:40+00:00\",\"last_send_error\":null}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -1689,8 +1689,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":{\"window_since\":null,\"contacts\":{\"total\":2,\"suppressed\":1},\"enrollments\":{\"active\":2,\"waiting_email\":0,\"total\":2},\"queue\":{\"pending_approval\":1,\"scheduled\":0,\"draft_failed\":0,\"send_failed\":0},\"sending\":{\"sent\":1,\"replies\":1,\"bounces\":0,\"unsubscribes\":0,\"reply_rate\":1,\"bounce_rate\":0},\"mailboxes\":{\"total\":1,\"active\":1,\"paused\":0,\"disconnected\":0}}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]
@@ -1777,8 +1777,8 @@
                                     "value": "*"
                                 }
                             ],
-                            "code": 200,
-                            "body": "{\"success\":true,\"message\":\"ok\",\"data\":[{\"id\":2,\"event\":\"send_failed\",\"level\":\"error\",\"message\":\"Gmail returned 429 for hello@outreach.example\",\"context\":[],\"subject_type\":null,\"subject_id\":null,\"retryable\":true,\"retried_at\":null,\"created_at\":\"2026-09-09T07:01:40+00:00\"},{\"id\":1,\"event\":\"email_sent\",\"level\":\"info\",\"message\":\"Sent to jane.doe@acme.example\",\"context\":[],\"subject_type\":\"App\\\\Models\\\\Message\",\"subject_id\":1,\"retryable\":false,\"retried_at\":null,\"created_at\":\"2026-09-09T07:01:40+00:00\"}],\"meta\":{\"page\":1,\"per_page\":50,\"total\":2,\"last_page\":1}}",
+                            "code": 401,
+                            "body": "{\"success\":false,\"message\":\"Invalid API key.\"}",
                             "name": ""
                         }
                     ]

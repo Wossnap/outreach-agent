@@ -55,8 +55,10 @@ trait WithIndexTable
 
     public function activeFilterCount(): int
     {
+        // A switch that is off is not a filter somebody applied, so false does
+        // not count; filled() would say otherwise.
         return collect($this->filterProperties())
-            ->filter(fn (string $property) => filled($this->{$property}))
+            ->filter(fn (string $property) => $this->{$property} !== false && filled($this->{$property}))
             ->count();
     }
 

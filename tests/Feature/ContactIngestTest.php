@@ -63,6 +63,31 @@ class ContactIngestTest extends TestCase
         $response->assertStatus(422)->assertJson(['success' => false]);
     }
 
+    public function test_category_niche_and_company_url_are_stored_and_never_blanked(): void
+    {
+        Queue::fake();
+
+        $this->postJson('/api/contacts', [
+            'email' => 'jane@acme.example',
+            'company' => 'Acme',
+            'category' => 'Home services',
+            'niche' => 'Landscaping',
+            'company_url' => 'https://linkedin.com/company/acme',
+        ], $this->apiHeaders())->assertOk();
+
+        $contact = Contact::query()->where('email', 'jane@acme.example')->sole();
+
+        $this->assertSame('Home services', $contact->category);
+        $this->assertSame('Landscaping', $contact->niche);
+        $this->assertSame('https://linkedin.com/company/acme', $contact->company_url);
+
+        // A later push that says nothing about them leaves what is known alone.
+        $this->postJson('/api/contacts', ['email' => 'jane@acme.example', 'name' => 'Jane'], $this->apiHeaders())->assertOk();
+
+        $this->assertSame('Landscaping', $contact->fresh()->niche);
+        $this->assertSame('https://linkedin.com/company/acme', $contact->fresh()->company_url);
+    }
+
     public function test_ingests_contact_and_enrolls_by_tag(): void
     {
         Queue::fake();

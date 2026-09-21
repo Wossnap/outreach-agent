@@ -30,6 +30,9 @@ class ContactsIndexTest extends TestCase
         Contact::factory()->create(['email' => 'jane@other.com', 'company' => 'Other']);
 
         Livewire::test(Index::class)
+            // Shut the panel: it starts open, and the email typeahead would
+            // otherwise list jane@other.com as a suggestion above the table.
+            ->call('toggleFilters')
             ->set('email', 'jane')
             ->set('company', 'Acme')
             ->assertSee('jane@acme.com')
@@ -164,6 +167,87 @@ class ContactsIndexTest extends TestCase
             ->assertDontSee('said Said')
             ->assertSee('status safe, score 93')
             ->assertDontSee('{"status"');
+    }
+
+    public function test_the_filters_start_open(): void
+    {
+        Livewire::test(Index::class)
+            ->assertSet('showFilters', true)
+            ->assertSee('Include leads with no address found');
+    }
+
+    public function test_leads_with_no_address_found_are_hidden_until_asked_for(): void
+    {
+        Contact::factory()->create(['email' => 'found@x.com']);
+        Contact::factory()->withoutAnEmail()->create(['name' => 'Nobody Found', 'email_status' => Contact::EMAIL_NOT_FOUND]);
+
+        // Nothing can be done with them from here, and they were most of the
+        // page. The switch brings them back.
+        Livewire::test(Index::class)
+            ->assertSee('found@x.com')
+            ->assertDontSee('Nobody Found')
+            ->set('includeNotFound', true)
+            ->assertSee('Nobody Found');
+    }
+
+    public function test_picking_not_found_in_the_address_filter_shows_them_without_the_switch(): void
+    {
+        Contact::factory()->create(['email' => 'found@x.com']);
+        Contact::factory()->withoutAnEmail()->create(['name' => 'Nobody Found', 'email_status' => Contact::EMAIL_NOT_FOUND]);
+
+        Livewire::test(Index::class)
+            ->set('emailStatuses', [Contact::EMAIL_NOT_FOUND])
+            ->assertSee('Nobody Found')
+            ->assertDontSee('found@x.com');
+    }
+
+    public function test_the_not_found_switch_only_counts_as_a_filter_when_it_is_on(): void
+    {
+        $this->assertSame(0, Livewire::test(Index::class)->instance()->activeFilterCount());
+        $this->assertSame(1, Livewire::test(Index::class)->set('includeNotFound', true)->instance()->activeFilterCount());
+    }
+
+    public function test_filters_by_category_and_niche(): void
+    {
+        Contact::factory()->create(['email' => 'garden@x.com', 'category' => 'Home services', 'niche' => 'Landscaping']);
+        Contact::factory()->create(['email' => 'plumb@x.com', 'category' => 'Home services', 'niche' => 'Plumbing']);
+        Contact::factory()->create(['email' => 'saas@x.com', 'category' => 'Software', 'niche' => 'CRM']);
+
+        Livewire::test(Index::class)
+            ->set('categories', ['Home services'])
+            ->assertSee('garden@x.com')
+            ->assertSee('plumb@x.com')
+            ->assertDontSee('saas@x.com')
+            ->set('niches', ['Plumbing'])
+            ->assertSee('plumb@x.com')
+            ->assertDontSee('garden@x.com');
+    }
+
+    public function test_sorts_by_niche(): void
+    {
+        Contact::factory()->create(['email' => 'b@x.com', 'niche' => 'Beta']);
+        Contact::factory()->create(['email' => 'a@x.com', 'niche' => 'Alpha']);
+
+        Livewire::test(Index::class)
+            ->call('sortBy', 'niche')
+            ->assertSeeInOrder(['a@x.com', 'b@x.com']);
+    }
+
+    public function test_name_and_company_link_to_linkedin_when_the_urls_are_known(): void
+    {
+        Contact::factory()->create([
+            'name' => 'Sam Carter',
+            'profile_url' => 'https://linkedin.com/in/sam-carter',
+            'company' => 'Acme Ltd',
+            'company_url' => 'https://linkedin.com/company/acme',
+        ]);
+        Contact::factory()->create(['name' => 'No Link', 'profile_url' => null, 'company' => 'Linkless', 'company_url' => null]);
+
+        Livewire::test(Index::class)
+            ->assertSeeHtml('href="https://linkedin.com/in/sam-carter"')
+            ->assertSeeHtml('href="https://linkedin.com/company/acme"')
+            ->assertSee('No Link')
+            ->assertSee('Linkless');
     }
 
     public function test_manual_suppress_stops_active_enrollments(): void

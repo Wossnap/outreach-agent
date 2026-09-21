@@ -86,6 +86,43 @@ class AnthropicDrafterTest extends TestCase
         app(AnthropicDrafter::class)->draft($enrollment, $step);
     }
 
+    public function test_the_prompt_forbids_asks_the_instructions_did_not_make(): void
+    {
+        // The model's habit was to close with an offer of its own - "Want me
+        // to send it over?" - that no automation had asked for.
+        $this->fakeAnthropic('{"subject": "Hi", "body": "Yo"}');
+        $enrollment = $this->makeEnrollment();
+        $step = SequenceStep::factory()->create(['automation_id' => $enrollment->automation_id]);
+
+        app(AnthropicDrafter::class)->draft($enrollment, $step);
+
+        Http::assertSent(function ($request) {
+            $prompt = $request->data()['messages'][0]['content'];
+
+            return str_contains($prompt, 'Include only what the drafting instructions ask for')
+                && str_contains($prompt, 'Want me to send it over?')
+                && str_contains($prompt, 'Do not add a P.S.');
+        });
+    }
+
+    public function test_the_prompt_names_the_leads_category_and_niche(): void
+    {
+        $this->fakeAnthropic('{"subject": "Hi", "body": "Yo"}');
+        $contact = Contact::factory()->create(['category' => 'Home services', 'niche' => 'Landscaping']);
+        $mailbox = Mailbox::factory()->connected()->create();
+        $enrollment = Enrollment::factory()->create(['contact_id' => $contact->id, 'mailbox_id' => $mailbox->id]);
+        $step = SequenceStep::factory()->create(['automation_id' => $enrollment->automation_id]);
+
+        app(AnthropicDrafter::class)->draft($enrollment, $step);
+
+        Http::assertSent(function ($request) {
+            $prompt = $request->data()['messages'][0]['content'];
+
+            return str_contains($prompt, 'Category: Home services')
+                && str_contains($prompt, 'Niche: Landscaping');
+        });
+    }
+
     public function test_follow_up_prompt_includes_prior_thread(): void
     {
         $this->fakeAnthropic('{"subject": "Re: Hi", "body": "Following up."}');

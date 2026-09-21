@@ -126,6 +126,87 @@ class ApprovalQueueTest extends TestCase
         );
     }
 
+    public function test_the_compact_view_is_the_default_and_shows_the_email_as_text(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $message = $this->makePending();
+
+        // Read in one pass: the lead, the automation, then the email as it
+        // would arrive. No form unless asked for.
+        Livewire::test(ApprovalQueue::class)
+            ->assertSet('view', ApprovalQueue::VIEW_COMPACT)
+            ->assertSee($message->subject)
+            ->assertSee($message->body_text)
+            ->assertSee($message->enrollment->automation->tag)
+            ->assertDontSeeHtml('<textarea');
+    }
+
+    public function test_edit_opens_the_form_for_one_draft_in_the_compact_view(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $message = $this->makePending();
+
+        Livewire::test(ApprovalQueue::class)
+            ->call('toggleEdit', $message->id)
+            ->assertSeeHtml('<textarea')
+            ->call('toggleEdit', $message->id)
+            ->assertDontSeeHtml('<textarea');
+    }
+
+    public function test_the_full_view_shows_every_draft_as_a_form(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $mailbox = Mailbox::factory()->connected()->create();
+        $this->makePending($mailbox);
+        $this->makePending($mailbox);
+
+        $component = Livewire::test(ApprovalQueue::class)->call('toggleView');
+
+        $component->assertSet('view', ApprovalQueue::VIEW_FULL);
+        $this->assertSame(2, substr_count($component->html(), '<textarea'));
+    }
+
+    public function test_select_all_on_page_ticks_every_draft_shown_and_only_those(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $mailbox = Mailbox::factory()->connected()->create();
+        $a = $this->makePending($mailbox);
+        $b = $this->makePending($mailbox);
+
+        $component = Livewire::test(ApprovalQueue::class)->call('toggleSelectPage', [$a->id, $b->id]);
+        $this->assertSame([$a->id, $b->id], $component->instance()->selectedIds());
+
+        // A second click on a fully ticked page clears it.
+        $component->call('toggleSelectPage', [$a->id, $b->id]);
+        $this->assertSame([], $component->instance()->selectedIds());
+    }
+
+    public function test_bulk_reject_only_selected_and_takes_them_out_of_their_sequences(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $mailbox = Mailbox::factory()->connected()->create();
+        $a = $this->makePending($mailbox);
+        $b = $this->makePending($mailbox);
+        $c = $this->makePending($mailbox);
+
+        Livewire::test(ApprovalQueue::class)
+            ->set('selected.'.$a->id, true)
+            ->set('selected.'.$b->id, true)
+            ->call('startRejectSelected')
+            ->set('rejectionNote', 'Wrong angle')
+            ->call('confirmReject')
+            ->assertSet('rejectingSelected', false);
+
+        foreach ([$a, $b] as $rejected) {
+            $this->assertSame(Message::STATUS_REJECTED, $rejected->fresh()->status);
+            $this->assertSame('Wrong angle', $rejected->fresh()->rejection_note);
+            $this->assertSame(Enrollment::STATUS_STOPPED_REJECTED, $rejected->enrollment->fresh()->status);
+        }
+
+        $this->assertSame(Message::STATUS_PENDING_APPROVAL, $c->fresh()->status);
+        $this->assertSame(Enrollment::STATUS_ACTIVE, $c->enrollment->fresh()->status);
+    }
+
     public function test_approve_without_mailbox_warns_and_stays_approved(): void
     {
         $this->actingAs(User::factory()->create());

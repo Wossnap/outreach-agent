@@ -116,7 +116,7 @@ class ContactIngestService
         // Never overwrite a known value with a missing one. A second push
         // carrying only an address should not blank out the name an earlier
         // one supplied.
-        foreach (['email', 'profile_url', 'company', 'job_title'] as $field) {
+        foreach (['email', 'profile_url', 'company', 'job_title', 'category', 'niche', 'company_url'] as $field) {
             if (filled($payload[$field] ?? null)) {
                 $contact->{$field} = $payload[$field];
             }

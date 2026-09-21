@@ -71,7 +71,7 @@ class AnthropicDrafter implements Drafter
             'Email: '.$contact->email,
         ];
 
-        foreach (['name' => 'Name', 'job_title' => 'Job title', 'company' => 'Company', 'domain' => 'Company domain'] as $field => $label) {
+        foreach (['name' => 'Name', 'job_title' => 'Job title', 'company' => 'Company', 'category' => 'Category', 'niche' => 'Niche', 'domain' => 'Company domain'] as $field => $label) {
             if ($contact->{$field}) {
                 $lines[] = $label.': '.$contact->{$field};
             }
@@ -99,6 +99,9 @@ class AnthropicDrafter implements Drafter
         $lines[] = $step->drafting_instructions;
         $lines[] = '';
         $lines[] = 'Write a plain-text email (no HTML, no markdown). Keep it genuinely personal to the recipient data given — never use placeholder brackets. Sign off as the sender.';
+        // The model's habit is to end with an extra offer of its own. It reads
+        // as a sales tic, and it is not what the automation's author wrote.
+        $lines[] = 'Include only what the drafting instructions ask for. Do not add offers, questions, calls to action, follow-up hooks or closing lines the instructions did not ask for (for example "Want me to send it over?", "Happy to share more", "Let me know if you\'re interested"). Do not add a P.S. If the instructions specify an ask, make exactly that ask, once.';
         $lines[] = 'Respond with ONLY a JSON object, no other text: {"subject": "...", "body": "..."}';
 
         return implode("\n", $lines);

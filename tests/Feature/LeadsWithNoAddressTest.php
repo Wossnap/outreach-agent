@@ -186,8 +186,7 @@ class LeadsWithNoAddressTest extends TestCase
         Enrollment::factory()->create(['contact_id' => $other->id, 'automation_id' => $this->automation->id]);
 
         Livewire::test(Index::class)
-            // The status list lives inside the filter panel, which starts shut.
-            ->call('toggleFilters')
+            // The status list lives inside the filter panel, which starts open.
             ->assertSee(Enrollment::STATUS_WAITING_EMAIL)
             ->set('enrollmentStatuses', [Enrollment::STATUS_WAITING_EMAIL])
             ->assertSee('Sam Carter')

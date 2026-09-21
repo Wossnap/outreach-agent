@@ -19,7 +19,7 @@ class Index extends Component
     use WithIndexTable, WithPagination;
 
     /** @var array<string> */
-    public array $sortable = ['email', 'name', 'company', 'source', 'email_status', 'created_at'];
+    public array $sortable = ['email', 'name', 'company', 'category', 'niche', 'source', 'email_status', 'created_at'];
 
     public string $defaultSort = 'created_at';
 
@@ -44,6 +44,23 @@ class Index extends Component
     #[Url]
     public array $emailStatuses = [];
 
+    /** @var array<string> */
+    #[Url]
+    public array $categories = [];
+
+    /** @var array<string> */
+    #[Url]
+    public array $niches = [];
+
+    /**
+     * Leads the waterfall could not find an address for are left out unless
+     * this is on, or "Not found" is picked in the Address filter outright.
+     * They are the one kind of lead nothing can be done with from here, and
+     * on a page for choosing who to write to they were most of the noise.
+     */
+    #[Url]
+    public bool $includeNotFound = false;
+
     #[Url]
     public string $suppressed = '';
 
@@ -67,9 +84,29 @@ class Index extends Component
 
     public ?string $flash = null;
 
+    /**
+     * The filters start open. This page is used by picking a slice of the
+     * leads, so the controls for that were being opened on every visit.
+     */
+    public function mount(): void
+    {
+        $this->showFilters = true;
+    }
+
+    /**
+     * Whether leads with no address found are left out of the list.
+     *
+     * Picking "Not found" in the Address filter is asking for them by name, so
+     * it wins over the switch without anybody having to find the switch.
+     */
+    public function hidesNotFound(): bool
+    {
+        return ! $this->includeNotFound && ! in_array(Contact::EMAIL_NOT_FOUND, $this->emailStatuses, true);
+    }
+
     protected function filterProperties(): array
     {
-        return ['email', 'name', 'company', 'sources', 'emailStatuses', 'enrollmentStatuses', 'suppressed', 'createdFrom', 'createdTo'];
+        return ['email', 'name', 'company', 'sources', 'emailStatuses', 'categories', 'niches', 'includeNotFound', 'enrollmentStatuses', 'suppressed', 'createdFrom', 'createdTo'];
     }
 
     public function toggleExpand(int $id): void
@@ -219,6 +256,9 @@ class Index extends Component
             ->when($this->company, fn ($q) => $q->whereRaw('lower(company) like ?', ['%'.mb_strtolower($this->company).'%']))
             ->when($this->sources !== [], fn ($q) => $q->whereIn('source', $this->sources))
             ->when($this->emailStatuses !== [], fn ($q) => $q->whereIn('email_status', $this->emailStatuses))
+            ->when($this->categories !== [], fn ($q) => $q->whereIn('category', $this->categories))
+            ->when($this->niches !== [], fn ($q) => $q->whereIn('niche', $this->niches))
+            ->when($this->hidesNotFound(), fn ($q) => $q->where('email_status', '!=', Contact::EMAIL_NOT_FOUND))
             ->when($this->enrollmentStatuses !== [], fn ($q) => $q->whereHas('enrollments', fn ($e) => $e->whereIn('status', $this->enrollmentStatuses)))
             ->when($this->suppressed === 'yes', fn ($q) => $q->whereIn('email', Suppression::query()->select('email')))
             /*
@@ -251,17 +291,32 @@ class Index extends Component
             'contacts' => $contacts,
             'suppressedEmails' => $suppressedEmails,
             'expanded' => $expanded,
-            'availableSources' => Contact::query()->whereNotNull('source')->distinct()->orderBy('source')->pluck('source'),
+            'availableSources' => $this->distinctValues('source'),
             'availableEmailStatuses' => Contact::emailStatuses(),
-            // Waiting sits beside active because it is the other open state:
-            // both mean the person is in the sequence and it has not ended.
-            'availableStatuses' => [
-                Enrollment::STATUS_ACTIVE, Enrollment::STATUS_WAITING_EMAIL,
-                Enrollment::STATUS_COMPLETED, Enrollment::STATUS_STOPPED_REPLY,
-                Enrollment::STATUS_STOPPED_UNSUBSCRIBE, Enrollment::STATUS_STOPPED_BOUNCE,
-                Enrollment::STATUS_STOPPED_SUPPRESSED, Enrollment::STATUS_STOPPED_REJECTED,
-                Enrollment::STATUS_CANCELLED, Enrollment::STATUS_FAILED,
-            ],
+            'availableCategories' => $this->distinctValues('category'),
+            'availableNiches' => $this->distinctValues('niche'),
+            // Every status, worded as a person would say it. Waiting sits
+            // beside active because it is the other open state: both mean the
+            // person is in the sequence and it has not ended.
+            'availableStatuses' => Enrollment::statusLabels(),
         ]);
+    }
+
+    /**
+     * Every value a column currently holds, for a filter built from what is
+     * there rather than from a fixed list.
+     *
+     * @return array<string, string>
+     */
+    protected function distinctValues(string $column): array
+    {
+        return Contact::query()
+            ->whereNotNull($column)
+            ->where($column, '!=', '')
+            ->distinct()
+            ->orderBy($column)
+            ->pluck($column)
+            ->mapWithKeys(fn (string $value) => [$value => $value])
+            ->all();
     }
 }

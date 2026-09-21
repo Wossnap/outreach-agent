@@ -1,3 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Alpine hides these until it has booted, so a closed dropdown never flashes open on load. */
+[x-cloak] { display: none !important; }

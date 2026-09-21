@@ -26,7 +26,7 @@
             </style>
 
     <script>
-        var tryItOutBaseUrl = "http://localhost:8010";
+        var tryItOutBaseUrl = "http://localhost:8000";
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
@@ -247,7 +247,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: September 9, 2026</li>
+        <li>Last updated: September 21, 2026</li>
     </ul>
 </div>
 
@@ -256,7 +256,7 @@
     <div class="content">
         <h1 id="introduction">Introduction</h1>
 <aside>
-    <strong>Base URL</strong>: <code>http://localhost:8010</code>
+    <strong>Base URL</strong>: <code>http://localhost:8000</code>
 </aside>
 <pre><code>Push leads in, read what came back out, and run the sequences that sit between the two.
 
@@ -319,14 +319,14 @@ is safe to poll from a monitor.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/health" \
+    --get "http://localhost:8000/api/health" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/health"
+    "http://localhost:8000/api/health"
 );
 
 const headers = {
@@ -448,7 +448,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/contacts" \
+    --get "http://localhost:8000/api/contacts" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -456,7 +456,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/contacts"
+    "http://localhost:8000/api/contacts"
 );
 
 const headers = {
@@ -475,7 +475,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-contacts">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -487,57 +487,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: [
-        {
-            &quot;id&quot;: 2,
-            &quot;email&quot;: &quot;sam.patel@globex.example&quot;,
-            &quot;email_status&quot;: &quot;pending&quot;,
-            &quot;email_checked_at&quot;: null,
-            &quot;email_provider&quot;: null,
-            &quot;profile_url&quot;: null,
-            &quot;name&quot;: &quot;Sam Patel&quot;,
-            &quot;first_name&quot;: &quot;Sam&quot;,
-            &quot;last_name&quot;: &quot;Patel&quot;,
-            &quot;job_title&quot;: null,
-            &quot;company&quot;: &quot;Globex&quot;,
-            &quot;domain&quot;: &quot;globex.example&quot;,
-            &quot;source&quot;: &quot;tube-trend-tool&quot;,
-            &quot;extra&quot;: [],
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-        },
-        {
-            &quot;id&quot;: 1,
-            &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
-            &quot;email_status&quot;: &quot;pending&quot;,
-            &quot;email_checked_at&quot;: null,
-            &quot;email_provider&quot;: null,
-            &quot;profile_url&quot;: null,
-            &quot;name&quot;: &quot;Jane Doe&quot;,
-            &quot;first_name&quot;: &quot;Jane&quot;,
-            &quot;last_name&quot;: &quot;Doe&quot;,
-            &quot;job_title&quot;: null,
-            &quot;company&quot;: &quot;Acme Ltd&quot;,
-            &quot;domain&quot;: &quot;acme.example&quot;,
-            &quot;source&quot;: &quot;tube-trend-tool&quot;,
-            &quot;extra&quot;: {
-                &quot;tube-trend-tool&quot;: {
-                    &quot;industry&quot;: &quot;SaaS&quot;,
-                    &quot;employees&quot;: 40
-                }
-            },
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-        }
-    ],
-    &quot;meta&quot;: {
-        &quot;page&quot;: 1,
-        &quot;per_page&quot;: 50,
-        &quot;total&quot;: 2,
-        &quot;last_page&quot;: 1
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -772,7 +723,7 @@ reply received, in one request.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/contacts/jane.doe@acme.example" \
+    --get "http://localhost:8000/api/contacts/jane.doe@acme.example" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -780,7 +731,7 @@ reply received, in one request.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/contacts/jane.doe@acme.example"
+    "http://localhost:8000/api/contacts/jane.doe@acme.example"
 );
 
 const headers = {
@@ -799,7 +750,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-contacts--contact-">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -811,85 +762,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: {
-        &quot;id&quot;: 1,
-        &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
-        &quot;email_status&quot;: &quot;pending&quot;,
-        &quot;email_checked_at&quot;: null,
-        &quot;email_provider&quot;: null,
-        &quot;profile_url&quot;: null,
-        &quot;name&quot;: &quot;Jane Doe&quot;,
-        &quot;first_name&quot;: &quot;Jane&quot;,
-        &quot;last_name&quot;: &quot;Doe&quot;,
-        &quot;job_title&quot;: null,
-        &quot;company&quot;: &quot;Acme Ltd&quot;,
-        &quot;domain&quot;: &quot;acme.example&quot;,
-        &quot;source&quot;: &quot;tube-trend-tool&quot;,
-        &quot;extra&quot;: {
-            &quot;tube-trend-tool&quot;: {
-                &quot;industry&quot;: &quot;SaaS&quot;,
-                &quot;employees&quot;: 40
-            }
-        },
-        &quot;suppressed&quot;: false,
-        &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-        &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-        &quot;enrollments&quot;: [
-            {
-                &quot;id&quot;: 1,
-                &quot;contact_id&quot;: 1,
-                &quot;automation_id&quot;: 1,
-                &quot;automation_tag&quot;: &quot;seo-backlinks&quot;,
-                &quot;mailbox_id&quot;: 1,
-                &quot;mailbox_email&quot;: &quot;hello@outreach.example&quot;,
-                &quot;status&quot;: &quot;active&quot;,
-                &quot;current_step&quot;: 1,
-                &quot;stopped_at&quot;: null,
-                &quot;stop_reason&quot;: null,
-                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-            }
-        ],
-        &quot;messages&quot;: [
-            {
-                &quot;id&quot;: 1,
-                &quot;enrollment_id&quot;: 1,
-                &quot;contact_id&quot;: 1,
-                &quot;mailbox_id&quot;: 1,
-                &quot;mailbox_email&quot;: &quot;hello@outreach.example&quot;,
-                &quot;sequence_step_id&quot;: 1,
-                &quot;step_position&quot;: 1,
-                &quot;status&quot;: &quot;sent&quot;,
-                &quot;subject&quot;: &quot;Your guide on nursery irrigation&quot;,
-                &quot;body_text&quot;: &quot;Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex&quot;,
-                &quot;edited_by_user&quot;: false,
-                &quot;scheduled_at&quot;: null,
-                &quot;sent_at&quot;: &quot;2026-09-08T07:01:40+00:00&quot;,
-                &quot;approved_at&quot;: null,
-                &quot;rejected_at&quot;: null,
-                &quot;rejection_note&quot;: null,
-                &quot;error&quot;: null,
-                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-            }
-        ],
-        &quot;replies&quot;: [
-            {
-                &quot;id&quot;: 1,
-                &quot;contact_id&quot;: 1,
-                &quot;enrollment_id&quot;: 1,
-                &quot;message_id&quot;: 1,
-                &quot;mailbox_id&quot;: 1,
-                &quot;from_email&quot;: &quot;jane.doe@acme.example&quot;,
-                &quot;subject&quot;: &quot;Re: Your guide on nursery irrigation&quot;,
-                &quot;snippet&quot;: &quot;Happy to take a look, send it over.&quot;,
-                &quot;body_text&quot;: &quot;Happy to take a look, send it over.\n\nJane&quot;,
-                &quot;classification&quot;: &quot;reply&quot;,
-                &quot;received_at&quot;: &quot;2026-09-09T01:01:40+00:00&quot;,
-                &quot;read_at&quot;: null
-            }
-        ]
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -1014,7 +888,7 @@ enrolled.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8010/api/contacts" \
+    "http://localhost:8000/api/contacts" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -1027,6 +901,9 @@ enrolled.</p>
     \"company\": \"Acme Ltd\",
     \"domain\": \"acme.example\",
     \"job_title\": \"Head of Operations\",
+    \"category\": \"Home services\",
+    \"niche\": \"Landscaping\",
+    \"company_url\": \"https:\\/\\/linkedin.com\\/company\\/acme\",
     \"source\": \"tube-trend-tool\",
     \"extra\": {
         \"industry\": \"SaaS\"
@@ -1036,17 +913,20 @@ enrolled.</p>
     ],
     \"contacts\": [
         {
-            \"email\": \"marquardt.noah@example.com\",
-            \"profile_url\": \"http:\\/\\/hauck.com\\/\",
-            \"name\": \"w\",
-            \"first_name\": \"r\",
-            \"last_name\": \"s\",
-            \"company\": \"i\",
-            \"domain\": \"t\",
-            \"job_title\": \"c\",
+            \"email\": \"bauch.marcelo@example.com\",
+            \"profile_url\": \"http:\\/\\/mclaughlin.info\\/dolores-enim-non-facere-tempora\",
+            \"name\": \"t\",
+            \"first_name\": \"u\",
+            \"last_name\": \"j\",
+            \"company\": \"w\",
+            \"domain\": \"v\",
+            \"job_title\": \"l\",
+            \"category\": \"x\",
+            \"niche\": \"j\",
+            \"company_url\": \"http:\\/\\/www.kshlerin.com\\/\",
             \"source\": \"p\",
             \"tags\": [
-                \"s\"
+                \"p\"
             ]
         }
     ]
@@ -1056,7 +936,7 @@ enrolled.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/contacts"
+    "http://localhost:8000/api/contacts"
 );
 
 const headers = {
@@ -1074,6 +954,9 @@ let body = {
     "company": "Acme Ltd",
     "domain": "acme.example",
     "job_title": "Head of Operations",
+    "category": "Home services",
+    "niche": "Landscaping",
+    "company_url": "https:\/\/linkedin.com\/company\/acme",
     "source": "tube-trend-tool",
     "extra": {
         "industry": "SaaS"
@@ -1083,17 +966,20 @@ let body = {
     ],
     "contacts": [
         {
-            "email": "marquardt.noah@example.com",
-            "profile_url": "http:\/\/hauck.com\/",
-            "name": "w",
-            "first_name": "r",
-            "last_name": "s",
-            "company": "i",
-            "domain": "t",
-            "job_title": "c",
+            "email": "bauch.marcelo@example.com",
+            "profile_url": "http:\/\/mclaughlin.info\/dolores-enim-non-facere-tempora",
+            "name": "t",
+            "first_name": "u",
+            "last_name": "j",
+            "company": "w",
+            "domain": "v",
+            "job_title": "l",
+            "category": "x",
+            "niche": "j",
+            "company_url": "http:\/\/www.kshlerin.com\/",
             "source": "p",
             "tags": [
-                "s"
+                "p"
             ]
         }
     ]
@@ -1210,10 +1096,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="contacts.0.email"                data-endpoint="POSTapi-contacts"
-               value="marquardt.noah@example.com"
+               value="bauch.marcelo@example.com"
                data-component="body">
     <br>
-<p>Must be a valid email address. Must not be greater than 255 characters. Example: <code>marquardt.noah@example.com</code></p>
+<p>Must be a valid email address. Must not be greater than 255 characters. Example: <code>bauch.marcelo@example.com</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>profile_url</code></b>&nbsp;&nbsp;
@@ -1222,10 +1108,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="contacts.0.profile_url"                data-endpoint="POSTapi-contacts"
-               value="http://hauck.com/"
+               value="http://mclaughlin.info/dolores-enim-non-facere-tempora"
                data-component="body">
     <br>
-<p>Must be a valid URL. Must not be greater than 255 characters. Example: <code>http://hauck.com/</code></p>
+<p>Must be a valid URL. Must not be greater than 255 characters. Example: <code>http://mclaughlin.info/dolores-enim-non-facere-tempora</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
@@ -1234,10 +1120,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="contacts.0.name"                data-endpoint="POSTapi-contacts"
-               value="w"
+               value="t"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>w</code></p>
+<p>Must not be greater than 255 characters. Example: <code>t</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>first_name</code></b>&nbsp;&nbsp;
@@ -1246,10 +1132,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="contacts.0.first_name"                data-endpoint="POSTapi-contacts"
-               value="r"
+               value="u"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>r</code></p>
+<p>Must not be greater than 255 characters. Example: <code>u</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>last_name</code></b>&nbsp;&nbsp;
@@ -1258,10 +1144,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="contacts.0.last_name"                data-endpoint="POSTapi-contacts"
-               value="s"
+               value="j"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>s</code></p>
+<p>Must not be greater than 255 characters. Example: <code>j</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>company</code></b>&nbsp;&nbsp;
@@ -1270,10 +1156,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="contacts.0.company"                data-endpoint="POSTapi-contacts"
-               value="i"
+               value="w"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>i</code></p>
+<p>Must not be greater than 255 characters. Example: <code>w</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>domain</code></b>&nbsp;&nbsp;
@@ -1282,10 +1168,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="contacts.0.domain"                data-endpoint="POSTapi-contacts"
-               value="t"
+               value="v"
                data-component="body">
     <br>
-<p>Must not be greater than 2048 characters. Example: <code>t</code></p>
+<p>Must not be greater than 2048 characters. Example: <code>v</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>job_title</code></b>&nbsp;&nbsp;
@@ -1294,10 +1180,46 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="contacts.0.job_title"                data-endpoint="POSTapi-contacts"
-               value="c"
+               value="l"
                data-component="body">
     <br>
-<p>Must not be greater than 1000 characters. Example: <code>c</code></p>
+<p>Must not be greater than 1000 characters. Example: <code>l</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>category</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.category"                data-endpoint="POSTapi-contacts"
+               value="x"
+               data-component="body">
+    <br>
+<p>Must not be greater than 255 characters. Example: <code>x</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>niche</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.niche"                data-endpoint="POSTapi-contacts"
+               value="j"
+               data-component="body">
+    <br>
+<p>Must not be greater than 255 characters. Example: <code>j</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>company_url</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="contacts.0.company_url"                data-endpoint="POSTapi-contacts"
+               value="http://www.kshlerin.com/"
+               data-component="body">
+    <br>
+<p>Must be a valid URL. Must not be greater than 255 characters. Example: <code>http://www.kshlerin.com/</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>source</code></b>&nbsp;&nbsp;
@@ -1436,6 +1358,42 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>Head of Operations</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>category</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="category"                data-endpoint="POSTapi-contacts"
+               value="Home services"
+               data-component="body">
+    <br>
+<p>The lead's market category. Example: <code>Home services</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>niche</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="niche"                data-endpoint="POSTapi-contacts"
+               value="Landscaping"
+               data-component="body">
+    <br>
+<p>The niche within that category. Example: <code>Landscaping</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>company_url</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="company_url"                data-endpoint="POSTapi-contacts"
+               value="https://linkedin.com/company/acme"
+               data-component="body">
+    <br>
+<p>The company's LinkedIn page. Example: <code>https://linkedin.com/company/acme</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>source</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
 <i>optional</i> &nbsp;
@@ -1493,7 +1451,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/automations" \
+    --get "http://localhost:8000/api/automations" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1501,7 +1459,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/automations"
+    "http://localhost:8000/api/automations"
 );
 
 const headers = {
@@ -1520,7 +1478,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-automations">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -1532,49 +1490,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: [
-        {
-            &quot;id&quot;: 1,
-            &quot;tag&quot;: &quot;seo-backlinks&quot;,
-            &quot;name&quot;: &quot;SEO backlinks outreach&quot;,
-            &quot;description&quot;: &quot;Three touches for sites that could carry a link back to us.&quot;,
-            &quot;active&quot;: true,
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-            &quot;steps&quot;: [
-                {
-                    &quot;id&quot;: 1,
-                    &quot;automation_id&quot;: 1,
-                    &quot;position&quot;: 1,
-                    &quot;delay_days&quot;: 0,
-                    &quot;delay_hours&quot;: 0,
-                    &quot;drafting_instructions&quot;: &quot;Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.&quot;,
-                    &quot;active&quot;: true,
-                    &quot;attachments&quot;: [],
-                    &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-                },
-                {
-                    &quot;id&quot;: 2,
-                    &quot;automation_id&quot;: 1,
-                    &quot;position&quot;: 2,
-                    &quot;delay_days&quot;: 3,
-                    &quot;delay_hours&quot;: 0,
-                    &quot;drafting_instructions&quot;: &quot;Short nudge referencing the first note. Do not re-introduce yourself.&quot;,
-                    &quot;active&quot;: true,
-                    &quot;attachments&quot;: [],
-                    &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-                }
-            ]
-        }
-    ],
-    &quot;meta&quot;: {
-        &quot;page&quot;: 1,
-        &quot;per_page&quot;: 50,
-        &quot;total&quot;: 1,
-        &quot;last_page&quot;: 1
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -1736,7 +1653,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/automations/seo-backlinks" \
+    --get "http://localhost:8000/api/automations/seo-backlinks" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1744,7 +1661,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/automations/seo-backlinks"
+    "http://localhost:8000/api/automations/seo-backlinks"
 );
 
 const headers = {
@@ -1763,7 +1680,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-automations--automation-">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -1775,41 +1692,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: {
-        &quot;id&quot;: 1,
-        &quot;tag&quot;: &quot;seo-backlinks&quot;,
-        &quot;name&quot;: &quot;SEO backlinks outreach&quot;,
-        &quot;description&quot;: &quot;Three touches for sites that could carry a link back to us.&quot;,
-        &quot;active&quot;: true,
-        &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-        &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-        &quot;steps&quot;: [
-            {
-                &quot;id&quot;: 1,
-                &quot;automation_id&quot;: 1,
-                &quot;position&quot;: 1,
-                &quot;delay_days&quot;: 0,
-                &quot;delay_hours&quot;: 0,
-                &quot;drafting_instructions&quot;: &quot;Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.&quot;,
-                &quot;active&quot;: true,
-                &quot;attachments&quot;: [],
-                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-            },
-            {
-                &quot;id&quot;: 2,
-                &quot;automation_id&quot;: 1,
-                &quot;position&quot;: 2,
-                &quot;delay_days&quot;: 3,
-                &quot;delay_hours&quot;: 0,
-                &quot;drafting_instructions&quot;: &quot;Short nudge referencing the first note. Do not re-introduce yourself.&quot;,
-                &quot;active&quot;: true,
-                &quot;attachments&quot;: [],
-                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-            }
-        ]
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -1925,7 +1809,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/automations/seo-backlinks/steps" \
+    --get "http://localhost:8000/api/automations/seo-backlinks/steps" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1933,7 +1817,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/automations/seo-backlinks/steps"
+    "http://localhost:8000/api/automations/seo-backlinks/steps"
 );
 
 const headers = {
@@ -1952,7 +1836,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-automations--automation--steps">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -1964,32 +1848,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: [
-        {
-            &quot;id&quot;: 1,
-            &quot;automation_id&quot;: 1,
-            &quot;position&quot;: 1,
-            &quot;delay_days&quot;: 0,
-            &quot;delay_hours&quot;: 0,
-            &quot;drafting_instructions&quot;: &quot;Introduce yourself as the founder. Name one specific page on their site and why a link swap makes sense. Under 120 words, one clear ask.&quot;,
-            &quot;active&quot;: true,
-            &quot;attachments&quot;: [],
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-        },
-        {
-            &quot;id&quot;: 2,
-            &quot;automation_id&quot;: 1,
-            &quot;position&quot;: 2,
-            &quot;delay_days&quot;: 3,
-            &quot;delay_hours&quot;: 0,
-            &quot;drafting_instructions&quot;: &quot;Short nudge referencing the first note. Do not re-introduce yourself.&quot;,
-            &quot;active&quot;: true,
-            &quot;attachments&quot;: [],
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-        }
-    ]
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -2107,7 +1967,7 @@ POST /api/contacts starts them on this sequence.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8010/api/automations" \
+    "http://localhost:8000/api/automations" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -2131,7 +1991,7 @@ POST /api/contacts starts them on this sequence.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/automations"
+    "http://localhost:8000/api/automations"
 );
 
 const headers = {
@@ -2406,7 +2266,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://localhost:8010/api/automations/seo-backlinks" \
+    "http://localhost:8000/api/automations/seo-backlinks" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -2421,7 +2281,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/automations/seo-backlinks"
+    "http://localhost:8000/api/automations/seo-backlinks"
 );
 
 const headers = {
@@ -2619,7 +2479,7 @@ delay_days and delay_hours after the previous one.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8010/api/automations/seo-backlinks/steps" \
+    "http://localhost:8000/api/automations/seo-backlinks/steps" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -2635,7 +2495,7 @@ delay_days and delay_hours after the previous one.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/automations/seo-backlinks/steps"
+    "http://localhost:8000/api/automations/seo-backlinks/steps"
 );
 
 const headers = {
@@ -2845,7 +2705,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://localhost:8010/api/automations/seo-backlinks/steps/1" \
+    "http://localhost:8000/api/automations/seo-backlinks/steps/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -2861,7 +2721,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/automations/seo-backlinks/steps/1"
+    "http://localhost:8000/api/automations/seo-backlinks/steps/1"
 );
 
 const headers = {
@@ -3083,7 +2943,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8010/api/automations/seo-backlinks/steps/1" \
+    "http://localhost:8000/api/automations/seo-backlinks/steps/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3091,7 +2951,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/automations/seo-backlinks/steps/1"
+    "http://localhost:8000/api/automations/seo-backlinks/steps/1"
 );
 
 const headers = {
@@ -3238,16 +3098,16 @@ quarantine them, and that cost lands on the whole sending domain.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8010/api/automations/seo-backlinks/steps/1/attachments" \
+    "http://localhost:8000/api/automations/seo-backlinks/steps/1/attachments" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "file=@/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/phpuleo7ulhr7137NhaK8l" </code></pre></div>
+    --form "file=@/private/var/folders/54/dbk5h9m57q3764qyllhpzzd40000gn/T/phpma8o7s6e91g72S5QGGz" </code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/automations/seo-backlinks/steps/1/attachments"
+    "http://localhost:8000/api/automations/seo-backlinks/steps/1/attachments"
 );
 
 const headers = {
@@ -3388,7 +3248,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>The file to attach. Choose it in Postman's Body tab. Example: <code>/private/var/folders/l9/624yw4qn74j737snl_tjc_gw0000gn/T/phpuleo7ulhr7137NhaK8l</code></p>
+<p>The file to attach. Choose it in Postman's Body tab. Example: <code>/private/var/folders/54/dbk5h9m57q3764qyllhpzzd40000gn/T/phpma8o7s6e91g72S5QGGz</code></p>
         </div>
         </form>
 
@@ -3406,7 +3266,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8010/api/automations/seo-backlinks/steps/1/attachments/9b1c7e2a4f6d4c8e9a0b1c2d3e4f5a6b" \
+    "http://localhost:8000/api/automations/seo-backlinks/steps/1/attachments/9b1c7e2a4f6d4c8e9a0b1c2d3e4f5a6b" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3414,7 +3274,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/automations/seo-backlinks/steps/1/attachments/9b1c7e2a4f6d4c8e9a0b1c2d3e4f5a6b"
+    "http://localhost:8000/api/automations/seo-backlinks/steps/1/attachments/9b1c7e2a4f6d4c8e9a0b1c2d3e4f5a6b"
 );
 
 const headers = {
@@ -3573,7 +3433,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/enrollments" \
+    --get "http://localhost:8000/api/enrollments" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -3581,7 +3441,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/enrollments"
+    "http://localhost:8000/api/enrollments"
 );
 
 const headers = {
@@ -3600,7 +3460,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-enrollments">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -3612,83 +3472,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: [
-        {
-            &quot;id&quot;: 2,
-            &quot;contact_id&quot;: 2,
-            &quot;automation_id&quot;: 1,
-            &quot;automation_tag&quot;: &quot;seo-backlinks&quot;,
-            &quot;mailbox_id&quot;: 1,
-            &quot;mailbox_email&quot;: &quot;hello@outreach.example&quot;,
-            &quot;status&quot;: &quot;active&quot;,
-            &quot;current_step&quot;: 0,
-            &quot;stopped_at&quot;: null,
-            &quot;stop_reason&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-            &quot;contact&quot;: {
-                &quot;id&quot;: 2,
-                &quot;email&quot;: &quot;sam.patel@globex.example&quot;,
-                &quot;email_status&quot;: &quot;pending&quot;,
-                &quot;email_checked_at&quot;: null,
-                &quot;email_provider&quot;: null,
-                &quot;profile_url&quot;: null,
-                &quot;name&quot;: &quot;Sam Patel&quot;,
-                &quot;first_name&quot;: &quot;Sam&quot;,
-                &quot;last_name&quot;: &quot;Patel&quot;,
-                &quot;job_title&quot;: null,
-                &quot;company&quot;: &quot;Globex&quot;,
-                &quot;domain&quot;: &quot;globex.example&quot;,
-                &quot;source&quot;: &quot;tube-trend-tool&quot;,
-                &quot;extra&quot;: [],
-                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-            }
-        },
-        {
-            &quot;id&quot;: 1,
-            &quot;contact_id&quot;: 1,
-            &quot;automation_id&quot;: 1,
-            &quot;automation_tag&quot;: &quot;seo-backlinks&quot;,
-            &quot;mailbox_id&quot;: 1,
-            &quot;mailbox_email&quot;: &quot;hello@outreach.example&quot;,
-            &quot;status&quot;: &quot;active&quot;,
-            &quot;current_step&quot;: 1,
-            &quot;stopped_at&quot;: null,
-            &quot;stop_reason&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-            &quot;contact&quot;: {
-                &quot;id&quot;: 1,
-                &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
-                &quot;email_status&quot;: &quot;pending&quot;,
-                &quot;email_checked_at&quot;: null,
-                &quot;email_provider&quot;: null,
-                &quot;profile_url&quot;: null,
-                &quot;name&quot;: &quot;Jane Doe&quot;,
-                &quot;first_name&quot;: &quot;Jane&quot;,
-                &quot;last_name&quot;: &quot;Doe&quot;,
-                &quot;job_title&quot;: null,
-                &quot;company&quot;: &quot;Acme Ltd&quot;,
-                &quot;domain&quot;: &quot;acme.example&quot;,
-                &quot;source&quot;: &quot;tube-trend-tool&quot;,
-                &quot;extra&quot;: {
-                    &quot;tube-trend-tool&quot;: {
-                        &quot;industry&quot;: &quot;SaaS&quot;,
-                        &quot;employees&quot;: 40
-                    }
-                },
-                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-            }
-        }
-    ],
-    &quot;meta&quot;: {
-        &quot;page&quot;: 1,
-        &quot;per_page&quot;: 50,
-        &quot;total&quot;: 2,
-        &quot;last_page&quot;: 1
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -3880,7 +3665,7 @@ automation_id or tag.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8010/api/enrollments" \
+    "http://localhost:8000/api/enrollments" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -3893,7 +3678,7 @@ automation_id or tag.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/enrollments"
+    "http://localhost:8000/api/enrollments"
 );
 
 const headers = {
@@ -4066,7 +3851,7 @@ further is sent.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8010/api/enrollments/1" \
+    "http://localhost:8000/api/enrollments/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -4078,7 +3863,7 @@ further is sent.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/enrollments/1"
+    "http://localhost:8000/api/enrollments/1"
 );
 
 const headers = {
@@ -4230,7 +4015,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/messages" \
+    --get "http://localhost:8000/api/messages" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -4238,7 +4023,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/messages"
+    "http://localhost:8000/api/messages"
 );
 
 const headers = {
@@ -4257,7 +4042,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-messages">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -4269,97 +4054,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: [
-        {
-            &quot;id&quot;: 1,
-            &quot;enrollment_id&quot;: 1,
-            &quot;contact_id&quot;: 1,
-            &quot;mailbox_id&quot;: 1,
-            &quot;mailbox_email&quot;: &quot;hello@outreach.example&quot;,
-            &quot;sequence_step_id&quot;: 1,
-            &quot;step_position&quot;: 1,
-            &quot;status&quot;: &quot;sent&quot;,
-            &quot;subject&quot;: &quot;Your guide on nursery irrigation&quot;,
-            &quot;body_text&quot;: &quot;Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex&quot;,
-            &quot;edited_by_user&quot;: false,
-            &quot;scheduled_at&quot;: null,
-            &quot;sent_at&quot;: &quot;2026-09-08T07:01:40+00:00&quot;,
-            &quot;approved_at&quot;: null,
-            &quot;rejected_at&quot;: null,
-            &quot;rejection_note&quot;: null,
-            &quot;error&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-            &quot;contact&quot;: {
-                &quot;id&quot;: 1,
-                &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
-                &quot;email_status&quot;: &quot;pending&quot;,
-                &quot;email_checked_at&quot;: null,
-                &quot;email_provider&quot;: null,
-                &quot;profile_url&quot;: null,
-                &quot;name&quot;: &quot;Jane Doe&quot;,
-                &quot;first_name&quot;: &quot;Jane&quot;,
-                &quot;last_name&quot;: &quot;Doe&quot;,
-                &quot;job_title&quot;: null,
-                &quot;company&quot;: &quot;Acme Ltd&quot;,
-                &quot;domain&quot;: &quot;acme.example&quot;,
-                &quot;source&quot;: &quot;tube-trend-tool&quot;,
-                &quot;extra&quot;: {
-                    &quot;tube-trend-tool&quot;: {
-                        &quot;industry&quot;: &quot;SaaS&quot;,
-                        &quot;employees&quot;: 40
-                    }
-                },
-                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-            }
-        },
-        {
-            &quot;id&quot;: 2,
-            &quot;enrollment_id&quot;: 2,
-            &quot;contact_id&quot;: 2,
-            &quot;mailbox_id&quot;: 1,
-            &quot;mailbox_email&quot;: &quot;hello@outreach.example&quot;,
-            &quot;sequence_step_id&quot;: 1,
-            &quot;step_position&quot;: 1,
-            &quot;status&quot;: &quot;pending_approval&quot;,
-            &quot;subject&quot;: &quot;Quick thought on your resources page&quot;,
-            &quot;body_text&quot;: &quot;Hi Sam,\n\nYour resources page is missing a section we could help fill.\n\nWorth a quick chat?\n\nAlex&quot;,
-            &quot;edited_by_user&quot;: false,
-            &quot;scheduled_at&quot;: null,
-            &quot;sent_at&quot;: null,
-            &quot;approved_at&quot;: null,
-            &quot;rejected_at&quot;: null,
-            &quot;rejection_note&quot;: null,
-            &quot;error&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-            &quot;contact&quot;: {
-                &quot;id&quot;: 2,
-                &quot;email&quot;: &quot;sam.patel@globex.example&quot;,
-                &quot;email_status&quot;: &quot;pending&quot;,
-                &quot;email_checked_at&quot;: null,
-                &quot;email_provider&quot;: null,
-                &quot;profile_url&quot;: null,
-                &quot;name&quot;: &quot;Sam Patel&quot;,
-                &quot;first_name&quot;: &quot;Sam&quot;,
-                &quot;last_name&quot;: &quot;Patel&quot;,
-                &quot;job_title&quot;: null,
-                &quot;company&quot;: &quot;Globex&quot;,
-                &quot;domain&quot;: &quot;globex.example&quot;,
-                &quot;source&quot;: &quot;tube-trend-tool&quot;,
-                &quot;extra&quot;: [],
-                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-            }
-        }
-    ],
-    &quot;meta&quot;: {
-        &quot;page&quot;: 1,
-        &quot;per_page&quot;: 50,
-        &quot;total&quot;: 2,
-        &quot;last_page&quot;: 1
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -4547,7 +4243,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/messages/1" \
+    --get "http://localhost:8000/api/messages/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -4555,7 +4251,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/messages/1"
+    "http://localhost:8000/api/messages/1"
 );
 
 const headers = {
@@ -4574,7 +4270,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-messages--message-">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -4586,51 +4282,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: {
-        &quot;id&quot;: 1,
-        &quot;enrollment_id&quot;: 1,
-        &quot;contact_id&quot;: 1,
-        &quot;mailbox_id&quot;: 1,
-        &quot;mailbox_email&quot;: &quot;hello@outreach.example&quot;,
-        &quot;sequence_step_id&quot;: 1,
-        &quot;step_position&quot;: 1,
-        &quot;status&quot;: &quot;sent&quot;,
-        &quot;subject&quot;: &quot;Your guide on nursery irrigation&quot;,
-        &quot;body_text&quot;: &quot;Hi Jane,\n\nI read your piece on drip irrigation and it lines up closely with what we publish.\n\nWould a link swap make sense?\n\nAlex&quot;,
-        &quot;edited_by_user&quot;: false,
-        &quot;scheduled_at&quot;: null,
-        &quot;sent_at&quot;: &quot;2026-09-08T07:01:40+00:00&quot;,
-        &quot;approved_at&quot;: null,
-        &quot;rejected_at&quot;: null,
-        &quot;rejection_note&quot;: null,
-        &quot;error&quot;: null,
-        &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-        &quot;contact&quot;: {
-            &quot;id&quot;: 1,
-            &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
-            &quot;email_status&quot;: &quot;pending&quot;,
-            &quot;email_checked_at&quot;: null,
-            &quot;email_provider&quot;: null,
-            &quot;profile_url&quot;: null,
-            &quot;name&quot;: &quot;Jane Doe&quot;,
-            &quot;first_name&quot;: &quot;Jane&quot;,
-            &quot;last_name&quot;: &quot;Doe&quot;,
-            &quot;job_title&quot;: null,
-            &quot;company&quot;: &quot;Acme Ltd&quot;,
-            &quot;domain&quot;: &quot;acme.example&quot;,
-            &quot;source&quot;: &quot;tube-trend-tool&quot;,
-            &quot;extra&quot;: {
-                &quot;tube-trend-tool&quot;: {
-                    &quot;industry&quot;: &quot;SaaS&quot;,
-                    &quot;employees&quot;: 40
-                }
-            },
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-        }
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -4748,7 +4401,7 @@ and a later edit would change an email that is already on its way out.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PATCH \
-    "http://localhost:8010/api/messages/1" \
+    "http://localhost:8000/api/messages/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -4761,7 +4414,7 @@ and a later edit would change an email that is already on its way out.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/messages/1"
+    "http://localhost:8000/api/messages/1"
 );
 
 const headers = {
@@ -4930,7 +4583,7 @@ nothing left to advance it.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8010/api/messages/1/reject" \
+    "http://localhost:8000/api/messages/1/reject" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -4942,7 +4595,7 @@ nothing left to advance it.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/messages/1/reject"
+    "http://localhost:8000/api/messages/1/reject"
 );
 
 const headers = {
@@ -5096,7 +4749,7 @@ sendable at that moment, and the reconciler picks it up later.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8010/api/messages/1/approve" \
+    "http://localhost:8000/api/messages/1/approve" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5104,7 +4757,7 @@ sendable at that moment, and the reconciler picks it up later.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/messages/1/approve"
+    "http://localhost:8000/api/messages/1/approve"
 );
 
 const headers = {
@@ -5239,7 +4892,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/replies" \
+    --get "http://localhost:8000/api/replies" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5247,7 +4900,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/replies"
+    "http://localhost:8000/api/replies"
 );
 
 const headers = {
@@ -5266,7 +4919,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-replies">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -5278,53 +4931,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: [
-        {
-            &quot;id&quot;: 1,
-            &quot;contact_id&quot;: 1,
-            &quot;enrollment_id&quot;: 1,
-            &quot;message_id&quot;: 1,
-            &quot;mailbox_id&quot;: 1,
-            &quot;from_email&quot;: &quot;jane.doe@acme.example&quot;,
-            &quot;subject&quot;: &quot;Re: Your guide on nursery irrigation&quot;,
-            &quot;snippet&quot;: &quot;Happy to take a look, send it over.&quot;,
-            &quot;body_text&quot;: &quot;Happy to take a look, send it over.\n\nJane&quot;,
-            &quot;classification&quot;: &quot;reply&quot;,
-            &quot;received_at&quot;: &quot;2026-09-09T01:01:40+00:00&quot;,
-            &quot;read_at&quot;: null,
-            &quot;contact&quot;: {
-                &quot;id&quot;: 1,
-                &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
-                &quot;email_status&quot;: &quot;pending&quot;,
-                &quot;email_checked_at&quot;: null,
-                &quot;email_provider&quot;: null,
-                &quot;profile_url&quot;: null,
-                &quot;name&quot;: &quot;Jane Doe&quot;,
-                &quot;first_name&quot;: &quot;Jane&quot;,
-                &quot;last_name&quot;: &quot;Doe&quot;,
-                &quot;job_title&quot;: null,
-                &quot;company&quot;: &quot;Acme Ltd&quot;,
-                &quot;domain&quot;: &quot;acme.example&quot;,
-                &quot;source&quot;: &quot;tube-trend-tool&quot;,
-                &quot;extra&quot;: {
-                    &quot;tube-trend-tool&quot;: {
-                        &quot;industry&quot;: &quot;SaaS&quot;,
-                        &quot;employees&quot;: 40
-                    }
-                },
-                &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-                &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-            }
-        }
-    ],
-    &quot;meta&quot;: {
-        &quot;page&quot;: 1,
-        &quot;per_page&quot;: 50,
-        &quot;total&quot;: 1,
-        &quot;last_page&quot;: 1
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -5534,7 +5142,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/replies/1" \
+    --get "http://localhost:8000/api/replies/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5542,7 +5150,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/replies/1"
+    "http://localhost:8000/api/replies/1"
 );
 
 const headers = {
@@ -5561,7 +5169,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-replies--reply-">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -5573,45 +5181,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: {
-        &quot;id&quot;: 1,
-        &quot;contact_id&quot;: 1,
-        &quot;enrollment_id&quot;: 1,
-        &quot;message_id&quot;: 1,
-        &quot;mailbox_id&quot;: 1,
-        &quot;from_email&quot;: &quot;jane.doe@acme.example&quot;,
-        &quot;subject&quot;: &quot;Re: Your guide on nursery irrigation&quot;,
-        &quot;snippet&quot;: &quot;Happy to take a look, send it over.&quot;,
-        &quot;body_text&quot;: &quot;Happy to take a look, send it over.\n\nJane&quot;,
-        &quot;classification&quot;: &quot;reply&quot;,
-        &quot;received_at&quot;: &quot;2026-09-09T01:01:40+00:00&quot;,
-        &quot;read_at&quot;: null,
-        &quot;contact&quot;: {
-            &quot;id&quot;: 1,
-            &quot;email&quot;: &quot;jane.doe@acme.example&quot;,
-            &quot;email_status&quot;: &quot;pending&quot;,
-            &quot;email_checked_at&quot;: null,
-            &quot;email_provider&quot;: null,
-            &quot;profile_url&quot;: null,
-            &quot;name&quot;: &quot;Jane Doe&quot;,
-            &quot;first_name&quot;: &quot;Jane&quot;,
-            &quot;last_name&quot;: &quot;Doe&quot;,
-            &quot;job_title&quot;: null,
-            &quot;company&quot;: &quot;Acme Ltd&quot;,
-            &quot;domain&quot;: &quot;acme.example&quot;,
-            &quot;source&quot;: &quot;tube-trend-tool&quot;,
-            &quot;extra&quot;: {
-                &quot;tube-trend-tool&quot;: {
-                    &quot;industry&quot;: &quot;SaaS&quot;,
-                    &quot;employees&quot;: 40
-                }
-            },
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;,
-            &quot;updated_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-        }
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -5734,7 +5305,7 @@ caller can tell the difference between "accepted" and "will be emailed".</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/suppressions" \
+    --get "http://localhost:8000/api/suppressions" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -5742,7 +5313,7 @@ caller can tell the difference between "accepted" and "will be emailed".</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/suppressions"
+    "http://localhost:8000/api/suppressions"
 );
 
 const headers = {
@@ -5761,7 +5332,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-suppressions">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -5773,23 +5344,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: [
-        {
-            &quot;id&quot;: 1,
-            &quot;email&quot;: &quot;no.thanks@globex.example&quot;,
-            &quot;reason&quot;: &quot;unsubscribed&quot;,
-            &quot;source_reply_id&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-        }
-    ],
-    &quot;meta&quot;: {
-        &quot;page&quot;: 1,
-        &quot;per_page&quot;: 50,
-        &quot;total&quot;: 1,
-        &quot;last_page&quot;: 1
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -5955,7 +5511,7 @@ emails queued behind it, so the address would still be written to.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8010/api/suppressions" \
+    "http://localhost:8000/api/suppressions" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -5968,7 +5524,7 @@ emails queued behind it, so the address would still be written to.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/suppressions"
+    "http://localhost:8000/api/suppressions"
 );
 
 const headers = {
@@ -6119,7 +5675,7 @@ carries.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:8010/api/suppressions/no.thanks@globex.example" \
+    "http://localhost:8000/api/suppressions/no.thanks@globex.example" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6127,7 +5683,7 @@ carries.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/suppressions/no.thanks@globex.example"
+    "http://localhost:8000/api/suppressions/no.thanks@globex.example"
 );
 
 const headers = {
@@ -6265,7 +5821,7 @@ Google's own consent screen, in the dashboard.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/mailboxes" \
+    --get "http://localhost:8000/api/mailboxes" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6273,7 +5829,7 @@ Google's own consent screen, in the dashboard.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/mailboxes"
+    "http://localhost:8000/api/mailboxes"
 );
 
 const headers = {
@@ -6292,7 +5848,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-mailboxes">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -6304,40 +5860,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: [
-        {
-            &quot;id&quot;: 1,
-            &quot;email&quot;: &quot;hello@outreach.example&quot;,
-            &quot;display_name&quot;: &quot;Alex Rivera&quot;,
-            &quot;domain&quot;: &quot;outreach.example&quot;,
-            &quot;status&quot;: &quot;active&quot;,
-            &quot;paused_reason&quot;: null,
-            &quot;health_status&quot;: &quot;healthy&quot;,
-            &quot;daily_cap&quot;: 40,
-            &quot;send_window&quot;: {
-                &quot;start&quot;: &quot;09:00&quot;,
-                &quot;end&quot;: &quot;17:00&quot;,
-                &quot;timezone&quot;: &quot;UTC&quot;,
-                &quot;weekends&quot;: false
-            },
-            &quot;warmup_enabled&quot;: true,
-            &quot;stats_7d&quot;: {
-                &quot;sent&quot;: 84,
-                &quot;bounce_rate&quot;: 0.0119,
-                &quot;reply_rate&quot;: 0.0714
-            },
-            &quot;last_polled_at&quot;: &quot;2026-09-09T06:59:40+00:00&quot;,
-            &quot;last_send_error&quot;: null
-        }
-    ],
-    &quot;meta&quot;: {
-        &quot;page&quot;: 1,
-        &quot;per_page&quot;: 50,
-        &quot;total&quot;: 1,
-        &quot;last_page&quot;: 1
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -6477,7 +6001,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/mailboxes/1" \
+    --get "http://localhost:8000/api/mailboxes/1" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6485,7 +6009,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/mailboxes/1"
+    "http://localhost:8000/api/mailboxes/1"
 );
 
 const headers = {
@@ -6504,7 +6028,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-mailboxes--mailbox-">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -6516,32 +6040,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: {
-        &quot;id&quot;: 1,
-        &quot;email&quot;: &quot;hello@outreach.example&quot;,
-        &quot;display_name&quot;: &quot;Alex Rivera&quot;,
-        &quot;domain&quot;: &quot;outreach.example&quot;,
-        &quot;status&quot;: &quot;active&quot;,
-        &quot;paused_reason&quot;: null,
-        &quot;health_status&quot;: &quot;healthy&quot;,
-        &quot;daily_cap&quot;: 40,
-        &quot;send_window&quot;: {
-            &quot;start&quot;: &quot;09:00&quot;,
-            &quot;end&quot;: &quot;17:00&quot;,
-            &quot;timezone&quot;: &quot;UTC&quot;,
-            &quot;weekends&quot;: false
-        },
-        &quot;warmup_enabled&quot;: true,
-        &quot;stats_7d&quot;: {
-            &quot;sent&quot;: 84,
-            &quot;bounce_rate&quot;: 0.0119,
-            &quot;reply_rate&quot;: 0.0714
-        },
-        &quot;last_polled_at&quot;: &quot;2026-09-09T06:59:40+00:00&quot;,
-        &quot;last_send_error&quot;: null
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -6657,7 +6157,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8010/api/mailboxes/1/pause" \
+    "http://localhost:8000/api/mailboxes/1/pause" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -6669,7 +6169,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/mailboxes/1/pause"
+    "http://localhost:8000/api/mailboxes/1/pause"
 );
 
 const headers = {
@@ -6819,7 +6319,7 @@ in the dashboard instead.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8010/api/mailboxes/1/resume" \
+    "http://localhost:8000/api/mailboxes/1/resume" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -6827,7 +6327,7 @@ in the dashboard instead.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/mailboxes/1/resume"
+    "http://localhost:8000/api/mailboxes/1/resume"
 );
 
 const headers = {
@@ -6965,7 +6465,7 @@ mailbox rather than creating a second one.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8010/api/mailboxes/1/disconnect" \
+    "http://localhost:8000/api/mailboxes/1/disconnect" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
@@ -6977,7 +6477,7 @@ mailbox rather than creating a second one.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/mailboxes/1/disconnect"
+    "http://localhost:8000/api/mailboxes/1/disconnect"
 );
 
 const headers = {
@@ -7132,7 +6632,7 @@ because 0 would read as "nobody replied" instead of "no data yet".</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/stats" \
+    --get "http://localhost:8000/api/stats" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -7140,7 +6640,7 @@ because 0 would read as "nobody replied" instead of "no data yet".</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/stats"
+    "http://localhost:8000/api/stats"
 );
 
 const headers = {
@@ -7159,7 +6659,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-stats">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -7171,40 +6671,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: {
-        &quot;window_since&quot;: null,
-        &quot;contacts&quot;: {
-            &quot;total&quot;: 2,
-            &quot;suppressed&quot;: 1
-        },
-        &quot;enrollments&quot;: {
-            &quot;active&quot;: 2,
-            &quot;waiting_email&quot;: 0,
-            &quot;total&quot;: 2
-        },
-        &quot;queue&quot;: {
-            &quot;pending_approval&quot;: 1,
-            &quot;scheduled&quot;: 0,
-            &quot;draft_failed&quot;: 0,
-            &quot;send_failed&quot;: 0
-        },
-        &quot;sending&quot;: {
-            &quot;sent&quot;: 1,
-            &quot;replies&quot;: 1,
-            &quot;bounces&quot;: 0,
-            &quot;unsubscribes&quot;: 0,
-            &quot;reply_rate&quot;: 1,
-            &quot;bounce_rate&quot;: 0
-        },
-        &quot;mailboxes&quot;: {
-            &quot;total&quot;: 1,
-            &quot;active&quot;: 1,
-            &quot;paused&quot;: 0,
-            &quot;disconnected&quot;: 0
-        }
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
@@ -7325,7 +6793,7 @@ polling errors. This is what to watch for problems.</p>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8010/api/activity" \
+    --get "http://localhost:8000/api/activity" \
     --header "Authorization: Bearer YOUR_API_KEY" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -7333,7 +6801,7 @@ polling errors. This is what to watch for problems.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8010/api/activity"
+    "http://localhost:8000/api/activity"
 );
 
 const headers = {
@@ -7352,7 +6820,7 @@ fetch(url, {
 
 <span id="example-responses-GETapi-activity">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (401):</p>
         </blockquote>
                 <details class="annotation">
             <summary style="cursor: pointer;">
@@ -7364,40 +6832,8 @@ access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;success&quot;: true,
-    &quot;message&quot;: &quot;ok&quot;,
-    &quot;data&quot;: [
-        {
-            &quot;id&quot;: 2,
-            &quot;event&quot;: &quot;send_failed&quot;,
-            &quot;level&quot;: &quot;error&quot;,
-            &quot;message&quot;: &quot;Gmail returned 429 for hello@outreach.example&quot;,
-            &quot;context&quot;: [],
-            &quot;subject_type&quot;: null,
-            &quot;subject_id&quot;: null,
-            &quot;retryable&quot;: true,
-            &quot;retried_at&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-        },
-        {
-            &quot;id&quot;: 1,
-            &quot;event&quot;: &quot;email_sent&quot;,
-            &quot;level&quot;: &quot;info&quot;,
-            &quot;message&quot;: &quot;Sent to jane.doe@acme.example&quot;,
-            &quot;context&quot;: [],
-            &quot;subject_type&quot;: &quot;App\\Models\\Message&quot;,
-            &quot;subject_id&quot;: 1,
-            &quot;retryable&quot;: false,
-            &quot;retried_at&quot;: null,
-            &quot;created_at&quot;: &quot;2026-09-09T07:01:40+00:00&quot;
-        }
-    ],
-    &quot;meta&quot;: {
-        &quot;page&quot;: 1,
-        &quot;per_page&quot;: 50,
-        &quot;total&quot;: 2,
-        &quot;last_page&quot;: 1
-    }
+    &quot;success&quot;: false,
+    &quot;message&quot;: &quot;Invalid API key.&quot;
 }</code>
  </pre>
     </span>
