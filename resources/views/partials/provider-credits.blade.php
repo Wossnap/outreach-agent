@@ -14,17 +14,17 @@
 @php($reading = $provider->cachedBalance())
 
 @if (! \App\Models\EnrichmentProvider::reportsBalanceForDriver($provider->driver))
-    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+    <p class="text-xs text-ink-dim mt-1">
         No balance endpoint. This provider does not publish what is left.
     </p>
 @elseif (! $provider->isConfigured())
     {{-- The "no key" badge beside the name has already said this. --}}
 @elseif ($reading === null)
-    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+    <p class="text-xs text-ink-dim mt-1">
         Credits not checked yet.
     </p>
 @elseif (! $reading->succeeded())
-    <p class="text-xs text-red-600 dark:text-red-400 mt-1">
+    <p class="text-xs text-danger mt-1">
         Could not check credits {{ $reading->checkedAt->diffForHumans() }}: {{ $reading->error }}
     </p>
 @else
@@ -32,18 +32,18 @@
     <p class="text-xs mt-1">
         <span @class([
             'font-medium',
-            'text-red-600 dark:text-red-400' => $low === 'empty',
-            'text-amber-600 dark:text-amber-400' => $low === 'low',
-            'text-gray-700 dark:text-gray-300' => $low === 'ok',
+            'text-danger' => $low === 'empty',
+            'text-warn' => $low === 'low',
+            'text-ink' => $low === 'ok',
         ])>{{ number_format($reading->balance->remaining) }} {{ $reading->balance->describe() }}</span>
         {{-- A figure with no date on it invites reading a week-old balance as
              the balance now. Said on every row, not only the stale ones. --}}
-        <span class="text-gray-500 dark:text-gray-400">
+        <span class="text-ink-dim">
             · as of {{ $reading->checkedAt->diffForHumans() }}
             ({{ $reading->checkedAt->timezone(config('outreach.timezone'))->format('j M Y, H:i') }})
         </span>
         @if ($low === 'empty')
-            <span class="block text-red-600 dark:text-red-400">Nothing left. Every call to this provider fails until it is topped up.</span>
+            <span class="block text-danger">Nothing left. Every call to this provider fails until it is topped up.</span>
         @endif
     </p>
 @endif

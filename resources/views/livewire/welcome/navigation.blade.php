@@ -1,15 +1,15 @@
-<nav class="-mx-3 flex flex-1 justify-end">
+<nav class="flex justify-center gap-3">
     @auth
         <a
             href="{{ url('/dashboard') }}"
-            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+            class="inline-flex items-center px-4 py-2 rounded-md bg-brand text-brand-ink text-sm font-semibold hover:bg-brand-hover transition"
         >
             Dashboard
         </a>
     @else
         <a
             href="{{ route('login') }}"
-            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+            class="inline-flex items-center px-4 py-2 rounded-md bg-brand text-brand-ink text-sm font-semibold hover:bg-brand-hover transition"
         >
             Log in
         </a>
@@ -17,7 +17,7 @@
         @if (Route::has('register') && config('outreach.registration_enabled'))
             <a
                 href="{{ route('register') }}"
-                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                class="inline-flex items-center px-4 py-2 rounded-md border border-rule-strong text-ink text-sm font-semibold hover:border-ink-dim transition"
             >
                 Register
             </a>

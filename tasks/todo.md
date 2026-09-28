@@ -88,3 +88,25 @@ Plan: ~/.claude/plans/i-want-to-add-fluttering-crown.md (same branch, still unco
 - [x] Leads "Detail" toggle moved beside the checkbox: with Category/Niche/Role the far-right column scrolled out of view, which read as the detail being gone
 - [x] Automation edit: a file chosen in a step row is attached by "Save automation" (validated first, works for a step saved in the same click); "Attach now" still works for saved steps; notice shows a chosen-but-unattached file
 - 512 tests green under PHP 8.3; browser check of all three.
+
+## 2026-09-28 — Apply the seannocode design system (v2.0 "Trust")
+
+Spec: tasks/design-spec.md. Semantic colour tokens as CSS variables (light cream / dark navy),
+views carry no `dark:` classes; theme switcher and its test stay.
+
+- [x] Tokens: tailwind.config.js + resources/css/app.css; Google Fonts in both layouts
+- [x] Chrome: layouts, navigation, wordmark, buttons, inputs, dropdown, modal, pill, sort-header, multi-select, pagination
+- [x] Views batch A: contacts/index, approval-queue, activity, automations/*
+- [x] Views batch B: dashboard, health/dashboard (+ DomainHealthScoringTest tone assertions), replies, mailboxes, provider-credits
+- [x] Views batch C: settings/*
+- [x] Views batch D: auth pages, profile, welcome
+- [x] Verify: no gray/indigo/dark: left, `npm run build`, full test suite, screenshots light + dark
+
+### Review (2026-09-28) — DONE
+- 513 tests / 1333 assertions green against docker Postgres :5433. Only `text-accent` left in views is the wordmark's period.
+- Status colours: green/yellow/red are gone; `<x-pill tone="good|warn|danger|neutral">` renders `data-tone` so tests assert meaning, not colour.
+- Dark mode kept (the design system has no dark theme; navy is a surface). Implemented as the system's own navy tokens via CSS variables, so views carry no `dark:` classes. Dropping dark mode later is a matter of deleting the `.dark` block in app.css and the theme switcher.
+- Two fixes found by screenshots: dashboard window toggle compared string to int key (never highlighted); Leads table padding tightened to px-4 so Enrollments fits at 1440.
+- Laravel welcome page replaced with a one-line branded landing. Pagination views published and restyled (`resources/views/vendor/pagination`).
+- Demo DB `outreach_demo` in docker Postgres, seeded (test@example.com / password) for screenshots.
+

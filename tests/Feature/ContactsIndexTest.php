@@ -240,11 +240,24 @@ class ContactsIndexTest extends TestCase
         // view, which read as the detail having gone.
         $contact = Contact::factory()->create(['email' => 'sam@acme.com', 'job_title' => 'Head of Operations']);
 
-        $component = Livewire::test(Index::class)->assertSee('Detail')->assertDontSee('Head of Operations');
+        $component = Livewire::test(Index::class)->assertSee('Show detail')->assertDontSee('Head of Operations');
         $html = $component->html();
         $this->assertLessThan(strpos($html, 'sam@acme.com'), strpos($html, 'toggleExpand('.$contact->id.')'));
 
-        $component->call('toggleExpand', $contact->id)->assertSee('Head of Operations')->assertSee('Hide');
+        $component->call('toggleExpand', $contact->id)->assertSee('Head of Operations')->assertSee('Hide detail');
+    }
+
+    public function test_the_row_shows_each_enrollment_as_its_automation_tag(): void
+    {
+        // The count told nobody which sequences the lead is in.
+        $contact = Contact::factory()->create(['email' => 'sam@acme.com']);
+        $enrollment = Enrollment::factory()->create(['contact_id' => $contact->id]);
+        $enrollment->automation->update(['tag' => 'agency-intro']);
+
+        $html = Livewire::test(Index::class)->html();
+
+        $this->assertStringContainsString('agency-intro', $html);
+        $this->assertLessThan(strpos($html, 'sam@acme.com'), strpos($html, $contact->created_at->timezone(config('outreach.timezone'))->format('j M Y')));
     }
 
     public function test_sorts_by_niche(): void

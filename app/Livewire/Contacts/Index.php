@@ -247,7 +247,7 @@ class Index extends Component
     public function render()
     {
         $query = Contact::query()
-            ->withCount('enrollments')
+            ->with('enrollments.automation')
             /*
              * Matched without regard to case, on both sides.
              *

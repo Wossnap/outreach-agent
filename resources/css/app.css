@@ -2,5 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Semantic colour variables, as RGB triples so Tailwind can add opacity.
+ * The names are explained in tailwind.config.js and tasks/design-spec.md.
+ */
+@layer base {
+    :root {
+        --c-page: 250 247 241;        /* cream */
+        --c-surface: 255 255 255;     /* white */
+        --c-band: 240 233 220;        /* sand */
+        --c-ink: 34 48 60;            /* ink */
+        --c-ink-dim: 102 112 123;
+        --c-rule: 230 222 205;
+        --c-rule-strong: 207 195 173; /* taupe */
+        --c-brand: 20 48 77;          /* navy */
+        --c-brand-hover: 28 64 95;    /* navy-raised */
+        --c-brand-ink: 243 238 227;   /* navy-ink */
+        --c-accent: 141 110 35;       /* gold-deep: the AA-safe gold on cream */
+        --c-warn: 141 110 35;
+        --c-danger: 169 68 60;        /* alert */
+    }
+
+    /*
+     * Dark is the system's navy ground. Navy is a surface in the design
+     * system rather than a mode, so this is the same set of tokens it
+     * already defines for navy, with the primary button inverting to cream
+     * so it still stands out. The two values that are not tokens, the
+     * strong border and the brick, are lifted so they can be seen on navy.
+     */
+    .dark {
+        --c-page: 12 33 54;           /* navy-deep */
+        --c-surface: 20 48 77;        /* navy */
+        --c-band: 28 64 95;           /* navy-raised */
+        --c-ink: 243 238 227;         /* navy-ink */
+        --c-ink-dim: 157 174 192;     /* navy-ink-dim */
+        --c-rule: 43 76 109;          /* navy-rule */
+        --c-rule-strong: 62 95 128;
+        --c-brand: 243 238 227;       /* navy-ink */
+        --c-brand-hover: 255 255 255;
+        --c-brand-ink: 12 33 54;      /* navy-deep */
+        --c-accent: 194 155 59;       /* gold */
+        --c-warn: 194 155 59;
+        --c-danger: 224 138 130;
+    }
+
+    body {
+        @apply bg-page text-ink font-sans antialiased;
+    }
+}
+
 /* Alpine hides these until it has booted, so a closed dropdown never flashes open on load. */
 [x-cloak] { display: none !important; }

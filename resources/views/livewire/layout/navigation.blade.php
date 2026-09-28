@@ -16,7 +16,7 @@ new class extends Component
     }
 }; ?>
 
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false }" class="bg-surface border-b border-rule">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -24,7 +24,7 @@ new class extends Component
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" wire:navigate>
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <x-wordmark class="text-xl" />
                     </a>
                 </div>
 
@@ -37,14 +37,14 @@ new class extends Component
                         {{ __('Approvals') }}
                         @php($pendingCount = \App\Models\Message::query()->where('status', \App\Models\Message::STATUS_PENDING_APPROVAL)->count())
                         @if ($pendingCount > 0)
-                            <span class="ms-1 px-1.5 py-0.5 text-xs rounded-full bg-indigo-600 text-white">{{ $pendingCount }}</span>
+                            <x-pill tone="good" class="ms-1">{{ $pendingCount }}</x-pill>
                         @endif
                     </x-nav-link>
                     <x-nav-link :href="route('replies.inbox')" :active="request()->routeIs('replies.*')" wire:navigate>
                         {{ __('Replies') }}
                         @php($unreadReplies = \App\Models\Reply::query()->whereNull('read_at')->count())
                         @if ($unreadReplies > 0)
-                            <span class="ms-1 px-1.5 py-0.5 text-xs rounded-full bg-green-600 text-white">{{ $unreadReplies }}</span>
+                            <x-pill tone="good" class="ms-1">{{ $unreadReplies }}</x-pill>
                         @endif
                     </x-nav-link>
                     <x-nav-link :href="route('contacts.index')" :active="request()->routeIs('contacts.*')" wire:navigate>
@@ -63,7 +63,7 @@ new class extends Component
                     <div class="inline-flex items-center">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
-                                <button class="inline-flex items-center h-16 px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out {{ $setupActive ? 'border-indigo-400 dark:border-indigo-500 text-gray-900 dark:text-gray-100' : 'border-transparent text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600' }}">
+                                <button class="inline-flex items-center h-16 px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition {{ $setupActive ? 'border-brand text-ink' : 'border-transparent text-ink-dim hover:text-ink hover:border-rule-strong' }}">
                                     {{ __('Setup') }}
                                     <svg class="ms-1 fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -82,7 +82,7 @@ new class extends Component
                     <div class="inline-flex items-center">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
-                                <button class="inline-flex items-center h-16 px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out {{ $reportsActive ? 'border-indigo-400 dark:border-indigo-500 text-gray-900 dark:text-gray-100' : 'border-transparent text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600' }}">
+                                <button class="inline-flex items-center h-16 px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition {{ $reportsActive ? 'border-brand text-ink' : 'border-transparent text-ink-dim hover:text-ink hover:border-rule-strong' }}">
                                     {{ __('Reports') }}
                                     <svg class="ms-1 fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -104,7 +104,7 @@ new class extends Component
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-ink-dim bg-surface hover:text-ink focus:outline-none transition">
                             <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
 
                             <div class="ms-1">
@@ -134,17 +134,17 @@ new class extends Component
                                     window.applyTheme();
                                 },
                              }"
-                             class="px-4 py-2 border-t border-gray-200 dark:border-gray-700">
-                            <div class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                             class="px-4 py-2 border-t border-rule">
+                            <div class="text-xs font-semibold uppercase tracking-label text-ink-dim">
                                 {{ __('Theme') }}
                             </div>
-                            <div class="mt-2 flex rounded-md border border-gray-200 dark:border-gray-600 overflow-hidden">
+                            <div class="mt-2 flex rounded-md border border-rule overflow-hidden">
                                 @foreach (['light' => __('Light'), 'dark' => __('Dark'), 'auto' => __('Auto')] as $value => $label)
                                     <button type="button"
                                         @click.stop="choose('{{ $value }}')"
                                         :class="theme === '{{ $value }}'
-                                            ? 'bg-indigo-600 text-white'
-                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'"
+                                            ? 'bg-brand text-brand-ink'
+                                            : 'text-ink-dim hover:bg-band'"
                                         class="flex-1 px-2 py-1 text-xs font-medium transition">
                                         {{ $label }}
                                     </button>
@@ -168,7 +168,7 @@ new class extends Component
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-ink-dim hover:text-ink hover:bg-band focus:outline-none focus:bg-band transition">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -196,7 +196,7 @@ new class extends Component
                 {{ __('Leads') }}
             </x-responsive-nav-link>
 
-            <div class="px-4 pt-4 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+            <div class="px-4 pt-4 pb-1 text-xs font-semibold uppercase tracking-label text-ink-dim">
                 {{ __('Setup') }}
             </div>
             <x-responsive-nav-link :href="route('automations.index')" :active="request()->routeIs('automations.*')" wire:navigate>
@@ -212,7 +212,7 @@ new class extends Component
                 {{ __('API keys') }}
             </x-responsive-nav-link>
 
-            <div class="px-4 pt-4 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+            <div class="px-4 pt-4 pb-1 text-xs font-semibold uppercase tracking-label text-ink-dim">
                 {{ __('Reports') }}
             </div>
             <x-responsive-nav-link :href="route('settings.waterfall-performance')" :active="request()->routeIs('settings.waterfall-performance')" wire:navigate>
@@ -230,10 +230,10 @@ new class extends Component
         </div>
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+        <div class="pt-4 pb-1 border-t border-rule">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
-                <div class="font-medium text-sm text-gray-500 dark:text-gray-300">{{ auth()->user()->email }}</div>
+                <div class="font-medium text-base text-ink" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
+                <div class="font-medium text-sm text-ink-dim">{{ auth()->user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">

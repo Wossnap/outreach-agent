@@ -164,8 +164,8 @@ class DomainHealthScoringTest extends TestCase
         // The words stay so the information is not lost, but nothing about
         // this row is coloured as a fault.
         $row = Str::between($html, 'unused.test', '</tr>');
-        $this->assertStringNotContainsString('bg-red-100', $row);
-        $this->assertStringNotContainsString('bg-yellow-100', $row);
+        $this->assertStringNotContainsString('data-tone="danger"', $row);
+        $this->assertStringNotContainsString('data-tone="warn"', $row);
     }
 
     public function test_a_domain_in_use_with_bad_records_is_still_coloured_red(): void
@@ -187,7 +187,7 @@ class DomainHealthScoringTest extends TestCase
         $html = Livewire::test(Dashboard::class)->html();
         $row = Str::between($html, 'inuse.test', '</tr>');
 
-        $this->assertStringContainsString('bg-red-100', $row);
+        $this->assertStringContainsString('data-tone="danger"', $row);
         $this->assertStringNotContainsString('not in use', $row);
     }
 

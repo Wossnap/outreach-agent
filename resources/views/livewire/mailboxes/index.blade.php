@@ -2,36 +2,36 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="flex items-center justify-between">
-                <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Mailboxes</h2>
+                <h2 class="font-display text-2xl font-semibold tracking-tight text-ink">Mailboxes</h2>
                 <a href="{{ route('mailboxes.connect') }}"
-                    class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-500">
+                    class="px-4 py-2 rounded-md bg-brand text-brand-ink text-sm font-semibold hover:bg-brand-hover transition">
                     + Connect Google mailbox
                 </a>
             </div>
 
             @if (session('status'))
-                <div class="rounded-md bg-green-50 dark:bg-green-900/30 p-3 text-sm text-green-800 dark:text-green-200">{{ session('status') }}</div>
+                <div class="rounded-md bg-band border border-rule p-3 text-sm text-ink">{{ session('status') }}</div>
             @endif
             @if (session('error'))
-                <div class="rounded-md bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-800 dark:text-red-200">{{ session('error') }}</div>
+                <div class="rounded-md bg-band border border-rule p-3 text-sm text-danger">{{ session('error') }}</div>
             @endif
 
-            <p class="text-sm text-gray-500 dark:text-gray-300">
+            <p class="text-sm text-ink-dim">
                 Mail is sent through the Gmail API from Google's servers, so IP reputation is handled by Google.
                 What matters here: keep each domain's SPF/DKIM/DMARC green (see Health), let warmup ramp volume slowly, and watch bounce rates.
             </p>
 
             @forelse ($mailboxes as $mailbox)
-                <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 space-y-3" wire:key="mailbox-{{ $mailbox->id }}">
+                <div class="bg-surface border border-rule sm:rounded-card p-6 space-y-3" wire:key="mailbox-{{ $mailbox->id }}">
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <div>
-                            <p class="font-semibold text-gray-900 dark:text-gray-100">
+                            <p class="font-semibold text-ink">
                                 {{ $mailbox->email }}
                                 @if ($mailbox->display_name)
-                                    <span class="font-normal text-gray-500 dark:text-gray-300">({{ $mailbox->display_name }})</span>
+                                    <span class="font-normal text-ink-dim">({{ $mailbox->display_name }})</span>
                                 @endif
                             </p>
-                            <p class="text-xs text-gray-500 dark:text-gray-300">
+                            <p class="text-xs text-ink-dim">
                                 {{ $mailbox->domain->name }}
                                 · sent today {{ $sentToday->get($mailbox->id, 0) }}/{{ $mailbox->effectiveDailyCap() }}
                                 @if ($mailbox->isWarming())
@@ -41,7 +41,7 @@
                             </p>
                             @if ($mailbox->paused_reason)
                                 {{-- Why it stopped. A record of the past, written once. --}}
-                                <p class="text-xs text-gray-500 dark:text-gray-300 mt-1">{{ $mailbox->paused_reason }}</p>
+                                <p class="text-xs text-ink-dim mt-1">{{ $mailbox->paused_reason }}</p>
                             @endif
 
                             @php($blocker = $blockers[$mailbox->id] ?? null)
@@ -51,46 +51,41 @@
                                      load. Without this the row kept reporting a problem that
                                      had already been fixed, and there was no way to tell. --}}
                                 @if ($blocker['reason'])
-                                    <p class="text-xs text-red-600 mt-1 font-medium">Still blocked: {{ $blocker['reason'] }}</p>
+                                    <p class="text-xs text-danger mt-1 font-medium">Still blocked: {{ $blocker['reason'] }}</p>
                                 @else
-                                    <p class="text-xs text-green-700 dark:text-green-400 mt-1 font-medium">
+                                    <p class="text-xs text-ink mt-1 font-medium">
                                         Nothing is blocking this mailbox any more. Safe to resume.
                                     </p>
                                 @endif
 
                                 @if ($blocker['summary'])
-                                    <p class="text-xs text-gray-500 dark:text-gray-300">{{ $mailbox->domain?->name }}: {{ $blocker['summary'] }}</p>
+                                    <p class="text-xs text-ink-dim">{{ $mailbox->domain?->name }}: {{ $blocker['summary'] }}</p>
                                 @endif
                             @endif
                         </div>
                         <div class="flex items-center gap-2">
-                            <span @class([
-                                'px-2 py-1 rounded text-xs font-semibold',
-                                'bg-green-100 text-green-800' => $mailbox->status === 'active',
-                                'bg-yellow-100 text-yellow-800' => $mailbox->status === 'paused',
-                                'bg-red-100 text-red-800' => in_array($mailbox->status, ['disconnected', 'error']),
-                            ])>{{ $mailbox->status }}</span>
-                            <span class="text-xs text-gray-500 dark:text-gray-300">bounce {{ number_format($mailbox->bounce_rate_7d * 100, 1) }}% · reply {{ number_format($mailbox->reply_rate_7d * 100, 1) }}% (7d)</span>
+                            <x-pill :tone="match (true) { $mailbox->status === 'active' => 'good', $mailbox->status === 'paused' => 'warn', in_array($mailbox->status, ['disconnected', 'error']) => 'danger', default => 'neutral' }">{{ $mailbox->status }}</x-pill>
+                            <span class="text-xs text-ink-dim">bounce {{ number_format($mailbox->bounce_rate_7d * 100, 1) }}% · reply {{ number_format($mailbox->reply_rate_7d * 100, 1) }}% (7d)</span>
                             @if ($mailbox->status === 'active')
-                                <button wire:click="pause({{ $mailbox->id }})" class="text-xs text-yellow-700 hover:underline">Pause</button>
+                                <button wire:click="pause({{ $mailbox->id }})" class="px-3 py-1.5 rounded-md border border-rule-strong text-ink text-sm font-semibold hover:border-ink-dim transition">Pause</button>
                             @elseif ($mailbox->status === 'paused')
-                                <button wire:click="resume({{ $mailbox->id }})" class="text-xs text-green-700 hover:underline">Resume</button>
+                                <button wire:click="resume({{ $mailbox->id }})" class="px-3 py-1.5 rounded-md border border-rule-strong text-ink text-sm font-semibold hover:border-ink-dim transition">Resume</button>
                             @elseif ($mailbox->status === 'disconnected')
-                                <a href="{{ route('mailboxes.connect') }}" class="text-xs text-indigo-600 hover:underline">Reconnect</a>
+                                <a href="{{ route('mailboxes.connect') }}" class="px-3 py-1.5 rounded-md border border-rule-strong text-ink text-sm font-semibold hover:border-ink-dim transition">Reconnect</a>
                             @endif
 
                             @if ($mailbox->status !== 'disconnected')
                                 <button wire:click="disconnect({{ $mailbox->id }})"
                                     wire:confirm="Disconnect {{ $mailbox->email }}?&#10;&#10;This signs the account out and deletes the stored credentials, so it stops sending and receiving. Anything queued on it moves to another mailbox.&#10;&#10;Its history is kept, but getting it back means signing in at Google again."
-                                    class="text-xs text-red-600 hover:underline">Disconnect</button>
+                                    class="px-3 py-1.5 rounded-md border border-danger text-danger text-sm font-semibold hover:bg-danger/10 transition">Disconnect</button>
                             @endif
 
-                            <button wire:click="edit({{ $mailbox->id }})" class="text-xs text-indigo-600 hover:underline">Settings</button>
+                            <button wire:click="edit({{ $mailbox->id }})" class="px-3 py-1.5 rounded-md border border-rule-strong text-ink text-sm font-semibold hover:border-ink-dim transition">Settings</button>
                         </div>
                     </div>
 
                     @if ($editingId === $mailbox->id)
-                        <form wire:submit="save" class="border-t dark:border-gray-700 pt-4 grid sm:grid-cols-3 gap-4 text-sm">
+                        <form wire:submit="save" class="border-t border-rule pt-4 grid sm:grid-cols-3 gap-4 text-sm">
                             <div>
                                 <x-input-label value="Sender display name" />
                                 <x-text-input wire:model="form.display_name" class="mt-1 w-full" />
@@ -130,10 +125,10 @@
                             </div>
                             <div class="flex items-end gap-4 pb-1">
                                 <label class="inline-flex items-center gap-2">
-                                    <input type="checkbox" wire:model="form.send_weekends" class="rounded border-gray-300 dark:border-gray-600"> Weekends
+                                    <input type="checkbox" wire:model="form.send_weekends" class="rounded border-rule-strong text-brand focus:ring-brand"> Weekends
                                 </label>
                                 <label class="inline-flex items-center gap-2">
-                                    <input type="checkbox" wire:model="form.warmup_enabled" class="rounded border-gray-300 dark:border-gray-600"> Warmup
+                                    <input type="checkbox" wire:model="form.warmup_enabled" class="rounded border-rule-strong text-brand focus:ring-brand"> Warmup
                                 </label>
                             </div>
                             <div class="sm:col-span-3 flex gap-2">
@@ -144,9 +139,9 @@
                     @endif
                 </div>
             @empty
-                <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-10 text-center text-gray-500 dark:text-gray-300">
+                <div class="bg-surface border border-rule sm:rounded-card p-10 text-center text-ink-dim">
                     No mailboxes connected yet. Connect a Google Workspace mailbox to start sending.
-                    <br>See <code class="font-mono text-xs">docs/google-cloud-setup.md</code> for the one-time Google Cloud setup.
+                    <br>See <code class="font-mono text-sm">docs/google-cloud-setup.md</code> for the one-time Google Cloud setup.
                 </div>
             @endforelse
         </div>
