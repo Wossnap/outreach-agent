@@ -19,7 +19,7 @@ class Index extends Component
     use WithIndexTable, WithPagination;
 
     /** @var array<string> */
-    public array $sortable = ['email', 'name', 'company', 'role', 'category', 'niche', 'source', 'email_status', 'created_at'];
+    public array $sortable = ['email', 'name', 'company', 'job_title', 'category', 'niche', 'source', 'email_status', 'created_at'];
 
     public string $defaultSort = 'created_at';
 

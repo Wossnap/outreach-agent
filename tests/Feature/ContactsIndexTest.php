@@ -238,13 +238,15 @@ class ContactsIndexTest extends TestCase
     {
         // On a table this wide a column at the far right scrolled out of
         // view, which read as the detail having gone.
-        $contact = Contact::factory()->create(['email' => 'sam@acme.com', 'job_title' => 'Head of Operations']);
+        // The company domain is only shown in the detail, so it stands in
+        // for "the detail is open".
+        $contact = Contact::factory()->create(['email' => 'sam@acme.com', 'domain' => 'acme-holdings.example']);
 
-        $component = Livewire::test(Index::class)->assertSee('Show detail')->assertDontSee('Head of Operations');
+        $component = Livewire::test(Index::class)->assertSee('Show detail')->assertDontSee('acme-holdings.example');
         $html = $component->html();
         $this->assertLessThan(strpos($html, 'sam@acme.com'), strpos($html, 'toggleExpand('.$contact->id.')'));
 
-        $component->call('toggleExpand', $contact->id)->assertSee('Head of Operations')->assertSee('Hide detail');
+        $component->call('toggleExpand', $contact->id)->assertSee('acme-holdings.example')->assertSee('Hide detail');
     }
 
     public function test_the_row_shows_each_enrollment_as_its_automation_tag(): void
@@ -258,6 +260,19 @@ class ContactsIndexTest extends TestCase
 
         $this->assertStringContainsString('agency-intro', $html);
         $this->assertLessThan(strpos($html, 'sam@acme.com'), strpos($html, $contact->created_at->timezone(config('outreach.timezone'))->format('j M Y')));
+    }
+
+    public function test_the_row_shows_the_job_title_and_sorts_by_it(): void
+    {
+        // The role is a filter bucket; the job title is what the person
+        // actually calls themselves, which is what you want to see in the row.
+        Contact::factory()->create(['email' => 'b@x.com', 'job_title' => 'Head of Growth']);
+        Contact::factory()->create(['email' => 'a@x.com', 'job_title' => 'CTO']);
+
+        Livewire::test(Index::class)
+            ->assertSee('Head of Growth')
+            ->call('sortBy', 'job_title')
+            ->assertSeeInOrder(['CTO', 'Head of Growth']);
     }
 
     public function test_sorts_by_niche(): void

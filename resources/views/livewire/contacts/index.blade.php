@@ -114,7 +114,7 @@
                             <x-index.sort-header field="email" :sort-field="$sortField" :sort-direction="$sortDirection">Email</x-index.sort-header>
                             <x-index.sort-header field="name" :sort-field="$sortField" :sort-direction="$sortDirection">Name</x-index.sort-header>
                             <x-index.sort-header field="company" :sort-field="$sortField" :sort-direction="$sortDirection">Company</x-index.sort-header>
-                            <x-index.sort-header field="role" :sort-field="$sortField" :sort-direction="$sortDirection">Role</x-index.sort-header>
+                            <x-index.sort-header field="job_title" :sort-field="$sortField" :sort-direction="$sortDirection">Job title</x-index.sort-header>
                             <x-index.sort-header field="category" :sort-field="$sortField" :sort-direction="$sortDirection">Category</x-index.sort-header>
                             <x-index.sort-header field="niche" :sort-field="$sortField" :sort-direction="$sortDirection">Niche</x-index.sort-header>
                             <x-index.sort-header field="email_status" :sort-field="$sortField" :sort-direction="$sortDirection">Address</x-index.sort-header>
@@ -169,7 +169,7 @@
                                         {{ $contact->company }}
                                     @endif
                                 </td>
-                                <td class="px-4 py-3">{{ $contact->role }}</td>
+                                <td class="px-4 py-3">{{ $contact->job_title }}</td>
                                 <td class="px-4 py-3">{{ $contact->category }}</td>
                                 <td class="px-4 py-3">{{ $contact->niche }}</td>
                                 <td class="px-4 py-3">
