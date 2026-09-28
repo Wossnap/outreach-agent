@@ -1,0 +1,28 @@
+{
+    "name": "outreach-agent-design-system",
+    "version": "0.1.0",
+    "private": true,
+    "description": "React equivalents of the app's Blade components, for Claude Design. The Blade components in resources/views/components are the shipped truth; these mirror their markup and classes one to one.",
+    "type": "module",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    },
+    "scripts": {
+        "build": "rm -rf dist && tsc -p tsconfig.json && esbuild src/index.tsx --bundle --format=esm --jsx=automatic --external:react --external:react-dom --outfile=dist/index.js && ../node_modules/.bin/tailwindcss -c tailwind.config.js -i ../resources/css/app.css -o dist/tailwind.css --minify && cat src/fonts.css dist/tailwind.css > dist/styles.css"
+    },
+    "peerDependencies": {
+        "react": "^18.0.0 || ^19.0.0"
+    },
+    "devDependencies": {
+        "@types/react": "^19.0.0",
+        "esbuild": "^0.25.0",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "typescript": "^5.6.0"
+    }
+}

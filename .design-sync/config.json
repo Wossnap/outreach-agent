@@ -1,0 +1,17 @@
+{
+    "projectId": "7faff056-8086-4610-b5f7-f17e62f37a8a",
+    "pkg": "outreach-agent-design-system",
+    "globalName": "OutreachAgentDS",
+    "shape": "package",
+    "buildCmd": "npm --prefix design-system run build",
+    "cssEntry": "dist/styles.css",
+    "docsDir": "../.design-sync/docs",
+    "readmeHeader": ".design-sync/conventions.md",
+    "overrides": {
+        "Banner": { "cardMode": "column" },
+        "Card": { "cardMode": "column" },
+        "NavLink": { "cardMode": "column" },
+        "StatTile": { "cardMode": "column" },
+        "TextInput": { "cardMode": "column" }
+    }
+}
