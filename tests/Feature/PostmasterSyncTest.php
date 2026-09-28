@@ -115,8 +115,11 @@ class PostmasterSyncTest extends TestCase
         $result = app(PostmasterSync::class)->sync($domain);
 
         $this->assertFalse($result['ok']);
-        $this->assertStringContainsString('Not registered or not verified', $domain->fresh()->postmaster_error);
-        $this->assertStringContainsString('me@unverified.test', $domain->fresh()->postmaster_error);
+        // Google's own reason is kept: the same 403 means either the account
+        // was never given the domain or the API is off in the Cloud project.
+        $this->assertStringContainsString('Postmaster Tools refused me@unverified.test', $domain->fresh()->postmaster_error);
+        $this->assertStringContainsString('HTTP 403: forbidden', $domain->fresh()->postmaster_error);
+        $this->assertStringContainsString('added as a user', $domain->fresh()->postmaster_error);
         $this->assertTrue(ActivityLog::query()->where('event', 'postmaster_sync_failed')->exists());
 
         // The same failure tomorrow is not a new event.

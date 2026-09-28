@@ -83,10 +83,17 @@ class PostmasterSync
             return ['domain' => $domain->name, 'ok' => true, 'text' => $text];
         } catch (GoogleException $e) {
             $code = $e->getCode();
+            $reason = mb_substr($e->getErrors()[0]['message'] ?? $e->getMessage(), 0, 300);
 
+            /*
+             * Google's own reason is kept because a 403 has two very
+             * different causes: the account has not been given this domain
+             * in Postmaster Tools (verified by somebody else is not enough),
+             * or the Postmaster Tools API is not enabled in the Cloud project.
+             */
             $text = in_array($code, [403, 404], true)
-                ? "Not registered or not verified in Postmaster Tools for {$mailbox->email} (HTTP {$code}). Add and verify the domain at postmaster.google.com with that account."
-                : "Postmaster API error (HTTP {$code}): ".mb_substr($e->getMessage(), 0, 300);
+                ? "Postmaster Tools refused {$mailbox->email} for this domain (HTTP {$code}: {$reason}). That Google account must own or be added as a user of the domain at postmaster.google.com; a verification by another account does not carry over."
+                : "Postmaster API error (HTTP {$code}): {$reason}";
 
             return $this->failed($domain, $text);
         } catch (RuntimeException $e) {
