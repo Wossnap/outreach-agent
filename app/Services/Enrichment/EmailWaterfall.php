@@ -7,6 +7,7 @@ use App\Models\EmailLookup;
 use App\Models\EnrichmentProvider;
 use App\Services\Enrichment\Contracts\EmailFinder;
 use App\Services\Enrichment\Contracts\EmailVerifier;
+use App\Services\Enrichment\Contracts\ResolvesCatchAll;
 use App\Services\Sending\EnrollmentActivator;
 use Illuminate\Support\Collection;
 use Throwable;
@@ -62,6 +63,7 @@ class EmailWaterfall
         }
 
         $answered = $askAgain ? [] : $this->providersThatAnswered($contact);
+        $found = null;
         $anyFailed = false;
 
         if (blank($contact->email)) {
@@ -77,7 +79,7 @@ class EmailWaterfall
                 return;
             }
 
-            $this->find($contact, $answered, $anyFailed);
+            $found = $this->find($contact, $answered, $anyFailed);
 
             if (blank($contact->fresh()->email)) {
                 /*
@@ -96,9 +98,26 @@ class EmailWaterfall
 
                 return;
             }
+
+            /*
+             * The finder's own check, where it ran one. Hunter checks every
+             * address it finds at no extra cost, so a valid from Hunter is
+             * taken as it is and no verifier is paid to say it again.
+             */
+            if ($found?->verdict === Verdict::VALID) {
+                $this->settle($contact, Contact::EMAIL_VALID);
+
+                return;
+            }
         }
 
-        $this->verify($contact->refresh(), $answered);
+        $this->verify(
+            $contact->refresh(),
+            $answered,
+            catchAllOnly: $found !== null
+                ? $found->verdict === Verdict::CATCH_ALL
+                : $this->finderSaidCatchAll($contact),
+        );
     }
 
     /**
@@ -144,8 +163,10 @@ class EmailWaterfall
      * has not looked, so settling the lead without it would write the lead off
      * on the word of the providers that happened to be left. One somebody
      * switched off by hand carries no reason and is genuinely out of the chain.
+     *
+     * @param  bool  $catchAllOnly  only count verifiers that can settle catch-alls
      */
-    private function stillToHearFrom(Contact $contact, string $kind): bool
+    private function stillToHearFrom(Contact $contact, string $kind, bool $catchAllOnly = false): bool
     {
         $answered = $this->providersThatAnswered($contact);
 
@@ -155,8 +176,29 @@ class EmailWaterfall
             ->whereNotNull('disabled_reason')
             ->get()
             ->filter(fn (EnrichmentProvider $provider): bool => $provider->isConfigured()
-                && ! in_array($provider->id, $answered, true))
+                && ! in_array($provider->id, $answered, true)
+                && (! $catchAllOnly || is_a(config("enrichment.drivers.{$provider->driver}"), ResolvesCatchAll::class, true)))
             ->isNotEmpty();
+    }
+
+    /**
+     * Whether the finder that supplied this lead's address said its domain is
+     * catch-all.
+     *
+     * A lead retried after its address was found has no fresh answer from the
+     * finder in hand, but the lookup that found it kept what the finder said.
+     * Without this a retry would pay the first verifier to say catch-all again.
+     */
+    private function finderSaidCatchAll(Contact $contact): bool
+    {
+        $lookup = EmailLookup::query()
+            ->where('contact_id', $contact->id)
+            ->where('kind', EnrichmentProvider::KIND_FIND)
+            ->where('result', EmailLookup::RESULT_FOUND)
+            ->latest('id')
+            ->first();
+
+        return ($lookup?->detail['verification'] ?? null) === 'accept_all';
     }
 
     /**
@@ -221,8 +263,11 @@ class EmailWaterfall
 
     /**
      * @param  array<int, int>  $answered  providers not to ask again
+     * @param  bool  $catchAllOnly  the finder already said the domain is
+     *                              catch-all, so only a verifier that can
+     *                              settle catch-alls is worth paying
      */
-    private function verify(Contact $contact, array $answered): void
+    private function verify(Contact $contact, array $answered, bool $catchAllOnly = false): void
     {
         /*
          * Nobody to ask, so nothing is claimed. Mirrors what the find half
@@ -251,9 +296,20 @@ class EmailWaterfall
             return;
         }
 
+        /*
+         * Asking a verifier that only reports catch-alls would pay to be told
+         * what the finder already said. If none of the switched-on verifiers
+         * can settle one, there is nobody to ask and the answer is the one we
+         * already have: could not tell.
+         */
+        $verifiers = $this->readyProviders(EnrichmentProvider::KIND_VERIFY)
+            ->when($catchAllOnly, fn (Collection $chain) => $chain->filter(
+                fn (EnrichmentProvider $provider): bool => is_a(config("enrichment.drivers.{$provider->driver}"), ResolvesCatchAll::class, true)
+            ));
+
         $anyFailed = false;
 
-        foreach ($this->readyProviders(EnrichmentProvider::KIND_VERIFY) as $provider) {
+        foreach ($verifiers as $provider) {
             if (in_array($provider->id, $answered, true)) {
                 continue;
             }
@@ -286,7 +342,7 @@ class EmailWaterfall
          * the lead waits instead, and the retry asks only the ones that did not
          * answer. Likewise when that specialist is off because it kept failing.
          */
-        if ($anyFailed || $this->stillToHearFrom($contact, EnrichmentProvider::KIND_VERIFY)) {
+        if ($anyFailed || $this->stillToHearFrom($contact, EnrichmentProvider::KIND_VERIFY, $catchAllOnly)) {
             $this->leaveUnsettled($contact);
 
             return;

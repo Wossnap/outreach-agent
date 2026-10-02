@@ -55,6 +55,30 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-3">
+                    <button wire:click="toggleMinimumCost" data-minimum-cost
+                        @if (! $minimumCost)
+                            wire:confirm="Turn Minimum cost on?&#10;&#10;Only Hunter, Reoon and BounceBan will be used. Every other provider is switched off and locked until Minimum cost is turned off again, when each goes back to how it is now."
+                        @endif
+                        class="px-3 py-2 rounded-md text-sm font-semibold transition {{ $minimumCost ? 'border border-rule-strong text-ink hover:border-ink-dim' : 'bg-brand text-brand-ink hover:bg-brand-hover' }}">
+                        {{ $minimumCost ? 'Turn Minimum cost off' : 'Turn Minimum cost on' }}
+                    </button>
+                    <span class="text-sm text-ink-dim">
+                        @if ($minimumCost)
+                            <span class="font-medium text-ink">On.</span>
+                            Only Hunter, Reoon and BounceBan are used; the rest are locked off.
+                        @else
+                            Off. Every provider switched on below is used.
+                        @endif
+                    </span>
+                </div>
+
+                @if ($minimumMissing->isNotEmpty())
+                    <x-banner tone="warn">
+                        Minimum cost needs {{ $minimumMissing->pluck('name')->join(', ', ' and ') }}, which {{ $minimumMissing->count() === 1 ? 'is' : 'are' }} switched off or {{ $minimumMissing->count() === 1 ? 'has' : 'have' }} no key.
+                    </x-banner>
+                @endif
+
+                <div class="flex flex-wrap items-center gap-3">
                     {{-- Changes the rule and nothing else. Nobody already
                          waiting is started by this; that is the separate
                          button below, so the two decisions stay apart. --}}
@@ -110,7 +134,9 @@
                                         <p class="text-sm font-medium text-ink">
                                             <span class="text-ink-dim">{{ $i + 1 }}.</span>
                                             {{ $provider->name }}
-                                            @if ($provider->enabled && $provider->isConfigured())
+                                            @if (\App\Services\Enrichment\MinimumCost::locks($provider))
+                                                <x-pill tone="neutral" class="ml-2">locked off</x-pill>
+                                            @elseif ($provider->enabled && $provider->isConfigured())
                                                 <x-pill tone="good" class="ml-2">in use</x-pill>
                                             @elseif (! $provider->isConfigured())
                                                 <x-pill tone="neutral" class="ml-2">no key</x-pill>
@@ -127,6 +153,10 @@
                                             @endif
                                         </p>
                                         @include('partials.provider-credits', ['provider' => $provider])
+
+                                        @if (\App\Services\Enrichment\MinimumCost::locks($provider))
+                                            <p class="text-xs text-ink-dim mt-1">Locked off while Minimum cost is on.</p>
+                                        @endif
 
                                         @if ($provider->disabled_reason)
                                             <p class="text-xs text-danger mt-1">
@@ -145,7 +175,9 @@
                                             {{ $provider->isConfigured() ? 'Replace key' : 'Add a key' }}
                                         </button>
                                         <button wire:click="toggle({{ $provider->id }})"
-                                            class="px-2 py-1 rounded-md border border-rule-strong text-ink text-xs font-semibold hover:border-ink-dim transition">
+                                            @disabled(\App\Services\Enrichment\MinimumCost::locks($provider))
+                                            @if (\App\Services\Enrichment\MinimumCost::locks($provider)) title="Locked off while Minimum cost is on" @endif
+                                            class="px-2 py-1 rounded-md border border-rule-strong text-ink text-xs font-semibold hover:border-ink-dim disabled:opacity-30 transition">
                                             {{ $provider->enabled ? 'Switch off' : 'Switch on' }}
                                         </button>
                                     </div>

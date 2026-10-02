@@ -7,6 +7,7 @@ use App\Services\Enrichment\Balance;
 use App\Services\Enrichment\Contracts\EmailVerifier;
 use App\Services\Enrichment\Contracts\PublishesListPrice;
 use App\Services\Enrichment\Contracts\ReportsBalance;
+use App\Services\Enrichment\Contracts\ResolvesCatchAll;
 use App\Services\Enrichment\ListPrice;
 use App\Services\Enrichment\Verdict;
 use App\Services\Enrichment\Verification;
@@ -27,7 +28,7 @@ use RuntimeException;
  *
  * https://bounceban.com/public/doc/llms-full.txt
  */
-class BounceBanVerifier implements EmailVerifier, PublishesListPrice, ReportsBalance
+class BounceBanVerifier implements EmailVerifier, PublishesListPrice, ReportsBalance, ResolvesCatchAll
 {
     /** What this provider is called on screen. */
     public static function label(): string
@@ -38,9 +39,9 @@ class BounceBanVerifier implements EmailVerifier, PublishesListPrice, ReportsBal
     public static function listPrice(): ListPrice
     {
         return new ListPrice(
-            perLookup: 0.0034,
+            perLookup: 0.004,
             billedOnMiss: true,
-            note: '$34 per 10,000 credits, checked September 2026. Unused credits roll over.',
+            note: 'Pay-as-you-go, $40 for 10,000 credits, never expire; $34 a month on subscription. From bounceban.com/pricing, 30 September 2026.',
         );
     }
 

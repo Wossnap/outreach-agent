@@ -34,9 +34,9 @@ class ZeroBounceVerifier implements EmailVerifier, PublishesListPrice, ReportsBa
     public static function listPrice(): ListPrice
     {
         return new ListPrice(
-            perLookup: 0.016,
+            perLookup: 0.0195,
             billedOnMiss: true,
-            note: 'About $0.016 at small volume, checked September 2026. Around $0.0035 at 100,000.',
+            note: 'Pay-as-you-go minimum, $39 for 2,000 credits. From zerobounce.net/email-validation-pricing, 30 September 2026.',
         );
     }
 

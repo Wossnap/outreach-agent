@@ -35,9 +35,9 @@ class FindymailFinder implements EmailFinder, PublishesListPrice, ReportsBalance
     public static function listPrice(): ListPrice
     {
         return new ListPrice(
-            perLookup: 0.049,
+            perLookup: 0.0198,
             billedOnMiss: false,
-            note: 'About $0.049 per address on the starting plan, from a third-party comparison rather than Findymail directly, September 2026. Billed only when an address is returned.',
+            note: 'Starter plan, $99 a month for 5,000 finder credits, charged only for addresses returned. From findymail.com/pricing, 30 September 2026.',
         );
     }
 

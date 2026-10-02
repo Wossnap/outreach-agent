@@ -65,6 +65,14 @@ let **Spend** tell you what to change.
 Free checks run before anything is paid for: syntax, then whether the domain
 publishes anywhere to deliver mail at all.
 
+A finder that checks what it finds is taken at its word. Hunter checks every
+address it finds at no extra cost: **valid** settles the lead as valid with no
+verifier paid; **catch-all** goes only to a verifier that can settle catch-alls
+(BounceBan), skipping the rest, which would only say catch-all again, and is
+risky if none is switched on; **unknown** goes through the verifiers as usual.
+An address that arrived with the lead was checked by nobody, so it always goes
+through the verifiers.
+
 A catch-all domain is marked **risky**, never valid. On such a domain the server
 accepts every address it is offered, so a yes says nothing about whether that
 mailbox exists, and roughly a fifth to a third of business domains are set up
@@ -76,6 +84,13 @@ button rather than something the page does by itself: those are six live calls
 to six other companies, they take several seconds altogether, and a balance only
 moves when we spend. Every figure carries the date it was read, so nothing on
 screen pretends to be today's number.
+
+Each provider's price is its published pay-as-you-go or starting-plan rate,
+with the source and date beside it in the driver's `listPrice()`. A call's cost
+is worked out and stored when the call is made, so correcting a price changes
+new calls only. To put past lookups at the corrected prices, run
+`php artisan enrichment:reprice-lookups` once after deploying: it reports the
+totals before and after and changes nothing; run it again with `--apply`.
 
 **Spend** reports what each provider cost and how often it was any good. The
 column that matters is cost per answer, not cost per call: a provider charging a
@@ -140,12 +155,13 @@ Nothing needs doing by hand to recover:
 
 The same warnings show at the top of **Leads** and **Dashboard**.
 
-Two switches live there too, both live rather than config:
+Three switches live there too, all live rather than config:
 
-| Switch | What off means |
+| Switch | What it does |
 |---|---|
-| Enrichment | Nothing is looked up and nothing is spent. Leads stay pending. |
-| Require a confirmed address | Leads are emailed on the address supplied, with nothing having checked it. Useful while no verifier is configured. |
+| Enrichment | Off: nothing is looked up and nothing is spent. Leads stay pending. |
+| Require a confirmed address | Off: leads are emailed on the address supplied, with nothing having checked it. Useful while no verifier is configured. |
+| Minimum cost | On: only Hunter, Reoon and BounceBan are used. Every other provider is switched off and locked, so the page never shows one as in use that is not. Off: each goes back exactly as it was. Hunter's own check is used either way. |
 
 ## Stack
 

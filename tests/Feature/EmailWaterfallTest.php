@@ -6,16 +6,19 @@ use App\Models\Contact;
 use App\Models\EmailLookup;
 use App\Models\EnrichmentProvider;
 use App\Services\Enrichment\EmailWaterfall;
+use App\Services\Enrichment\Verdict;
 use App\Support\Dns\DnsResolver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\BillsEveryCall;
 use Tests\Support\BillsOnlyForHits;
+use Tests\Support\BrokenCatchAllSpecialist;
 use Tests\Support\BrokenFinder;
 use Tests\Support\BrokenVerifier;
 use Tests\Support\CannotHelp;
 use Tests\Support\DomainAcceptsNothing;
 use Tests\Support\DomainAlwaysAcceptsMail;
 use Tests\Support\FakeEnrichment;
+use Tests\Support\FindsACheckedAddress;
 use Tests\Support\FindsAnAddress;
 use Tests\Support\FindsAnAddressWithExtras;
 use Tests\Support\FindsNothing;
@@ -23,6 +26,7 @@ use Tests\Support\SaysCatchAll;
 use Tests\Support\SaysInvalid;
 use Tests\Support\SaysNothingUseful;
 use Tests\Support\SaysValid;
+use Tests\Support\SettlesCatchAlls;
 use Tests\TestCase;
 
 class EmailWaterfallTest extends TestCase
@@ -49,6 +53,9 @@ class EmailWaterfallTest extends TestCase
             'broken-verifier' => BrokenVerifier::class,
             'bills-every-call' => BillsEveryCall::class,
             'bills-only-for-hits' => BillsOnlyForHits::class,
+            'finds-a-checked-address' => FindsACheckedAddress::class,
+            'settles-catch-alls' => SettlesCatchAlls::class,
+            'broken-catch-all-specialist' => BrokenCatchAllSpecialist::class,
         ]]);
     }
 
@@ -453,6 +460,95 @@ class EmailWaterfallTest extends TestCase
         app(EmailWaterfall::class)->run($contact->fresh(), askAgain: true);
 
         $this->assertSame(['finds-nothing', 'broken-finder'], FakeEnrichment::$calls);
+    }
+
+    public function test_a_finder_that_says_valid_is_taken_at_its_word(): void
+    {
+        // Hunter checks what it finds at no extra cost. Paying a verifier to
+        // say "valid" again is exactly the spend this avoids.
+        FakeEnrichment::$finderVerdict = Verdict::VALID;
+        $this->provider('finds-a-checked-address', EnrichmentProvider::KIND_FIND);
+        $this->provider('says-valid', EnrichmentProvider::KIND_VERIFY);
+
+        $contact = $this->enrich($this->lead());
+
+        $this->assertSame(['finds-a-checked-address'], FakeEnrichment::$calls);
+        $this->assertSame(Contact::EMAIL_VALID, $contact->email_status);
+        $this->assertSame('found@acme.com', $contact->email);
+    }
+
+    public function test_a_finder_that_is_unsure_sends_the_address_through_every_verifier(): void
+    {
+        FakeEnrichment::$finderVerdict = Verdict::UNKNOWN;
+        $this->provider('finds-a-checked-address', EnrichmentProvider::KIND_FIND);
+        $this->provider('says-nothing-useful', EnrichmentProvider::KIND_VERIFY, ['position' => 1]);
+        $this->provider('settles-catch-alls', EnrichmentProvider::KIND_VERIFY, ['position' => 2]);
+
+        $contact = $this->enrich($this->lead());
+
+        $this->assertSame(['finds-a-checked-address', 'says-nothing-useful', 'settles-catch-alls'], FakeEnrichment::$calls);
+        $this->assertSame(Contact::EMAIL_VALID, $contact->email_status);
+    }
+
+    public function test_a_catch_all_from_the_finder_goes_straight_to_the_catch_all_specialist(): void
+    {
+        // The cheap verifier first in line would only say "catch-all" again.
+        FakeEnrichment::$finderVerdict = Verdict::CATCH_ALL;
+        $this->provider('finds-a-checked-address', EnrichmentProvider::KIND_FIND);
+        $this->provider('says-catch-all', EnrichmentProvider::KIND_VERIFY, ['position' => 1]);
+        $this->provider('settles-catch-alls', EnrichmentProvider::KIND_VERIFY, ['position' => 2]);
+
+        $contact = $this->enrich($this->lead());
+
+        $this->assertSame(['finds-a-checked-address', 'settles-catch-alls'], FakeEnrichment::$calls);
+        $this->assertSame(Contact::EMAIL_VALID, $contact->email_status);
+    }
+
+    public function test_a_catch_all_with_no_specialist_switched_on_is_risky_without_paying_anyone(): void
+    {
+        FakeEnrichment::$finderVerdict = Verdict::CATCH_ALL;
+        $this->provider('finds-a-checked-address', EnrichmentProvider::KIND_FIND);
+        $this->provider('says-catch-all', EnrichmentProvider::KIND_VERIFY);
+
+        $contact = $this->enrich($this->lead());
+
+        $this->assertSame(['finds-a-checked-address'], FakeEnrichment::$calls);
+        $this->assertSame(Contact::EMAIL_RISKY, $contact->email_status);
+    }
+
+    public function test_a_catch_all_retried_after_the_specialist_failed_goes_straight_back_to_it(): void
+    {
+        // The retry has no fresh answer from Hunter in hand, only the address.
+        // Without Hunter's saved verdict it would pay Reoon to say catch-all
+        // again before reaching the one verifier that can settle it.
+        FakeEnrichment::$finderVerdict = Verdict::CATCH_ALL;
+        $this->provider('finds-a-checked-address', EnrichmentProvider::KIND_FIND);
+        $this->provider('says-catch-all', EnrichmentProvider::KIND_VERIFY, ['position' => 1]);
+        $specialist = $this->provider('broken-catch-all-specialist', EnrichmentProvider::KIND_VERIFY, ['position' => 2]);
+
+        $contact = $this->enrich($this->lead());
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
+        $this->assertSame('found@acme.com', $contact->email);
+
+        FakeEnrichment::reset();
+        $specialist->update(['driver' => 'settles-catch-alls']);
+
+        $contact = $this->enrich($contact);
+
+        $this->assertSame(['settles-catch-alls'], FakeEnrichment::$calls);
+        $this->assertSame(Contact::EMAIL_VALID, $contact->email_status);
+    }
+
+    public function test_an_address_that_arrived_with_the_lead_is_verified_as_before(): void
+    {
+        // Nobody found it, so nobody checked it. The verifiers are the only check.
+        $this->provider('finds-a-checked-address', EnrichmentProvider::KIND_FIND);
+        $this->provider('says-valid', EnrichmentProvider::KIND_VERIFY);
+
+        $contact = $this->enrich($this->lead(['email' => 'sam@acme.com']));
+
+        $this->assertSame(['says-valid'], FakeEnrichment::$calls);
+        $this->assertSame(Contact::EMAIL_VALID, $contact->email_status);
     }
 
     public function test_a_switched_off_provider_is_not_used(): void

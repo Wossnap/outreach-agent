@@ -34,9 +34,9 @@ class ReoonVerifier implements EmailVerifier, PublishesListPrice, ReportsBalance
     public static function listPrice(): ListPrice
     {
         return new ListPrice(
-            perLookup: 0.0012,
+            perLookup: 0.00119,
             billedOnMiss: true,
-            note: '$12 per 10,000 credits, checked September 2026. Falls to about $0.00074 at 500,000.',
+            note: '$11.90 for 10,000 instant credits, one-off, never expire. From reoon.com/email-verifier, 30 September 2026.',
         );
     }
 

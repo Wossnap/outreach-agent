@@ -58,6 +58,36 @@ class EnrichmentDriverTest extends TestCase
         $this->assertSame(2, $found->detail['sources']);
     }
 
+    public function test_hunter_passes_on_its_own_check_of_the_address(): void
+    {
+        $said = ['valid' => Verdict::VALID, 'accept_all' => Verdict::CATCH_ALL, 'unknown' => Verdict::UNKNOWN];
+
+        $answers = Http::fakeSequence('api.hunter.io/*');
+        foreach (array_keys($said) as $status) {
+            $answers->push(['data' => ['email' => 'sam.carter@acme.com', 'score' => 94, 'verification' => ['status' => $status, 'date' => '2026-09-14']]]);
+        }
+
+        $lead = $this->lead();
+        $hunter = $this->provider('hunter', EnrichmentProvider::KIND_FIND);
+
+        foreach ($said as $status => $verdict) {
+            $found = (new HunterFinder)->find($lead, $hunter);
+
+            $this->assertSame($verdict, $found->verdict, "Hunter said {$status}");
+            $this->assertSame($status, $found->detail['verification']);
+            $this->assertSame('2026-09-14', $found->detail['verified_on']);
+        }
+    }
+
+    public function test_hunter_saying_nothing_about_the_address_is_no_verdict(): void
+    {
+        Http::fake(['api.hunter.io/*' => Http::response(['data' => ['email' => 'sam.carter@acme.com']])]);
+
+        $found = (new HunterFinder)->find($this->lead(), $this->provider('hunter', EnrichmentProvider::KIND_FIND));
+
+        $this->assertNull($found->verdict);
+    }
+
     public function test_hunter_finding_nobody_is_a_miss_not_a_failure(): void
     {
         // Hunter answers 404 when it has no address for the person. That is the

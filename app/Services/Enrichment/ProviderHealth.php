@@ -64,6 +64,8 @@ class ProviderHealth
             ->where('enabled', false)
             ->whereNotNull('disabled_reason')
             ->get()
+            // Never one Minimum cost is holding off, whatever its account says.
+            ->reject(fn (EnrichmentProvider $provider): bool => MinimumCost::locks($provider))
             // Only on a reading that says so. "Nobody asked yet" is good enough
             // to keep using a provider, not to switch a failing one back on.
             ->filter(function (EnrichmentProvider $provider): bool {

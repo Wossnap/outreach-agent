@@ -37,9 +37,9 @@ class MyEmailVerifierVerifier implements EmailVerifier, PublishesListPrice, Repo
     public static function listPrice(): ListPrice
     {
         return new ListPrice(
-            perLookup: 0.00216,
+            perLookup: 0.004,
             billedOnMiss: true,
-            note: '$21.60 per 10,000 credits, checked September 2026. Credits do not expire.',
+            note: 'Pay-as-you-go, $4 for 1,000 credits, never expire; $15 for 10,000. From myemailverifier.com/pricing, 30 September 2026.',
         );
     }
 

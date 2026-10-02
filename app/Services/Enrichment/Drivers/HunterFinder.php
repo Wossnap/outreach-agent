@@ -10,6 +10,7 @@ use App\Services\Enrichment\Contracts\PublishesListPrice;
 use App\Services\Enrichment\Contracts\ReportsBalance;
 use App\Services\Enrichment\FoundEmail;
 use App\Services\Enrichment\ListPrice;
+use App\Services\Enrichment\Verdict;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -35,9 +36,9 @@ class HunterFinder implements EmailFinder, PublishesListPrice, ReportsBalance
     public static function listPrice(): ListPrice
     {
         return new ListPrice(
-            perLookup: 0.098,
+            perLookup: 0.0245,
             billedOnMiss: false,
-            note: 'About $0.098 per address on the starting plan, from a third-party comparison rather than Hunter directly, September 2026.',
+            note: 'Starter plan, $49 a month for 2,000 credits, one credit per address found and none when nothing is found. From hunter.io/pricing, 30 September 2026.',
         );
     }
 
@@ -94,10 +95,15 @@ class HunterFinder implements EmailFinder, PublishesListPrice, ReportsBalance
         return new FoundEmail(
             email: $email,
             confidence: $response->json('data.score'),
-            detail: [
+            detail: array_filter([
                 'score' => $response->json('data.score'),
                 'sources' => count($response->json('data.sources', [])),
-            ],
+                // Kept so a verdict taken from Hunter can be traced to the day
+                // Hunter checked it, which is not always the day we asked.
+                'verification' => $response->json('data.verification.status'),
+                'verified_on' => $response->json('data.verification.date'),
+            ], fn ($value) => $value !== null),
+            verdict: $this->verdictFrom($response->json('data.verification.status')),
             extra: array_filter([
                 'score' => $response->json('data.score'),
                 'sources' => count($response->json('data.sources', [])) ?: null,
@@ -108,6 +114,23 @@ class HunterFinder implements EmailFinder, PublishesListPrice, ReportsBalance
                 'company' => $response->json('data.company'),
             ]),
         );
+    }
+
+    /**
+     * Hunter checks every address it finds, at no extra cost, and says so.
+     *
+     * Its finder only ever answers valid, accept_all or unknown: it does not
+     * hand back an address it knows is dead. Anything it has not said is no
+     * verdict at all, and the address goes through the verifiers as usual.
+     */
+    private function verdictFrom(?string $status): ?Verdict
+    {
+        return match ($status) {
+            'valid' => Verdict::VALID,
+            'accept_all' => Verdict::CATCH_ALL,
+            'unknown' => Verdict::UNKNOWN,
+            default => null,
+        };
     }
 
     /**

@@ -23,5 +23,13 @@ readonly class FoundEmail
          * @var array<string, mixed>
          */
         public array $extra = [],
+        /**
+         * The finder's own check of the address, where it runs one.
+         *
+         * Hunter checks every address it finds at no extra cost. Valid is
+         * taken as it is; anything else decides which verifier is paid to
+         * look again. Null when the finder says nothing either way.
+         */
+        public ?Verdict $verdict = null,
     ) {}
 }

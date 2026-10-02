@@ -6,6 +6,7 @@ use App\Models\Contact;
 use App\Models\EnrichmentProvider;
 use App\Services\Enrichment\BalanceReading;
 use App\Services\Enrichment\EnrichmentSwitch;
+use App\Services\Enrichment\MinimumCost;
 use App\Services\Sending\EnrollmentActivator;
 use App\Services\Sending\VerifiedEmailSwitch;
 use Carbon\CarbonImmutable;
@@ -72,6 +73,12 @@ class Waterfall extends Component
     public function toggle(int $id): void
     {
         $provider = EnrichmentProvider::findOrFail($id);
+
+        if (MinimumCost::locks($provider)) {
+            $this->flash = $provider->name.' is locked off while Minimum cost is on. Turn Minimum cost off to use it.';
+
+            return;
+        }
 
         if (! $provider->enabled && ! $provider->isConfigured()) {
             $this->flash = $provider->name.' has no key yet, so it would fail every call.';
@@ -154,6 +161,27 @@ class Waterfall extends Component
     {
         EnrichmentProvider::orderByPrice();
         $this->flash = 'Reordered cheapest first. That is a starting point, not an answer: check the performance page once there is traffic to judge.';
+    }
+
+    /**
+     * Only Hunter, Reoon and BounceBan, or the full waterfall as it was set up.
+     *
+     * Everything else is switched off and locked, not skipped while still
+     * showing "in use", so the page always says what will actually happen.
+     */
+    public function toggleMinimumCost(): void
+    {
+        if (MinimumCost::isOn()) {
+            $restored = MinimumCost::switchOff();
+            $this->flash = 'Minimum cost is off. Every provider is back as it was'
+                .($restored->isEmpty() ? '.' : ': '.$restored->pluck('name')->join(', ').' switched back on.');
+
+            return;
+        }
+
+        $locked = MinimumCost::switchOn();
+        $this->flash = 'Minimum cost is on. Only Hunter, Reoon and BounceBan are used'
+            .($locked->isEmpty() ? '.' : '; '.$locked->pluck('name')->join(', ').' switched off and locked.');
     }
 
     public function toggleEnrichment(): void
@@ -244,6 +272,8 @@ class Waterfall extends Component
                 ])
                 ->all(),
             'enrichmentOn' => EnrichmentSwitch::isOn(),
+            'minimumCost' => MinimumCost::isOn(),
+            'minimumMissing' => MinimumCost::isOn() ? MinimumCost::missing() : collect(),
             'verifiedRequired' => VerifiedEmailSwitch::isOn(),
             // Named on the button that relaxes the rule, so nobody relaxes it
             // without being told how many people it starts.

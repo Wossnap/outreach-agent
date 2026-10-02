@@ -9,6 +9,7 @@ use App\Services\Enrichment\Contracts\EmailFinder;
 use App\Services\Enrichment\Contracts\EmailVerifier;
 use App\Services\Enrichment\Contracts\PublishesListPrice;
 use App\Services\Enrichment\Contracts\ReportsBalance;
+use App\Services\Enrichment\Contracts\ResolvesCatchAll;
 use App\Services\Enrichment\FoundEmail;
 use App\Services\Enrichment\ListPrice;
 use App\Services\Enrichment\Verdict;
@@ -36,6 +37,9 @@ class FakeEnrichment
      */
     public static array $credits = [];
 
+    /** What FindsACheckedAddress says its own check found. */
+    public static ?Verdict $finderVerdict = null;
+
     /** How many times a provider was asked what it has left. */
     public static int $balanceChecks = 0;
 
@@ -43,6 +47,7 @@ class FakeEnrichment
     {
         self::$calls = [];
         self::$credits = [];
+        self::$finderVerdict = null;
         self::$balanceChecks = 0;
     }
 
@@ -88,6 +93,52 @@ class CheckerWithCredits implements EmailVerifier, ReportsBalance
     public function balance(EnrichmentProvider $provider): Balance
     {
         return FakeEnrichment::creditsFor($provider);
+    }
+}
+
+/** A finder that checks what it finds, the way Hunter does. */
+class FindsACheckedAddress implements EmailFinder
+{
+    public function supports(Contact $contact): bool
+    {
+        return true;
+    }
+
+    public function find(Contact $contact, EnrichmentProvider $provider): ?FoundEmail
+    {
+        FakeEnrichment::$calls[] = 'finds-a-checked-address';
+
+        // Kept on the lookup the way Hunter's is, so a retry can read it back.
+        $said = match (FakeEnrichment::$finderVerdict) {
+            Verdict::VALID => 'valid',
+            Verdict::CATCH_ALL => 'accept_all',
+            Verdict::UNKNOWN => 'unknown',
+            default => null,
+        };
+
+        return new FoundEmail('found@acme.com', 88, array_filter(['score' => 88, 'verification' => $said]), verdict: FakeEnrichment::$finderVerdict);
+    }
+}
+
+/** A catch-all specialist having a bad day, the way BounceBan might. */
+class BrokenCatchAllSpecialist implements EmailVerifier, ResolvesCatchAll
+{
+    public function verify(string $email, EnrichmentProvider $provider): Verification
+    {
+        FakeEnrichment::$calls[] = 'broken-catch-all-specialist';
+
+        throw new RuntimeException('503 Service Unavailable');
+    }
+}
+
+/** A verifier that can settle catch-alls, the way BounceBan does. */
+class SettlesCatchAlls implements EmailVerifier, ResolvesCatchAll
+{
+    public function verify(string $email, EnrichmentProvider $provider): Verification
+    {
+        FakeEnrichment::$calls[] = 'settles-catch-alls';
+
+        return new Verification(Verdict::VALID, ['said' => 'mailbox exists']);
     }
 }
 
