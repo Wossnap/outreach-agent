@@ -93,6 +93,53 @@ key, tick them on the Leads page and use **Check the addresses again**. A settle
 lead is never revisited on its own, because an answer is only paid for once.
 Anybody who has opted out is skipped, and the message says how many.
 
+### When a provider runs dry
+
+A provider that fails five calls in a row, usually because it is out of credits
+or over its plan's limit, is switched off, and the lead moves on to the next one.
+A failure is never taken as an answer. A lead that only failed goes to
+**waiting to retry**, never "not found" or "risky", and keeps any address a
+finder already returned.
+
+What each address status means:
+
+| Status | Meaning |
+|---|---|
+| Pending | Not looked up yet: its lookup is queued, or lookups are switched off |
+| Finding / Verifying | A finder or checker is being asked right now (seconds) |
+| Waiting to retry | Looked up, but it could not finish: a provider failed, ran out or was switched off for failing, or no checker was on |
+| Valid | Confirmed to receive mail; the only status emailed on its own |
+| Risky | Checked, nobody could confirm it: a catch-all domain, or every checker said unknown |
+| Invalid | Does not receive mail, or failed the free syntax and DNS check |
+| Not found | Every finder switched on looked and none had an address |
+
+Leads the older code left in the wrong status (marked "not found" or "risky"
+because a provider failed, or stuck at "finding") are repaired once after
+deploying: `php artisan enrichment:repair-statuses` reports what it would
+change and changes nothing; run it again with `--apply` to make the changes.
+
+Nothing needs doing by hand to recover:
+
+- **`enrichment:retry`**, every 15 minutes, sends leads waiting to retry
+  through again, at once. A lead still pending, finding or verifying after
+  15 minutes (`ENRICHMENT_RETRY_STALE_MINUTES`) is one whose lookup never ran
+  or died part way, and is sent too.
+  With nobody waiting it stops before asking any provider anything. Otherwise
+  it asks them what they have left, switches back on any the waterfall had
+  switched off that has credit again, so a top-up is used within 15 minutes
+  rather than at the next hourly check, and does nothing when none can take
+  the work. It sends a batch of 200, four seconds apart, so sending is
+  never held up behind lookups. A provider that already answered for a lead is
+  not asked again. **Check the addresses again** is the exception: a person
+  asking wants a fresh answer, so everybody is asked.
+- **`enrichment:check-providers`**, hourly, reads every balance, switches back
+  on any provider the waterfall switched off once it has credit again, and
+  emails when a finder or checker is low, empty or switched off. Each problem is
+  emailed once, and again only if it clears and comes back. One you switched off
+  yourself stays off.
+
+The same warnings show at the top of **Leads** and **Dashboard**.
+
 Two switches live there too, both live rather than config:
 
 | Switch | What off means |
@@ -174,6 +221,9 @@ happens.
 | `OUTREACH_OPEN_TRACKING_IGNORE_SECONDS` | pixel hits this soon after sending are scanners, not people (default 10) |
 | `OUTREACH_POSTMASTER_SYNC` | pull Gmail Postmaster Tools spam rates daily (default `true`) |
 | `OUTREACH_POSTMASTER_LOOKBACK_DAYS` | how far back the first Postmaster sync asks for (default 30) |
+| `ENRICHMENT_ALERT_EMAIL` | who is emailed when a finder or checker is low or switched off, comma separated. Empty emails every dashboard user |
+| `ENRICHMENT_LOW_CREDITS` | below this many credits a provider counts as low (default 50) |
+| `ENRICHMENT_RETRY_BATCH` / `ENRICHMENT_RETRY_SPACING` | waiting leads sent per retry, and seconds between them (default 200, 4) |
 
 ## Setup order
 
@@ -255,6 +305,8 @@ Mail is sent through the **Gmail API**, so it leaves **Google's IP ranges** — 
 | `gmail:poll-mailboxes` | every 2 min | fetch replies/bounces per mailbox |
 | `outreach:advance-sequences` | every 10 min | draft next step when delay elapsed, no reply |
 | `outreach:reconcile-stuck` | every 15 min | heal/fail rows orphaned by worker crashes |
+| `enrichment:retry` | every 15 min | send leads still waiting for an address or a check through the waterfall again |
+| `enrichment:check-providers` | hourly | refresh balances, switch topped-up providers back on, email about new problems |
 | `health:evaluate` | hourly | bounce/reply/open rates + auto-pause |
 | `health:check-dns` / `--dnsbl` | daily | SPF/DKIM/DMARC + blocklists |
 | `postmaster:sync` | daily | Gmail Postmaster spam-rate figures per domain |

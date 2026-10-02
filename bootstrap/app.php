@@ -59,6 +59,16 @@ return Application::configure(basePath: dirname(__DIR__))
             ->withoutOverlapping(30)
             ->onFailure(fn () => Log::error('health:check-dns --dnsbl scheduled run failed'));
 
+        $schedule->command('enrichment:retry')
+            ->everyFifteenMinutes()
+            ->withoutOverlapping(10)
+            ->onFailure(fn () => Log::error('enrichment:retry scheduled run failed'));
+
+        $schedule->command('enrichment:check-providers')
+            ->hourly()
+            ->withoutOverlapping(10)
+            ->onFailure(fn () => Log::error('enrichment:check-providers scheduled run failed'));
+
         $schedule->command('postmaster:sync')
             ->dailyAt('07:00')
             ->withoutOverlapping(30)

@@ -140,12 +140,12 @@ paths:
         -
           in: query
           name: email_status
-          description: 'How far the waterfall has got: pending, finding, verifying, valid, risky, invalid, not_found. Only `valid` is sendable on its own. e.g. valid.'
+          description: 'How far the waterfall has got: pending, finding, verifying, waiting, valid, risky, invalid, not_found. Only `valid` is sendable on its own. e.g. valid.'
           example: null
           required: false
           schema:
             type: string
-            description: 'How far the waterfall has got: pending, finding, verifying, valid, risky, invalid, not_found. Only `valid` is sendable on its own. e.g. valid.'
+            description: 'How far the waterfall has got: pending, finding, verifying, waiting, valid, risky, invalid, not_found. Only `valid` is sendable on its own. e.g. valid.'
             example: null
         -
           in: query

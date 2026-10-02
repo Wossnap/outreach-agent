@@ -95,7 +95,7 @@ class EmailWaterfallTest extends TestCase
 
         // Pending, not risky. Nobody was asked, so nothing is claimed, and the
         // lead can still be checked once somebody puts a key in.
-        $this->assertSame(Contact::EMAIL_PENDING, $contact->email_status);
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
         $this->assertFalse($contact->isEmailResolved());
     }
 
@@ -140,12 +140,12 @@ class EmailWaterfallTest extends TestCase
         $this->assertFalse(Contact::sendable()->whereKey($contact->id)->exists());
 
         /*
-         * And pending rather than risky. Risky counts as settled, so a lead
+         * And waiting to retry rather than risky. Risky counts as settled, so a lead
          * that arrived while no verifier was configured would never be looked
          * at again once one was. An empty chain is a gap in the setup, not a
          * verdict about the address.
          */
-        $this->assertSame(Contact::EMAIL_PENDING, $contact->email_status);
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
         $this->assertFalse($contact->isEmailResolved());
     }
 
@@ -268,7 +268,7 @@ class EmailWaterfallTest extends TestCase
         // the setup would lose it for good: settled leads are never revisited.
         $contact = $this->enrich($this->lead());
 
-        $this->assertSame(Contact::EMAIL_PENDING, $contact->email_status);
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
         $this->assertFalse($contact->isEmailResolved());
     }
 
@@ -323,6 +323,138 @@ class EmailWaterfallTest extends TestCase
         $this->assertNotNull($broken->disabled_at);
     }
 
+    public function test_a_finder_that_fails_leaves_the_lead_waiting_rather_than_not_found(): void
+    {
+        // The case that happened: every finder out of credits. Not found is
+        // settled for good and hidden by default, and nobody had looked.
+        $this->provider('broken-finder', EnrichmentProvider::KIND_FIND);
+        $this->provider('says-valid', EnrichmentProvider::KIND_VERIFY);
+
+        $contact = $this->enrich($this->lead());
+
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
+        $this->assertFalse($contact->isEmailResolved());
+    }
+
+    public function test_a_retry_does_not_ask_a_finder_that_already_found_nothing(): void
+    {
+        $this->provider('finds-nothing', EnrichmentProvider::KIND_FIND, ['position' => 1]);
+        $broken = $this->provider('broken-finder', EnrichmentProvider::KIND_FIND, ['position' => 2]);
+        $this->provider('says-valid', EnrichmentProvider::KIND_VERIFY);
+
+        $contact = $this->enrich($this->lead());
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
+
+        // The failing one comes back. Only it is asked: the other has already
+        // said it has nothing, and would only say so again.
+        FakeEnrichment::reset();
+        $broken->update(['driver' => 'finds-an-address']);
+
+        $contact = $this->enrich($contact);
+
+        $this->assertSame(['finds-an-address', 'says-valid'], FakeEnrichment::$calls);
+        $this->assertSame(Contact::EMAIL_VALID, $contact->email_status);
+    }
+
+    public function test_a_lead_every_switched_on_finder_has_answered_is_not_found_without_asking_again(): void
+    {
+        $this->provider('finds-nothing', EnrichmentProvider::KIND_FIND, ['position' => 1]);
+        $broken = $this->provider('broken-finder', EnrichmentProvider::KIND_FIND, ['position' => 2]);
+
+        $contact = $this->enrich($this->lead());
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
+
+        // Somebody takes the failing one out of the chain. Everybody left has
+        // answered, so the lead is settled without paying anyone again.
+        FakeEnrichment::reset();
+        $broken->update(['enabled' => false]);
+
+        $contact = $this->enrich($contact);
+
+        $this->assertSame([], FakeEnrichment::$calls);
+        $this->assertSame(Contact::EMAIL_NOT_FOUND, $contact->email_status);
+    }
+
+    public function test_a_lead_waits_for_a_finder_that_was_switched_off_for_failing(): void
+    {
+        // Findymail said it had nothing; Hunter ran dry and switched itself
+        // off. Hunter never looked, so this is not "not found": the lead
+        // waits for Hunter's top-up instead of being written off for good.
+        $this->provider('finds-nothing', EnrichmentProvider::KIND_FIND, ['position' => 1]);
+        $this->provider('finds-an-address', EnrichmentProvider::KIND_FIND, ['position' => 2])
+            ->disableBecause('5 calls in a row failed. Check the key and the account balance.');
+
+        $contact = $this->enrich($this->lead());
+
+        $this->assertSame(['finds-nothing'], FakeEnrichment::$calls);
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
+    }
+
+    public function test_a_catch_all_waits_for_a_specialist_that_was_switched_off_for_failing(): void
+    {
+        $this->provider('says-catch-all', EnrichmentProvider::KIND_VERIFY, ['position' => 1]);
+        $this->provider('settles-catch-alls', EnrichmentProvider::KIND_VERIFY, ['position' => 2])
+            ->disableBecause('5 calls in a row failed. Check the key and the account balance.');
+
+        $contact = $this->enrich($this->lead(['email' => 'sam@acme.com']));
+
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
+    }
+
+    public function test_a_checker_that_fails_leaves_the_address_waiting_rather_than_risky(): void
+    {
+        $this->provider('broken-verifier', EnrichmentProvider::KIND_VERIFY);
+
+        $contact = $this->enrich($this->lead(['email' => 'sam@acme.com']));
+
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
+        $this->assertSame('sam@acme.com', $contact->email);
+    }
+
+    public function test_a_found_address_waits_to_retry_when_there_is_no_checker(): void
+    {
+        // Not left at "finding", which says a lookup is under way when none
+        // is, and which nothing would ever pick up again.
+        $this->provider('finds-an-address', EnrichmentProvider::KIND_FIND);
+
+        $contact = $this->enrich($this->lead());
+
+        $this->assertSame('found@acme.com', $contact->email);
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
+    }
+
+    public function test_a_retry_only_asks_the_checker_that_failed(): void
+    {
+        // The specialist that settles catch-alls is the one that failed.
+        // Settling as risky here would have lost the one answer worth having.
+        $this->provider('says-catch-all', EnrichmentProvider::KIND_VERIFY, ['position' => 1]);
+        $specialist = $this->provider('broken-verifier', EnrichmentProvider::KIND_VERIFY, ['position' => 2]);
+
+        $contact = $this->enrich($this->lead(['email' => 'sam@acme.com']));
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
+
+        FakeEnrichment::reset();
+        $specialist->update(['driver' => 'says-valid']);
+
+        $contact = $this->enrich($contact);
+
+        $this->assertSame(['says-valid'], FakeEnrichment::$calls);
+        $this->assertSame(Contact::EMAIL_VALID, $contact->email_status);
+    }
+
+    public function test_checking_again_by_hand_asks_everyone_afresh(): void
+    {
+        $this->provider('finds-nothing', EnrichmentProvider::KIND_FIND, ['position' => 1]);
+        $this->provider('broken-finder', EnrichmentProvider::KIND_FIND, ['position' => 2]);
+
+        $contact = $this->enrich($this->lead());
+        FakeEnrichment::reset();
+
+        app(EmailWaterfall::class)->run($contact->fresh(), askAgain: true);
+
+        $this->assertSame(['finds-nothing', 'broken-finder'], FakeEnrichment::$calls);
+    }
+
     public function test_a_switched_off_provider_is_not_used(): void
     {
         $this->provider('says-valid', EnrichmentProvider::KIND_VERIFY, ['enabled' => false]);
@@ -330,7 +462,7 @@ class EmailWaterfallTest extends TestCase
         $contact = $this->enrich($this->lead(['email' => 'sam@acme.com']));
 
         $this->assertSame([], FakeEnrichment::$calls);
-        $this->assertSame(Contact::EMAIL_PENDING, $contact->email_status);
+        $this->assertSame(Contact::EMAIL_WAITING, $contact->email_status);
         $this->assertFalse($contact->isEmailResolved());
     }
 

@@ -240,9 +240,22 @@ class EnrichmentProvider extends Model
 
         $reading = $this->readBalance();
 
-        Cache::forever($this->balanceCacheKey(), $reading->toArray());
+        $this->rememberBalance($reading);
 
         return $reading;
+    }
+
+    /**
+     * Keep a reading as this provider's last known balance.
+     *
+     * Also how a reading survives the provider being saved, which otherwise
+     * forgets it (see booted): switching a topped-up provider back on is a
+     * save, and the page would then say "not checked yet" about a balance that
+     * was read a moment before.
+     */
+    public function rememberBalance(BalanceReading $reading): void
+    {
+        Cache::forever($this->balanceCacheKey(), $reading->toArray());
     }
 
     private function readBalance(): BalanceReading

@@ -15,6 +15,8 @@
                 </div>
             </div>
 
+            <x-lookup-alerts />
+
             @if (session('dashboard-status'))
                 <pre class="rounded-md bg-band border border-rule p-3 font-mono text-xs text-ink whitespace-pre-wrap">{{ session('dashboard-status') }}</pre>
             @endif

@@ -47,7 +47,9 @@ class Recheck
 
             $contact->update(['email_status' => Contact::EMAIL_PENDING, 'email_checked_at' => null]);
 
-            EnrichContact::dispatch($contact->id);
+            // Somebody asked for a fresh answer, so providers that already
+            // gave one are asked again rather than skipped.
+            EnrichContact::dispatch($contact->id, askAgain: true);
             $queued++;
         }
 

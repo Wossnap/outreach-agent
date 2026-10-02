@@ -9,6 +9,8 @@
                 </div>
             @endif
 
+            <x-lookup-alerts />
+
             <div class="flex items-center justify-between">
                 <h2 class="font-display text-2xl font-semibold tracking-tight text-ink">
                     Leads <span class="text-sm font-sans font-normal text-ink-dim">{{ $contacts->total() }}</span>
@@ -176,7 +178,7 @@
                                     @php($status = $contact->email_status)
                                     <x-pill :tone="match (true) {
                                         $status === \App\Models\Contact::EMAIL_VALID => 'good',
-                                        $status === \App\Models\Contact::EMAIL_RISKY => 'warn',
+                                        in_array($status, [\App\Models\Contact::EMAIL_RISKY, \App\Models\Contact::EMAIL_WAITING], true) => 'warn',
                                         in_array($status, [\App\Models\Contact::EMAIL_INVALID, \App\Models\Contact::EMAIL_NOT_FOUND], true) => 'danger',
                                         default => 'neutral',
                                     }">

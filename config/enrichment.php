@@ -55,4 +55,36 @@ return [
      */
     'balance_timeout' => (int) env('ENRICHMENT_BALANCE_TIMEOUT', 8),
 
+    /*
+     * Leads that are still waiting for an address or a check are sent through
+     * again by `enrichment:retry`, every fifteen minutes.
+     *
+     * A limited batch, spaced out, rather than everybody at once. Lookups
+     * share the queue with drafting and sending, and two thousand of them
+     * queued together would hold every send up behind them. 200 leads four
+     * seconds apart takes about thirteen minutes, so one run is finished
+     * before the next begins.
+     *
+     * Leads marked "waiting to retry" are picked up at once. A lead still at
+     * pending, finding or verifying after stale_minutes is one whose lookup
+     * never ran or died part way, a worker killed during a deploy, say, since
+     * a lookup takes seconds; those are picked up too.
+     */
+    'retry' => [
+        'batch' => (int) env('ENRICHMENT_RETRY_BATCH', 200),
+        'spacing_seconds' => (int) env('ENRICHMENT_RETRY_SPACING', 4),
+        'stale_minutes' => (int) env('ENRICHMENT_RETRY_STALE_MINUTES', 15),
+    ],
+
+    /*
+     * Who is told when a finder or checker runs low or is switched off, and
+     * what counts as low.
+     *
+     * Comma separated. Left empty, every user of the dashboard is told.
+     */
+    'alerts' => [
+        'to' => array_values(array_filter(array_map('trim', explode(',', (string) env('ENRICHMENT_ALERT_EMAIL', ''))))),
+        'low_credits' => (int) env('ENRICHMENT_LOW_CREDITS', 50),
+    ],
+
 ];

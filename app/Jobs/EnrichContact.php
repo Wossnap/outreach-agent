@@ -52,7 +52,11 @@ class EnrichContact implements ShouldBeUnique, ShouldQueue
      */
     public int $uniqueFor = 900;
 
-    public function __construct(public int $contactId) {}
+    /**
+     * @param  bool  $askAgain  ask providers that already answered too. Only
+     *                          "check the address again" sets it.
+     */
+    public function __construct(public int $contactId, public bool $askAgain = false) {}
 
     public function uniqueId(): string
     {
@@ -64,7 +68,7 @@ class EnrichContact implements ShouldBeUnique, ShouldQueue
         $contact = Contact::find($this->contactId);
 
         if ($contact) {
-            $waterfall->run($contact);
+            $waterfall->run($contact, $this->askAgain);
         }
     }
 }

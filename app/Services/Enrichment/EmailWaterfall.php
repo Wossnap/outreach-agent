@@ -38,7 +38,14 @@ class EmailWaterfall
         private readonly EnrollmentActivator $activator,
     ) {}
 
-    public function run(Contact $contact): void
+    /**
+     * @param  bool  $askAgain  ask every provider afresh, including ones that
+     *                          have already answered for this lead. Only a
+     *                          person pressing "check the address again" wants
+     *                          that; a retry should not pay twice for an answer
+     *                          it already has.
+     */
+    public function run(Contact $contact, bool $askAgain = false): void
     {
         // Already settled. Running again would pay for an answer we have.
         if ($contact->isEmailResolved()) {
@@ -54,35 +61,125 @@ class EmailWaterfall
             return;
         }
 
+        $answered = $askAgain ? [] : $this->providersThatAnswered($contact);
+        $anyFailed = false;
+
         if (blank($contact->email)) {
             /*
              * With no finder configured there is nobody to ask, and saying "not
-             * found" would claim we looked. The lead stays pending so it is
+             * found" would claim we looked. The lead waits to retry so it is
              * picked up once a finder exists, rather than being written off by
              * a gap in the setup.
              */
             if ($this->readyProviders(EnrichmentProvider::KIND_FIND)->isEmpty()) {
+                $this->leaveUnsettled($contact);
+
                 return;
             }
 
-            $this->find($contact);
+            $this->find($contact, $answered, $anyFailed);
 
             if (blank($contact->fresh()->email)) {
-                $this->settle($contact, Contact::EMAIL_NOT_FOUND);
+                /*
+                 * Not found only when every finder actually answered. One that
+                 * failed, out of credits or over its limit, never looked, and
+                 * "not found" would write the lead off for good: settled leads
+                 * are never asked again, and not-found ones are hidden from the
+                 * Leads page by default.
+                 *
+                 * The same goes for a finder that is off because it kept
+                 * failing: it is waiting for a top-up, not out of the chain.
+                 */
+                $anyFailed || $this->stillToHearFrom($contact, EnrichmentProvider::KIND_FIND)
+                    ? $this->leaveUnsettled($contact)
+                    : $this->settle($contact, Contact::EMAIL_NOT_FOUND);
 
                 return;
             }
         }
 
-        $this->verify($contact->refresh());
+        $this->verify($contact->refresh(), $answered);
     }
 
-    private function find(Contact $contact): void
+    /**
+     * Providers that have already given this lead a real answer.
+     *
+     * A finder that said "nothing" will say nothing again, and a verifier that
+     * could not commit will not commit now, so asking either twice is paying
+     * for an answer we have. A call that failed is not an answer: the provider
+     * never looked, and it is exactly the one worth asking again.
+     *
+     * @return array<int, int> provider ids
+     */
+    private function providersThatAnswered(Contact $contact): array
+    {
+        return EmailLookup::query()
+            ->where('contact_id', $contact->id)
+            ->whereNotNull('enrichment_provider_id')
+            ->where('result', '!=', EmailLookup::RESULT_ERROR)
+            ->distinct()
+            ->pluck('enrichment_provider_id')
+            ->all();
+    }
+
+    /**
+     * Waiting to retry: looked up, not finished, nothing decided.
+     *
+     * Waiting is what the retry looks for, so a lead left here is picked up
+     * again as soon as a provider can take it. Pending would say nobody has
+     * looked yet, and finding or verifying that a lookup is under way when
+     * none is.
+     */
+    private function leaveUnsettled(Contact $contact): void
+    {
+        $contact->update(['email_status' => Contact::EMAIL_WAITING]);
+    }
+
+    /**
+     * Whether a provider the waterfall switched off has yet to answer for this
+     * lead.
+     *
+     * A provider switched off for failing five times in a row is out of credit
+     * or over its limit, and comes back by itself once topped up. Until then it
+     * has not looked, so settling the lead without it would write the lead off
+     * on the word of the providers that happened to be left. One somebody
+     * switched off by hand carries no reason and is genuinely out of the chain.
+     */
+    private function stillToHearFrom(Contact $contact, string $kind): bool
+    {
+        $answered = $this->providersThatAnswered($contact);
+
+        return EnrichmentProvider::query()
+            ->where('kind', $kind)
+            ->where('enabled', false)
+            ->whereNotNull('disabled_reason')
+            ->get()
+            ->filter(fn (EnrichmentProvider $provider): bool => $provider->isConfigured()
+                && ! in_array($provider->id, $answered, true))
+            ->isNotEmpty();
+    }
+
+    /**
+     * @param  array<int, int>  $answered  providers not to ask again
+     * @param  bool  $anyFailed  set when a finder failed rather than answered
+     * @return FoundEmail|null the address a finder returned, if one did
+     */
+    private function find(Contact $contact, array $answered, bool &$anyFailed): ?FoundEmail
     {
         $contact->update(['email_status' => Contact::EMAIL_FINDING]);
 
         foreach ($this->readyProviders(EnrichmentProvider::KIND_FIND) as $provider) {
+            if (in_array($provider->id, $answered, true)) {
+                continue;
+            }
+
             $found = $this->attemptFind($contact, $provider);
+
+            if ($found === false) {
+                $anyFailed = true;
+
+                continue;
+            }
 
             if ($found instanceof FoundEmail) {
                 $contact->forceFill([
@@ -115,23 +212,30 @@ class EmailWaterfall
 
                 $contact->save();
 
-                return;
+                return $found;
             }
         }
+
+        return null;
     }
 
-    private function verify(Contact $contact): void
+    /**
+     * @param  array<int, int>  $answered  providers not to ask again
+     */
+    private function verify(Contact $contact, array $answered): void
     {
         /*
          * Nobody to ask, so nothing is claimed. Mirrors what the find half
-         * already does, and it is checked BEFORE the status moves to verifying
-         * so the lead is left plainly pending.
+         * already does. The address a finder just returned is kept, and the
+         * lead waits to retry so it is checked once a verifier is back.
          *
          * An empty verify chain is a gap in the setup, not a verdict about the
          * address. Settling as risky would count as settled, and the lead would
          * never be looked at again.
          */
         if ($this->readyProviders(EnrichmentProvider::KIND_VERIFY)->isEmpty()) {
+            $this->leaveUnsettled($contact);
+
             return;
         }
 
@@ -147,10 +251,22 @@ class EmailWaterfall
             return;
         }
 
+        $anyFailed = false;
+
         foreach ($this->readyProviders(EnrichmentProvider::KIND_VERIFY) as $provider) {
+            if (in_array($provider->id, $answered, true)) {
+                continue;
+            }
+
             $verdict = $this->attemptVerify($contact, $provider);
 
-            if ($verdict?->isConclusive()) {
+            if ($verdict === null) {
+                $anyFailed = true;
+
+                continue;
+            }
+
+            if ($verdict->isConclusive()) {
                 $this->settle($contact, match ($verdict) {
                     Verdict::VALID => Contact::EMAIL_VALID,
                     Verdict::INVALID => Contact::EMAIL_INVALID,
@@ -162,6 +278,18 @@ class EmailWaterfall
 
                 return;
             }
+        }
+
+        /*
+         * A verifier that failed never looked, and the one that failed may be
+         * the specialist that settles catch-alls. Risky is settled for good, so
+         * the lead waits instead, and the retry asks only the ones that did not
+         * answer. Likewise when that specialist is off because it kept failing.
+         */
+        if ($anyFailed || $this->stillToHearFrom($contact, EnrichmentProvider::KIND_VERIFY)) {
+            $this->leaveUnsettled($contact);
+
+            return;
         }
 
         /*
@@ -191,7 +319,12 @@ class EmailWaterfall
         return EnrichmentProvider::chainFor($kind);
     }
 
-    private function attemptFind(Contact $contact, EnrichmentProvider $provider): ?FoundEmail
+    /**
+     * @return FoundEmail|false|null the address, false when the call failed, or
+     *                               null when the provider had nothing or no
+     *                               way in for this lead
+     */
+    private function attemptFind(Contact $contact, EnrichmentProvider $provider): FoundEmail|false|null
     {
         $startedAt = hrtime(true);
 
@@ -209,7 +342,7 @@ class EmailWaterfall
         } catch (Throwable $e) {
             $this->recordFailure($contact, $provider, $startedAt, $e);
 
-            return null;
+            return false;
         }
 
         $this->record(
@@ -224,6 +357,7 @@ class EmailWaterfall
         return $found;
     }
 
+    /** @return Verdict|null the verdict, or null when the call failed */
     private function attemptVerify(Contact $contact, EnrichmentProvider $provider): ?Verdict
     {
         $startedAt = hrtime(true);

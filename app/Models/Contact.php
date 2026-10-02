@@ -45,6 +45,15 @@ class Contact extends Model
 
     public const EMAIL_VERIFYING = 'verifying';
 
+    /*
+     * Looked up, but the lookup could not finish: a provider failed, ran out
+     * of credits or was switched off for failing, or no verifier was on. Not
+     * the same as PENDING, which is a lead nobody has looked up yet; one
+     * status for both left nobody able to tell a new lead from a stuck one.
+     * The retry sends these through again as soon as a provider can take them.
+     */
+    public const EMAIL_WAITING = 'waiting';
+
     public const EMAIL_VALID = 'valid';
 
     public const EMAIL_RISKY = 'risky';
@@ -88,6 +97,9 @@ class Contact extends Model
             self::EMAIL_PENDING => 'Pending',
             self::EMAIL_FINDING => 'Finding',
             self::EMAIL_VERIFYING => 'Verifying',
+            // Not just "Waiting": the enrollment beside it can be "Waiting for
+            // an address", which is a different thing.
+            self::EMAIL_WAITING => 'Waiting to retry',
             self::EMAIL_VALID => 'Valid',
             self::EMAIL_RISKY => 'Risky',
             self::EMAIL_INVALID => 'Invalid',
@@ -98,9 +110,9 @@ class Contact extends Model
     /**
      * Whether the waterfall has finished with this contact, one way or another.
      *
-     * Pending, finding and verifying all mean the work is not done, which
-     * includes one left mid-flight by a job that died. Those are picked up
-     * again; the settled ones never are, so an answer is only ever paid for
+     * Pending, finding, verifying and waiting all mean the work is not done,
+     * which includes one left mid-flight by a job that died. Those are picked
+     * up again; the settled ones never are, so an answer is only ever paid for
      * once.
      */
     public function isEmailResolved(): bool

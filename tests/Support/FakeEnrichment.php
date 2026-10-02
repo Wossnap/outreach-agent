@@ -4,9 +4,11 @@ namespace Tests\Support;
 
 use App\Models\Contact;
 use App\Models\EnrichmentProvider;
+use App\Services\Enrichment\Balance;
 use App\Services\Enrichment\Contracts\EmailFinder;
 use App\Services\Enrichment\Contracts\EmailVerifier;
 use App\Services\Enrichment\Contracts\PublishesListPrice;
+use App\Services\Enrichment\Contracts\ReportsBalance;
 use App\Services\Enrichment\FoundEmail;
 use App\Services\Enrichment\ListPrice;
 use App\Services\Enrichment\Verdict;
@@ -26,9 +28,66 @@ class FakeEnrichment
     /** @var array<int, string> */
     public static array $calls = [];
 
+    /**
+     * What each provider that reports a balance has left, by driver. Anything
+     * not set has 100.
+     *
+     * @var array<string, int>
+     */
+    public static array $credits = [];
+
+    /** How many times a provider was asked what it has left. */
+    public static int $balanceChecks = 0;
+
     public static function reset(): void
     {
         self::$calls = [];
+        self::$credits = [];
+        self::$balanceChecks = 0;
+    }
+
+    public static function creditsFor(EnrichmentProvider $provider): Balance
+    {
+        self::$balanceChecks++;
+
+        return new Balance(self::$credits[$provider->driver] ?? 100, 'credits');
+    }
+}
+
+/** A finder whose account can be emptied and topped up by a test. */
+class FinderWithCredits implements EmailFinder, ReportsBalance
+{
+    public function supports(Contact $contact): bool
+    {
+        return true;
+    }
+
+    public function find(Contact $contact, EnrichmentProvider $provider): ?FoundEmail
+    {
+        FakeEnrichment::$calls[] = 'finder-with-credits';
+
+        return new FoundEmail('found@acme.com', 88, ['score' => 88]);
+    }
+
+    public function balance(EnrichmentProvider $provider): Balance
+    {
+        return FakeEnrichment::creditsFor($provider);
+    }
+}
+
+/** A checker whose account can be emptied and topped up by a test. */
+class CheckerWithCredits implements EmailVerifier, ReportsBalance
+{
+    public function verify(string $email, EnrichmentProvider $provider): Verification
+    {
+        FakeEnrichment::$calls[] = 'checker-with-credits';
+
+        return new Verification(Verdict::VALID, ['said' => 'valid']);
+    }
+
+    public function balance(EnrichmentProvider $provider): Balance
+    {
+        return FakeEnrichment::creditsFor($provider);
     }
 }
 
